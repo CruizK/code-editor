@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Tutorial]
 (
-	[Id] INT NOT NULL PRIMARY KEY, 
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [Title] VARCHAR(100) NULL, 
     [Author] INT NOT NULL, 
     [CourseId] INT NULL, 
