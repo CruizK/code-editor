@@ -51,7 +51,7 @@ namespace CodeEditorApiDataAccess.Data
             modelBuilder.Entity<CfgProgrammingLanguage>(entity =>
             {
                 entity.HasKey(e => e.Language)
-                    .HasName("PK__cfgProgr__C3D592512ED67318");
+                    .HasName("PK__tmp_ms_x__C3D59251E247CEAC");
 
                 entity.ToTable("cfgProgrammingLanguages");
 
@@ -98,8 +98,6 @@ namespace CodeEditorApiDataAccess.Data
             modelBuilder.Entity<Tutorial>(entity =>
             {
                 entity.ToTable("Tutorial");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
