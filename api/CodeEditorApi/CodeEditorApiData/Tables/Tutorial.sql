@@ -8,7 +8,7 @@
     [CreateDate] DATETIME NOT NULL, 
     [ModifyDate] NCHAR(10) NOT NULL, 
     [IsPublished] BIT NOT NULL, 
-    [StudentCount] INT NOT NULL, 
+    [Index] INT NOT NULL, 
     CONSTRAINT [FK_Tutorial_UserId] FOREIGN KEY ([Author]) REFERENCES [User]([Id]), 
     CONSTRAINT [FK_Tutorial_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Course]([Id])
 )
