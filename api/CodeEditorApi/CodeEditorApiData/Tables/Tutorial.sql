@@ -1,9 +1,9 @@
 ﻿CREATE TABLE [dbo].[Tutorial]
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
-    [Title] VARCHAR(100) NULL, 
+    [Title] VARCHAR(100) NOT NULL, 
     [Author] INT NOT NULL, 
-    [CourseId] INT NULL, 
+    [CourseId] INT NOT NULL, 
     [Prompt] TEXT NULL, 
     [CreateDate] DATETIME NOT NULL, 
     [ModifyDate] NCHAR(10) NOT NULL, 
