@@ -128,8 +128,16 @@ namespace CodeEditorApiDataAccess.Data
             {
                 entity.ToTable("User");
 
+                entity.Property(e => e.AccessToken)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Email)
                     .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Hash)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 

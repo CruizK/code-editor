@@ -1,46 +1,53 @@
-﻿using CodeEditorApiDataAccess.Data;
-using Microsoft.AspNetCore.Http;
+﻿using CodeEditorApi.Features.Auth.Login;
+using CodeEditorApi.Features.Auth.Register;
+using CodeEditorApi.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Auth
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
+    [AllowAnonymous]
     [ApiController]
     public class AuthController : ControllerBase
     {
 
-        private readonly CodeEditorApiContext _context;
+        private readonly IRegisterCommand _registerCommand;
+        private readonly ILoginCommand _loginCommand;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(CodeEditorApiContext context)
+        public AuthController(IRegisterCommand registerCommand, ILoginCommand loginCommand, IConfiguration configuration)
         {
-            _context = context;
+            _registerCommand = registerCommand;
+            _loginCommand = loginCommand;
+            _configuration = configuration;
         }
 
-
-        [HttpGet("github")]
-        public ActionResult PostGithub([FromQuery] string code)
+        [HttpPost("Register")]
+        public async Task Register([FromBody] RegisterBody registerBody)
         {
-
-
-            return Ok();
+            await _registerCommand.ExecuteAsync(registerBody);
         }
 
-        /// <summary>
-        /// Queries for all users
-        /// </summary>
-        /// <returns>All users in the DB</returns>
-        /// <response code="200">Returns the users from the DB</response>
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        [HttpPost("Login")]
+        public async Task<ActionResult<string>> Login([FromBody] LoginBody loginBody)
         {
-            var users = await _context.Users.ToListAsync();
+            var user = await _loginCommand.ExecuteAsync(loginBody);
 
-            return users;
+            if(user != null)
+            {
+                var token = JwtHelper.GenerateToken(
+                    _configuration["Jwt:Key"],
+                    _configuration["Jwt:Issuer"],
+                    _configuration["Jwt:Audience"],
+                    user);
+                return token;
+            }
+
+            return Unauthorized();
         }
     }
 }
