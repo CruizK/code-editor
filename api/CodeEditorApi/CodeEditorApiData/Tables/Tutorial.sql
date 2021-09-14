@@ -9,6 +9,9 @@
     [ModifyDate] NCHAR(10) NOT NULL, 
     [IsPublished] BIT NOT NULL, 
     [Index] INT NOT NULL, 
+    [LanguageId] INT NULL, 
+    [DifficultyId] INT NULL, 
+    [Description] NCHAR(10) NULL, 
     CONSTRAINT [FK_Tutorial_UserId] FOREIGN KEY ([Author]) REFERENCES [User]([Id]), 
     CONSTRAINT [FK_Tutorial_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Course]([Id])
 )
