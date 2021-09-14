@@ -67,7 +67,7 @@
     <Build Include="Tables\Course.sql" />
     <Build Include="Tables\User.sql" />
     <Build Include="Tables\cfgRoles.sql" />
-    <Build Include="Tables\cfgProgrammingLanguages.sql" />
+    <Build Include="Tables\cfgProgrammingLanguage.sql" />
     <Build Include="Tables\cfgDifficultyLevel.sql" />
     <Build Include="Tables\Tutorial.sql" />
     <Build Include="Tables\UserRegisteredCourse.sql" />
