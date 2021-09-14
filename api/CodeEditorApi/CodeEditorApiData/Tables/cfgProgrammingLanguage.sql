@@ -1,5 +1,5 @@
-﻿CREATE TABLE [dbo].[cfgProgrammingLanguages]
+﻿CREATE TABLE [dbo].[cfgProgrammingLanguage]
 (
-	[Id] INT, 
+	[Id] INT NOT NULL, 
     [Language] VARCHAR(255) NOT NULL PRIMARY KEY
 )
