@@ -33,6 +33,20 @@ const config = {
   useSystemColorMode: false
 }
 
-const theme = extendTheme({ colors, config })
+const fonts = {
+  body: "Ubuntu Mono, monospace",
+  heading: "Open Sans",
+  mono: "Ubuntu Mono, monospace",
+}
+
+const fontSizes = {
+  xs: "13px",
+  sm: "16px",
+  md: "24px",
+  lg: "36px",
+  xl: "40px",
+}
+
+const theme = extendTheme({ colors, config, fonts, fontSizes })
 
 export default theme;
