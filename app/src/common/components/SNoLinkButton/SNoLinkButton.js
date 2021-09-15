@@ -1,4 +1,4 @@
-import SNoLink from "@Components/SnoLink/SnoLink";
+import SNoLink from "@Components/SNoLink/SNoLink";
 
 function SNoLinkButton(props) {
     let sizeProps = {};
