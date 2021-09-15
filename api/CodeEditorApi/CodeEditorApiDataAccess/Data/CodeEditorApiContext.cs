@@ -23,6 +23,8 @@ namespace CodeEditorApiDataAccess.Data
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Tutorial> Tutorials { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRegisteredCourse> UserRegisteredCourses { get; set; }
+        public virtual DbSet<UserTutorial> UserTutorials { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -50,12 +52,12 @@ namespace CodeEditorApiDataAccess.Data
 
             modelBuilder.Entity<CfgProgrammingLanguage>(entity =>
             {
-                entity.HasKey(e => e.Language)
-                    .HasName("PK__tmp_ms_x__C3D59251E247CEAC");
+                entity.ToTable("cfgProgrammingLanguage");
 
-                entity.ToTable("cfgProgrammingLanguages");
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Language)
+                    .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
             });
@@ -85,6 +87,7 @@ namespace CodeEditorApiDataAccess.Data
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Title)
+                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
@@ -101,6 +104,8 @@ namespace CodeEditorApiDataAccess.Data
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
+                entity.Property(e => e.Description).HasMaxLength(255);
+
                 entity.Property(e => e.ModifyDate)
                     .IsRequired()
                     .HasMaxLength(10)
@@ -109,6 +114,7 @@ namespace CodeEditorApiDataAccess.Data
                 entity.Property(e => e.Prompt).HasColumnType("text");
 
                 entity.Property(e => e.Title)
+                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
@@ -121,12 +127,26 @@ namespace CodeEditorApiDataAccess.Data
                 entity.HasOne(d => d.Course)
                     .WithMany(p => p.Tutorials)
                     .HasForeignKey(d => d.CourseId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Tutorial_CourseId");
+
+                entity.HasOne(d => d.Difficulty)
+                    .WithMany(p => p.Tutorials)
+                    .HasForeignKey(d => d.DifficultyId)
+                    .HasConstraintName("FK_Tutorial_cfgDifficultyLevel");
+
+                entity.HasOne(d => d.Language)
+                    .WithMany(p => p.Tutorials)
+                    .HasForeignKey(d => d.LanguageId)
+                    .HasConstraintName("FK_Tutorial_cfgProgrammingLanguage");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("User");
+
+                entity.HasIndex(e => e.Email, "AK_Email")
+                    .IsUnique();
 
                 entity.Property(e => e.AccessToken)
                     .HasMaxLength(255)
@@ -143,7 +163,7 @@ namespace CodeEditorApiDataAccess.Data
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(100)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Role)
@@ -151,6 +171,45 @@ namespace CodeEditorApiDataAccess.Data
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_User_cfgRoles");
+            });
+
+            modelBuilder.Entity<UserRegisteredCourse>(entity =>
+            {
+                entity.HasKey(e => new { e.CourseId, e.UserId });
+
+                entity.ToTable("UserRegisteredCourse");
+
+                entity.HasOne(d => d.Course)
+                    .WithMany(p => p.UserRegisteredCourses)
+                    .HasForeignKey(d => d.CourseId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserRegisteredCourse_Course");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserRegisteredCourses)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserRegisteredCourse_User");
+            });
+
+            modelBuilder.Entity<UserTutorial>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.TutorialId })
+                    .HasName("PK__UserTuto__22630A28E0EDDDD5");
+
+                entity.ToTable("UserTutorial");
+
+                entity.HasOne(d => d.Tutorial)
+                    .WithMany(p => p.UserTutorials)
+                    .HasForeignKey(d => d.TutorialId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserTutorial_Tutorial");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserTutorials)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserTutorial_User");
             });
 
             OnModelCreatingPartial(modelBuilder);
