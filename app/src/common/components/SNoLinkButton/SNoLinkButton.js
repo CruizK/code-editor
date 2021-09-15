@@ -11,7 +11,7 @@ function SNoLinkButton(props) {
     }
 
     return(
-        <SNoLink href={props.href} as="button" backgroundColor={props.backgroundColor} borderRadius="md" {...sizeProps}>{props.children}</SNoLink>
+        <SNoLink href={props.href} fontFamily="button" fontWeight="bold" as="button" backgroundColor={props.backgroundColor} borderRadius="md" {...sizeProps}>{props.children}</SNoLink>
     )
 }
 

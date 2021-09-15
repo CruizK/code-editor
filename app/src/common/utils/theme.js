@@ -35,6 +35,7 @@ const config = {
 
 const fonts = {
   body: "Ubuntu Mono, monospace",
+  button: "Open Sans",
   heading: "Open Sans",
   mono: "Ubuntu Mono, monospace",
 }
