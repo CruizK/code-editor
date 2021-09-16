@@ -48,6 +48,30 @@ const fontSizes = {
   xl: "40px",
 }
 
-const theme = extendTheme({ colors, config, fonts, fontSizes })
+const styles = {
+  global: {
+    "*::placeholder": {
+      color: "ce_black",
+    },
+  },
+}
+
+const components = {
+  Input: {
+    defaultProps: {
+      size: "xs",
+    },
+    variants: {
+      outline: {
+        field: {
+          borderColor: "ce_black",
+          borderRadius: "md",
+        },
+      },
+    },
+  },
+}
+
+const theme = extendTheme({ colors, config, fonts, fontSizes, styles, components })
 
 export default theme;
