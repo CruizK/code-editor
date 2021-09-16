@@ -1,5 +1,5 @@
 import { Box, Center, Divider, Flex, Grid } from "@chakra-ui/layout";
-import SNoLink from "@Components/SnoLink/SnoLink";
+import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 import paletteToRGB from '@Utils/color';
 
