@@ -5,7 +5,7 @@ function SNoLinkButton(props) {
 
     if(props.type == "large") {
         sizeProps.height = "50px";
-        sizeProps.fontSize = "xl";
+        sizeProps.fontSize = "md";
     } else {
         sizeProps.height = "35px";
     }
