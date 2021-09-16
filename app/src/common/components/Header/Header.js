@@ -6,7 +6,7 @@ import { Box } from "@chakra-ui/layout";
  function Header(props) {
     return(
         <Box height="50px" bgColor="ce_darkgrey">
-            {props.children}
+            {/** INSERT HEADER STUFF HERE */}
         </Box>
     )
 }

@@ -1,11 +1,12 @@
 import { Box, Center, Divider, Flex, Grid } from "@chakra-ui/layout";
+import Main from "@Components/Main/Main";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 import paletteToRGB from '@Utils/color';
 
 function Index() {
   return(
-    <main>
+    <Main>
       <Flex minHeight="350px">
         <Box flex="3" bgImage="/eng.jpg" flexShrink="3" bgBlendMode="multiply" backgroundColor={paletteToRGB("ce_mainmaroon", 0.6)} />
         <Center flex="2" color="ce_white" bgColor="ce_backgroundlighttan">
@@ -19,7 +20,7 @@ function Index() {
           </Grid>
         </Center>
       </Flex>
-    </main>
+    </Main>
   );
 }
 
