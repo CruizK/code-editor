@@ -2,13 +2,14 @@
 * Actual routes. Don't put raw components in here or nextjs'll try to render them individually as pages.
 
 ## src
-* Holds most of our code. Add tests for a given \<file\>.js as \<file\>.test.js. See https://www.testim.io/blog/node-js-unit-testing-get-started-quickly-with-examples/ for a quick demo on how to write jest tests. 
+* Holds most of our code. Add tests for a given \<file\>.js as \<file\>.test.js. See https://www.testim.io/blog/node-js-unit-testing-get-started-quickly-with-examples/ for a quick demo on how to write jest tests. Put chakra component style definitions into \<file\>.style.js.
 ```
 /src
     /common
         /components
             /<Name>
                 <Name>.js
+                <Name>.style.js
                 <Name>.test.js
         /hooks
         /utils
