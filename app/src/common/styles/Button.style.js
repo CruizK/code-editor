@@ -22,6 +22,14 @@ const ButtonStyle = {
         variant: "maroon",
         size: "sm",
     },
+    sizes: {
+        md: {
+            h: 12,
+            minW: 10,
+            fontSize: "md",
+            px: 4,
+        },
+    }
 }
 
 export default ButtonStyle;

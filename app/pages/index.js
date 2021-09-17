@@ -12,7 +12,7 @@ function Index() {
         <Center flex="2" color="ce_white" bgColor="ce_backgroundlighttan">
           <Grid templateRows="5 1fr" gap={6} w="56">
             <SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink>
-            <SNoLinkButton type="large" href="/auth/register" variant="maroon">SIGN UP</SNoLinkButton>
+            <SNoLinkButton size="md" href="/auth/register" variant="maroon">SIGN UP</SNoLinkButton>
             <Center>
               <Divider w="75%" borderColor="ce_black" />
             </Center>
