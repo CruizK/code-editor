@@ -14,7 +14,7 @@ function RegistrationForm() {
                 <FormControl id="password" isRequired>
                     <Input placeholder="Password" />
                 </FormControl>
-                <Button backgroundColor="ce_white">Sign Up</Button>
+                <Button variant="white">Sign Up</Button>
             </Grid>
         </Center>
     );

@@ -14,7 +14,7 @@ function LoginForm() {
                 <FormControl id="password" isRequired>
                     <Input placeholder="Password" />
                 </FormControl>
-                <Button backgroundColor="ce_white">Sign In</Button>
+                <Button variant="white">Sign In</Button>
             </Grid>
         </Center>
     );

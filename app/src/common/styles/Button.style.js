@@ -8,6 +8,7 @@ const ButtonStyle = {
     },
     variants: {
         white: {
+            color: "ce_black",
             backgroundColor: "ce_white",
         },
         maroon: {
