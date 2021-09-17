@@ -1,17 +1,26 @@
+import { Button } from "@chakra-ui/button";
+import { useStyleConfig } from "@chakra-ui/system";
 import SNoLink from "@Components/SNoLink/SNoLink";
 
 function SNoLinkButton(props) {
-    let sizeProps = {};
+    const { variant, children, type, href, ...rest } = props
 
-    if(props.type == "large") {
+    let sizeProps = {};
+    if(type == "large") {
         sizeProps.height = "50px";
         sizeProps.fontSize = "md";
     } else {
         sizeProps.height = "35px";
     }
 
+    const styles = useStyleConfig("SNoLinkButtonStyle", { variant });
+
     return(
-        <SNoLink href={props.href} fontFamily="button" fontWeight="bold" as="button" backgroundColor={props.backgroundColor} borderRadius="md" {...sizeProps}>{props.children}</SNoLink>
+        <SNoLink href={href}>
+            <Button __css={styles} {...sizeProps} {...rest}>
+                {children}
+            </Button>
+        </SNoLink>
     )
 }
 

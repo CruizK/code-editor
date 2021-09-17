@@ -1,4 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
+import SNoLinkButtonStyle from "@Components/SNoLinkButton/SNoLinkButton.style";
 
 // ce_ is prepended to differentiate from default css colors
 const colors = {
@@ -70,6 +71,7 @@ const components = {
       },
     },
   },
+  SNoLinkButtonStyle,
 }
 
 const theme = extendTheme({ colors, config, fonts, fontSizes, styles, components })
