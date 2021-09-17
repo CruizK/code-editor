@@ -1,5 +1,4 @@
 import { Button } from "@chakra-ui/button";
-import { useStyleConfig } from "@chakra-ui/system";
 import SNoLink from "@Components/SNoLink/SNoLink";
 
 function SNoLinkButton(props) {
@@ -13,11 +12,9 @@ function SNoLinkButton(props) {
         sizeProps.height = "35px";
     }
 
-    const styles = useStyleConfig("SNoLinkButtonStyle", { variant });
-
     return(
         <SNoLink href={href}>
-            <Button __css={styles} {...sizeProps} {...rest}>
+            <Button variant={variant} {...sizeProps} {...rest}>
                 {children}
             </Button>
         </SNoLink>

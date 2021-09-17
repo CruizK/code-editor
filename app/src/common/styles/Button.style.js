@@ -1,5 +1,5 @@
-const SNoLinkButtonStyle = {
-    // The styles all SNoLinkButton's have in common
+const ButtonStyle = {
+    // The styles all Button's have in common
     baseStyle: {
         fontWeight: "bold",
         fontFamily: "button",
@@ -20,7 +20,8 @@ const SNoLinkButtonStyle = {
     // The default variant value
     defaultProps: {
         variant: "maroon",
+        size: "sm",
     },
 }
 
-export default SNoLinkButtonStyle;
+export default ButtonStyle;
