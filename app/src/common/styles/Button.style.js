@@ -10,12 +10,21 @@ const ButtonStyle = {
         white: {
             color: "ce_black",
             backgroundColor: "ce_white",
+            _hover: {
+                color: "ce_mainmaroon",
+            }
         },
         maroon: {
             backgroundColor: "ce_mainmaroon",
+            _hover: {
+                backgroundColor: "ce_hovermaroon",
+            }
         },
         black: {
             backgroundColor: "ce_black",
+            _hover: {
+                backgroundColor: "ce_darkgrey",
+            }
         },
     },
     // The default variant value
