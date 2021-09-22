@@ -29,6 +29,17 @@ namespace CodeEditorApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "dev",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000").AllowAnyHeader();
+                    }
+                );
+            });
+
             services.AddControllers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -112,6 +123,12 @@ namespace CodeEditorApi
 
             app.UseAuthentication();
             app.UseRouting();
+
+            if (env.IsDevelopment())
+            {
+                app.UseCors("dev");
+            }
+
             app.UseAuthorization();
 
 
