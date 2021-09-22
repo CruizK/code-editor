@@ -7,7 +7,14 @@ namespace CodeEditorApiDataAccess.Data
 {
     public partial class CfgProgrammingLanguage
     {
-        public int? Id { get; set; }
+        public CfgProgrammingLanguage()
+        {
+            Tutorials = new HashSet<Tutorial>();
+        }
+
+        public int Id { get; set; }
         public string Language { get; set; }
+
+        public virtual ICollection<Tutorial> Tutorials { get; set; }
     }
 }

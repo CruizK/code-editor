@@ -31,10 +31,23 @@ pipeline {
         branch 'main'
       }
       stages {
-        stage('Build & Deploy') {
+        stage ('Build Image') {
           steps {
             dir('app') {
-              sh 'echo woo'
+              sh 'docker build -t code-editor-ui .'
+            }
+          }
+        }
+        stage ('Save Image') {
+          steps {
+            sh 'docker save -o code-editor-ui.tar code-editor-ui'
+          }
+        }
+        stage('Deploy') {
+          steps {
+            sshagent(['ssh-for-staging']) {
+              sh 'scp code-editor-ui.tar cruizk@192.168.0.16:/home/cruizk'
+              sh 'cat scripts/deployStaging.sh | ssh cruizk@192.168.0.16 /bin/bash'
             }
           }
         }

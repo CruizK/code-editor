@@ -11,6 +11,8 @@ namespace CodeEditorApiDataAccess.Data
         {
             Courses = new HashSet<Course>();
             Tutorials = new HashSet<Tutorial>();
+            UserRegisteredCourses = new HashSet<UserRegisteredCourse>();
+            UserTutorials = new HashSet<UserTutorial>();
         }
 
         public int Id { get; set; }
@@ -23,5 +25,7 @@ namespace CodeEditorApiDataAccess.Data
         public virtual CfgRole Role { get; set; }
         public virtual ICollection<Course> Courses { get; set; }
         public virtual ICollection<Tutorial> Tutorials { get; set; }
+        public virtual ICollection<UserRegisteredCourse> UserRegisteredCourses { get; set; }
+        public virtual ICollection<UserTutorial> UserTutorials { get; set; }
     }
 }

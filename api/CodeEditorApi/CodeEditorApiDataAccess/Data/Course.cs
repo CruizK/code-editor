@@ -10,6 +10,7 @@ namespace CodeEditorApiDataAccess.Data
         public Course()
         {
             Tutorials = new HashSet<Tutorial>();
+            UserRegisteredCourses = new HashSet<UserRegisteredCourse>();
         }
 
         public int Id { get; set; }
@@ -19,9 +20,9 @@ namespace CodeEditorApiDataAccess.Data
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
         public bool IsPublished { get; set; }
-        public int StudentCount { get; set; }
 
         public virtual User AuthorNavigation { get; set; }
         public virtual ICollection<Tutorial> Tutorials { get; set; }
+        public virtual ICollection<UserRegisteredCourse> UserRegisteredCourses { get; set; }
     }
 }

@@ -21,4 +21,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Language" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="2cfd78ad-47b6-4719-bafc-e083ce49257c" ChangeDateTime="09/09/2021 19:23:12">
+    <Property Name="ElementName" Value="[dbo].[UserRegisteredCourse].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserRegisteredCourse]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CourseId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="310952af-2ce5-43f3-a92d-b96246b4a21a" ChangeDateTime="09/09/2021 19:46:30">
+    <Property Name="ElementName" Value="[dbo].[UserTutorial].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserTutorial]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TutorialId" />
+  </Operation>
 </Operations>
