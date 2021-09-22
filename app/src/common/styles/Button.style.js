@@ -15,12 +15,14 @@ const ButtonStyle = {
             }
         },
         maroon: {
+            color: "ce_white",
             backgroundColor: "ce_mainmaroon",
             _hover: {
                 backgroundColor: "ce_hovermaroon",
             }
         },
         black: {
+            color: "ce_white",
             backgroundColor: "ce_black",
             _hover: {
                 backgroundColor: "ce_darkgrey",

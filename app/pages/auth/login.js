@@ -8,7 +8,7 @@ function Login() {
     return(
         <Main>
             <Flex minHeight="350px">        
-                <Center flex="2" color="white" bgColor="ce_white">
+                <Center flex="2" bgColor="ce_white">
                     <Grid templateRows="5 1fr" gap={6} w="56">
                         <SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink>
                         <Center><Heading as="h1">Sign In</Heading></Center>
