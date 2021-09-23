@@ -2,8 +2,40 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Center, Grid } from "@chakra-ui/layout";
-import { passwordRegEx, register } from "@Modules/Auth/Auth";
+import { passwordRegEx, validKeys } from "@Modules/Auth/Auth";
 import { useState } from "react";
+
+/**
+ * A function that sends form data to the server for registration.
+ * Validation is done through attributes on the form's html
+ * @param event submit event from a form.
+ * @return The response from the server.
+ */
+ async function register(event) {
+    event.preventDefault();
+
+    let isValid = true;
+    
+    let form = event.target;
+    let formData = {};
+    
+    validKeys.register.forEach(key => {
+        isValid = (form[key].validity.valid) ? isValid : false;
+        formData[key] = form[key].value;
+    });
+
+    if (isValid) {        
+        const res = await fetch(process.env.NEXT_PUBLIC_API + '/Auth/Register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+        return res;  
+    }
+
+}
 
 function RegistrationForm() {
     const [email, setEmail] = useState("placeholder");
