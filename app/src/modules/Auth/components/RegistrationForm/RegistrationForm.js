@@ -37,6 +37,9 @@ import { useState } from "react";
 
 }
 
+/**
+ * Handles displaying form UI and sending formdata to the server.
+ */
 function RegistrationForm() {
     const [email, setEmail] = useState("placeholder");
 
