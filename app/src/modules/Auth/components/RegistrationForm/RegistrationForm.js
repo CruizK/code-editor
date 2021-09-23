@@ -3,20 +3,23 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Center, Grid } from "@chakra-ui/layout";
 import { passwordRegEx, register } from "@Modules/Auth/Auth";
+import { useState } from "react";
 
 function RegistrationForm() {
+    const [email, setEmail] = useState("placeholder");
+
     return(
         <Center>
             <form onSubmit={register}>
                 <Grid templateRows="5 1fr" gap={6} w="56">
                     <FormControl id="email" isRequired>
-                        <Input placeholder="Email" type="email" />
+                        <Input placeholder="Email" type="email" onChange={(e) => setEmail(e.target.value)} />
                     </FormControl>
                     <FormControl id="name" isRequired>
                         <Input placeholder="Name" />
                     </FormControl>
                     <FormControl id="password" isRequired>
-                        <Input placeholder="Password" type="password" pattern={passwordRegEx} />
+                        <Input placeholder="Password" type="password" pattern={passwordRegEx(email)} />
                     </FormControl>
                     <Button variant="white" type="submit">Sign Up</Button>
                 </Grid>
