@@ -1,4 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
+import AccordionStyle, { AccordionBoxStyle } from "@Common/styles/Accordion.style";
 import ButtonStyle from "@Common/styles/Button.style";
 import HeadingStyle from "@Common/styles/Heading.style";
 import InputStyle from "@Common/styles/Input.style";
@@ -29,6 +30,18 @@ const colors = {
   ce_brightyellow: "#f1b434",
   ce_brightblue: "#298fc2",
   ce_brightgreen: "#6da800",
+  languages: {
+    python: "#ffa800",
+    java: "#246181",
+    js: "#246181",
+    html: "#660000",
+    css: "#000000",
+  },
+  difficulties: {
+    easy: "#880000",
+    med: "#FFD700",
+    hard: "#228B22",
+  }
 };
 
 const config = {
@@ -66,6 +79,8 @@ const components = {
   Input: InputStyle,
   Heading: HeadingStyle,
   Button: ButtonStyle,
+  Accordion: AccordionStyle,
+  AccordionBox: AccordionBoxStyle,
 }
 
 const theme = extendTheme({ colors, config, fonts, fontSizes, styles, components })
