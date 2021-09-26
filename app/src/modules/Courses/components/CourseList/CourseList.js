@@ -13,7 +13,7 @@ function CourseItem(props) {
                         {props.title}
                     </Box>
                     <HStack spacing={3}>                        
-                        <EditIcon />
+                        <EditIcon color="ce_mainmaroon" />
                         <DeleteIcon />
                         <AccordionIcon />
                     </HStack>

@@ -33,7 +33,7 @@ function TutorialItem(props) {
             </GridItem>
             <GridItem colStart={6}>
                 <HStack spacing={3}>                        
-                    <EditIcon />
+                    <EditIcon color="ce_mainmaroon" />
                     <DeleteIcon />
                 </HStack>
             </GridItem>
