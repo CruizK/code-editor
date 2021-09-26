@@ -1,3 +1,4 @@
+import { Container } from "@chakra-ui/layout";
 import Header from "@Components/Header/Header"
 
 /**
@@ -6,8 +7,10 @@ import Header from "@Components/Header/Header"
 function Main(props) {
     return(
         <main>
-            <Header />
-            {props.children}
+            <Container maxW="container.lg" centerContent minHeight="450px" bgColor="ce_white">
+                <Header />
+                {props.children}
+            </Container>
         </main>
     )
 }
