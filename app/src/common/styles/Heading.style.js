@@ -1,6 +1,7 @@
 const HeadingStyle = {
     baseStyle: {
         color: "ce_black",
+        fontWeight: 300,
     },
 }
 
