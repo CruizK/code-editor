@@ -11,7 +11,7 @@ namespace CodeEditorApiUnitTests.Features.Courses
     public class GetCoursesCommandTest
     {
 
-        private readonly GetCoursesCommand _target;
+        private readonly GetCourseCommand _target;
         private readonly Fixture _fixture;
 
         private readonly Mock<IGetCourses> _getCoursesMock;
@@ -20,7 +20,7 @@ namespace CodeEditorApiUnitTests.Features.Courses
         {
             _getCoursesMock = new Mock<IGetCourses>();
             _fixture = new Fixture();
-            _target = new GetCoursesCommand(_getCoursesMock.Object);
+            _target = new GetCourseCommand(_getCoursesMock.Object);
         }
 
         [Fact]
