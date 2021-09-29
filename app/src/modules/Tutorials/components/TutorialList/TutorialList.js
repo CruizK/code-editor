@@ -1,6 +1,6 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Box, Flex, Grid, GridItem, HStack, Divider, Center } from "@chakra-ui/layout";
-import { Tag } from "@chakra-ui/tag";
+import { Tag, TagLabel } from "@chakra-ui/tag";
 
 function TutorialItem(props) {
     const tags = [];
@@ -26,8 +26,10 @@ function TutorialItem(props) {
                 <HStack spacing={3}>
                     {tags.map((tagData) => {
                         let name = tagData.name;
-                        let color = tagData.type + "." + name.toLowerCase();
-                        return <Tag key={name} color="ce_white" backgroundColor={color}>{name}</Tag>;
+                        let lower = name.toLowerCase();
+                        return <Tag key={name} type={tagData.type} lower={lower}>
+                            <TagLabel>{name}</TagLabel>
+                        </Tag>;
                     })}
                 </HStack>
             </GridItem>
