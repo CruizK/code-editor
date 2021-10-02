@@ -1,8 +1,9 @@
 import { Button } from "@chakra-ui/button";
+import { Checkbox } from "@chakra-ui/checkbox";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Center, Grid } from "@chakra-ui/layout";
-import { passwordRegEx, validKeys } from "@Modules/Auth/Auth";
+import { passwordRegEx } from "@Modules/Auth/Auth";
 import instance from "@Utils/instance";
 import { useState } from "react";
 
@@ -22,17 +23,24 @@ function RegistrationForm() {
         event.preventDefault();
 
         let isValid = true;
-        
         let form = event.target;
-        let formData = {};
         
-        validKeys.register.forEach(key => {
+        [
+            "name",
+            "email",
+            "password",
+            "admin",
+        ].forEach(key => {
             isValid = (form[key].validity.valid) ? isValid : false;
-            formData[key] = form[key].value;
         });
 
         if (isValid) {        
-            instance.post("/Auth/Register", formData)
+            instance.post("/Auth/Register", {
+                name: form["name"].value,
+                email: form["email"].value,
+                password: form["password"].value,
+                admin: form["admin"].checked,
+            })
             .then((response) => {
                 if (response.statusText == "OK") {
                     // DO SOMETHING
@@ -54,6 +62,7 @@ function RegistrationForm() {
                     <FormControl id="password" isRequired>
                         <Input placeholder="Password" type="password" pattern={passwordRegEx(email)} />
                     </FormControl>
+                    <Checkbox id="admin" size="sm">Request admin access</Checkbox>
                     <Button variant="white" type="submit">Sign Up</Button>
                 </Grid>
             </form>
