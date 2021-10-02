@@ -1,3 +1,4 @@
+using CodeEditorApi.StartHelpers;
 using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -51,6 +52,17 @@ namespace CodeEditorApi
                     Title = "Code Editor API",
                     Description = "API For Code Editor Project",
                 });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                // add auth header for [Authorize] endpoints, ignoring [AllowAnonymous]
+                c.OperationFilter<AddAuthHeaderOperationFilter>();
 
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
