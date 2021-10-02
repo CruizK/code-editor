@@ -21,17 +21,20 @@ function LoginForm() {
         event.preventDefault();
 
         let isValid = true;
-        
         let form = event.target;
-        let formData = {};
         
-        validKeys.login.forEach(key => {
+        [
+            "email",
+            "password",
+        ].forEach(key => {
             isValid = (form[key].validity.valid) ? isValid : false;
-            formData[key] = form[key].value;
         });
 
         if (isValid) {        
-            instance.post("/Auth/Login", formData)
+            instance.post("/Auth/Login", {
+                email: form["email"].value,
+                password: form["password"].value,
+            })
             .then((response) => {
                 if (response.statusText == "OK") {
                     let token = response.data;
