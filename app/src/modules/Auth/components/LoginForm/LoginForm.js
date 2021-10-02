@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Center, Grid } from "@chakra-ui/layout";
-import { passwordRegEx, validKeys } from "@Modules/Auth/Auth";
+import { passwordRegEx } from "@Modules/Auth/Auth";
 import instance from "@Utils/instance";
 import { useState } from "react";
 import { useCookies } from "react-cookie";

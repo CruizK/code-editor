@@ -2,11 +2,6 @@ function loggedIn() {
     return false;
 }
 
-const validKeys = {
-    login: ["email", "password"],
-    register: ["email", "name", "password"],
-}
-
 /**
  * At least eight characters, but no more than twenty.
  * At least one lowercase letter.
@@ -29,5 +24,4 @@ function passwordRegEx(email) {
 };
 
 exports.loggedIn = loggedIn;
-exports.validKeys = validKeys;
 exports.passwordRegEx = passwordRegEx;
