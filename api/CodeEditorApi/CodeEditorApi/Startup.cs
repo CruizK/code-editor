@@ -1,4 +1,4 @@
-using CodeEditorApi.StartHelpers;
+using CodeEditorApi.Helpers;
 using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

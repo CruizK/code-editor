@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeEditorApi.StartHelpers
+namespace CodeEditorApi.Helpers
 {
     public class AddAuthHeaderOperationFilter : IOperationFilter
     {
