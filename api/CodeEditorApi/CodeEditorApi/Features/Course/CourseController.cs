@@ -1,24 +1,33 @@
-﻿using CodeEditorApi.Features.Courses.GetCourses;
+﻿using CodeEditorApi.Features.Courses.CreateCourse;
+using CodeEditorApi.Features.Courses.GetCourses;
 using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 
 namespace CodeEditorApi.Features.Courses
 {
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class CoursesController : ControllerBase
-    {
-        private readonly IGetCoursesCommand _getCoursesCommand;
 
-        public CoursesController(IGetCoursesCommand getCoursesCommand)
+    /// <summary>
+    /// Controls the direction of which CRUD operation/API request is called
+    /// </summary>
+    public class CourseController : ControllerBase
+    {
+        private readonly IGetCourseCommand _getCourseCommand;
+        private readonly ICreateCourseCommand _createCourseCommand;
+
+        public CourseController(IGetCourseCommand getCourseCommand, ICreateCourseCommand createCourseCommand)
         {
-            _getCoursesCommand = getCoursesCommand;
+            _getCourseCommand = getCourseCommand;
+            _createCourseCommand = createCourseCommand;
         }
 
         /// <summary>
@@ -29,9 +38,29 @@ namespace CodeEditorApi.Features.Courses
         [Authorize]
         public async Task<IEnumerable<Course>> GetCourses()
         {
-            return await _getCoursesCommand.ExecuteAsync();
+            var userId = retrieveRequestUserId();
+            return await _getCourseCommand.ExecuteAsync(userId);
         }
 
+        public async Task<IEnumerable<Course>> CreateCourse()
+        {
+            var userId = retrieveRequestUserId();
+            return await _createCourseCommand.ExecuteAsync(userId);
+        }
+
+        private int retrieveRequestUserId()
+        {
+            var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub).Value;
+            try
+            {
+                return int.Parse(userId);
+            }
+            catch(System.FormatException e)
+            {
+                return -1;
+                //TODO: catch internal error of invalid userId...this should turn into a validation on it's own though. Then call validation in this method.
+            }
+        }
         //[HttpGet("all")]
         //[Authorize(Roles = "Student")]
         //public async Task<IEnumerable<Course>> GetAllCourses()
@@ -39,10 +68,10 @@ namespace CodeEditorApi.Features.Courses
         //    var user = HttpContext.User;
         //    // This is how you would get the id, or any other information stored in the JWT
         //    var userId = user.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
-            
+
         //    // You can check if something is in a role like so
         //    var isInRole = user.IsInRole("Student");
-            
+
         //    return await _getCoursesCommand.ExecuteAsync();
         //}
     }

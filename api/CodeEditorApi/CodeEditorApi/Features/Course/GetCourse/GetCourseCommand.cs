@@ -4,24 +4,24 @@ using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Courses.GetCourses
 {
-    public interface IGetCoursesCommand
+    public interface IGetCourseCommand
     {
-        public Task<IEnumerable<Course>> ExecuteAsync();
+        public Task<IEnumerable<Course>> ExecuteAsync(int userId);
     }
-
-    public class GetCoursesCommand : IGetCoursesCommand
+    
+    public class GetCourseCommand : IGetCourseCommand
     {
 
-        private readonly IGetCourses _getCourses;
+        private readonly IGetCourse _getCourse;
 
-        public GetCoursesCommand(IGetCourses getCourses)
+        public GetCourseCommand(IGetCourse getCourse)
         {
-            _getCourses = getCourses;
+            _getCourse = getCourse;
         }
 
-        public async Task<IEnumerable<Course>> ExecuteAsync()
+        public async Task<IEnumerable<Course>> ExecuteAsync(int userId)
         {
-            var courses =  await _getCourses.ExecuteAsync();
+            var courses =  await _getCourse.ExecuteAsync(userId);
 
             // If we needed to manipulate the data, or do some data validation it would be here
 
