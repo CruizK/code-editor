@@ -3,6 +3,7 @@ import AccordionStyle, { AccordionBoxStyle } from "@Common/styles/Accordion.styl
 import ButtonStyle from "@Common/styles/Button.style";
 import HeadingStyle from "@Common/styles/Heading.style";
 import InputStyle from "@Common/styles/Input.style";
+import MenuStyle from "@Common/styles/Menu.style";
 import TagStyle from "@Common/styles/Tag.style";
 
 // ce_ is prepended to differentiate from default css colors
@@ -83,6 +84,7 @@ const components = {
   Accordion: AccordionStyle,
   AccordionBox: AccordionBoxStyle,
   Tag: TagStyle,
+  Menu: MenuStyle,
 }
 
 const theme = extendTheme({ colors, config, fonts, fontSizes, styles, components })
