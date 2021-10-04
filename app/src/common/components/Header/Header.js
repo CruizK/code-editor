@@ -1,9 +1,11 @@
 import { Box, Flex, Grid, GridItem, Heading, HStack } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import { useState } from "react";
 import { loggedIn } from "@Modules/Auth/Auth";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 /**
  * Contains the shared header for each page. Only render user icon if logged in.
@@ -26,6 +28,15 @@ import { loggedIn } from "@Modules/Auth/Auth";
                             <SNoLink href="/courses/mine">My Content</SNoLink>
                             <SNoLink href="/dashboard">My Courses</SNoLink>
                             <Avatar size="sm" name={userName} src={profileImage} />
+                            <Menu>
+                                <MenuButton>
+                                    <ChevronDownIcon />
+                                </MenuButton>
+                                <MenuList color="ce_black">
+                                    <MenuItem>My Account</MenuItem>
+                                    <MenuItem>Sign Out</MenuItem>
+                                </MenuList>
+                            </Menu>
                         </HStack>
                         }
                         
