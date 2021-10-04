@@ -1,13 +1,37 @@
-import { Box } from "@chakra-ui/layout";
+import { Box, Flex, Grid, GridItem, Heading, HStack } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/react";
+import { Avatar } from "@chakra-ui/avatar";
+import SNoLink from "@Components/SNoLink/SNoLink";
+import { useState } from "react";
+import { loggedIn } from "@Modules/Auth/Auth";
 
 /**
  * Contains the shared header for each page. Only render user icon if logged in.
  */
  function Header(props) {
+    const [userName, setUserName] = useState("user");
+    const profileImage = "/defaults/avatar.png"; // TODO: Update with actual avatar.
+    const loginStatus = loggedIn();
+
     return(
-        <Box height="50px" bgColor="ce_darkgrey" width="100%">
-            <Image src="/siu_logo.png" alt="SIU Logo" maxHeight="50px" />
+        <Box height="50px" bgColor="ce_darkgrey" width="100%" color="ce_white">
+            <Grid templateColumns="repeat(5, 1fr)" gap={6} pl={5} pr={5}>
+                <GridItem>
+                    <Image src="/siu_logo.png" alt="SIU Logo" maxHeight="50px" />
+                </GridItem>
+                <GridItem colSpan={2} colEnd={6}>
+                    <Flex height="100%" justifyContent="right" alignItems="center">
+                        {loginStatus && 
+                        <HStack spacing={3}>
+                            <SNoLink href="/courses/mine">My Content</SNoLink>
+                            <SNoLink href="/dashboard">My Courses</SNoLink>
+                            <Avatar size="sm" name={userName} src={profileImage} />
+                        </HStack>
+                        }
+                        
+                    </Flex>
+                </GridItem>
+            </Grid>
         </Box>
     )
 }
