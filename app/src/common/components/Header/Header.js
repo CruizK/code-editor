@@ -3,17 +3,27 @@ import { Image } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import SNoLink from "@Components/SNoLink/SNoLink";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loggedIn } from "@Modules/Auth/Auth";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { getRole } from "@Utils/jwt";
+import { useCookies } from "react-cookie";
 
 /**
  * Contains the shared header for each page. Only render user icon if logged in.
  */
  function Header(props) {
-    const [userName, setUserName] = useState("user");
+    const [cookie, setCookie] = useCookies(["user"]);
+    const [userRole, setUserRole] = useState("Student");
+    const [loginStatus, setLogin] = useState(loggedIn());
+    
     const profileImage = "/defaults/avatar.png"; // TODO: Update with actual avatar.
-    const loginStatus = loggedIn();
+
+    useEffect(() => {
+        if (loginStatus) {
+            setUserRole(getRole(cookie.user));
+        }
+    }, [loginStatus])
 
     return(
         <Box height="50px" bgColor="ce_darkgrey" width="100%" color="ce_white">
@@ -25,9 +35,11 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
                     <Flex height="100%" justifyContent="right" alignItems="center">
                         {loginStatus && 
                         <HStack spacing={3}>
+                            {(userRole == "Teacher" || userRole == "Admin") && 
                             <SNoLink href="/courses/mine">My Content</SNoLink>
+                            }
                             <SNoLink href="/dashboard">My Courses</SNoLink>
-                            <Avatar size="sm" name={userName} src={profileImage} />
+                            <Avatar size="sm" name="user icon" src={profileImage} />
                             <Menu>
                                 <MenuButton>
                                     <ChevronDownIcon />
