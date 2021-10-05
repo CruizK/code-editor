@@ -11,10 +11,15 @@ const keys = {
  * TODO: Switch to jwt.verify(token, <public_key>, function(err, decoded) {})
  */
 function decode(token) {
-    let JWTObj;
+    let JWTObj = {};
 
     try {
-        JWTObj = jwt.decode(token);
+        let tempJWTObj = jwt.decode(token);
+        if (tempJWTObj) {
+            JWTObj = tempJWTObj;
+        } else {
+            JWTObj[keys.role] = "Student";
+        }
     } catch (error) {
         JWTObj[keys.role] = "Student";
     }
@@ -32,4 +37,4 @@ function getRole(token) {
     return decoded[keys.role];
 }
 
-export { getRole };
+export { keys as JWTKeys, decode, getRole };
