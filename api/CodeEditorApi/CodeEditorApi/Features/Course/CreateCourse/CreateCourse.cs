@@ -8,7 +8,7 @@ namespace CodeEditorApi.Features.Courses.CreateCourse
 {
     public interface ICreateCourse
     {
-        public Task<IEnumerable<Course>> ExecuteAsync(int userId);
+        public Task ExecuteAsync(int userId, Course course);
     }
     public class CreateCourse : ICreateCourse
     {
@@ -18,9 +18,9 @@ namespace CodeEditorApi.Features.Courses.CreateCourse
         {
             _context = context;
         }
-        public async Task<IEnumerable<Course>> ExecuteAsync(int userId)
+        public async Task ExecuteAsync(int userId, Course course)
         {
-            throw new NotImplementedException();
+            await _context.Courses.AddAsync(course);
         }
     }
 }

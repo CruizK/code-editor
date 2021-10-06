@@ -8,7 +8,7 @@ namespace CodeEditorApi.Features.Courses.CreateCourse
 {
     public interface ICreateCourseCommand
     {
-        public Task<IEnumerable<Course>> ExecuteAsync(int userId);
+        public Task ExecuteAsync(int userId, Course course);
     }
     public class CreateCourseCommand : ICreateCourseCommand
     {
@@ -18,9 +18,9 @@ namespace CodeEditorApi.Features.Courses.CreateCourse
         {
             _createCourse = createCourse;
         }
-        public Task<IEnumerable<Course>> ExecuteAsync(int userId)
+        public Task ExecuteAsync(int userId, Course course)
         {
-            throw new NotImplementedException();
+            return _createCourse.ExecuteAsync(userId, course);
         }
     }
 }

@@ -42,10 +42,12 @@ namespace CodeEditorApi.Features.Courses
             return await _getCourseCommand.ExecuteAsync(userId);
         }
 
-        public async Task<IEnumerable<Course>> CreateCourse()
+        [HttpPost("CreateCourse")]
+        [Authorize]
+        public async Task CreateCourse([FromBody] Course course)
         {
             var userId = retrieveRequestUserId();
-            return await _createCourseCommand.ExecuteAsync(userId);
+            await _createCourseCommand.ExecuteAsync(userId, course);
         }
 
         private int retrieveRequestUserId()
