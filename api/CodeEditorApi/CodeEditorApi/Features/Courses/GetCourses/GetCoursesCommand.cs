@@ -8,20 +8,20 @@ namespace CodeEditorApi.Features.Courses.GetCourses
     {
         public Task<IEnumerable<Course>> ExecuteAsync(int userId);
     }
-    
-    public class GetCourseCommand : IGetCourseCommand
+
+    public class GetCoursesCommand : IGetCourseCommand
     {
 
         private readonly IGetCourse _getCourse;
 
-        public GetCourseCommand(IGetCourse getCourse)
+        public GetCoursesCommand(IGetCourse getCourse)
         {
             _getCourse = getCourse;
         }
 
         public async Task<IEnumerable<Course>> ExecuteAsync(int userId)
         {
-            var courses =  await _getCourse.ExecuteAsync(userId);
+            var courses = await _getCourse.ExecuteAsync(userId);
 
             // If we needed to manipulate the data, or do some data validation it would be here
 

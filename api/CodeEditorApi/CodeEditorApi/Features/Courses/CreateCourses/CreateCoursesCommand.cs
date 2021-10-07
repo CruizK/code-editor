@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeEditorApi.Features.Courses.CreateCourse
+namespace CodeEditorApi.Features.Courses.CreateCourses
 {
     public interface ICreateCourseCommand
     {
         public Task ExecuteAsync(int userId, Course course);
     }
-    public class CreateCourseCommand : ICreateCourseCommand
+    public class CreateCoursesCommand : ICreateCourseCommand
     {
         private readonly ICreateCourse _createCourse;
 
-        public CreateCourseCommand(ICreateCourse createCourse)
+        public CreateCoursesCommand(ICreateCourse createCourse)
         {
             _createCourse = createCourse;
         }

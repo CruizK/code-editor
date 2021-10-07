@@ -11,7 +11,7 @@ namespace CodeEditorApiUnitTests.Features.Courses
     public class GetCoursesCommandTest
     {
 
-        private readonly GetCourseCommand _target;
+        private readonly GetCoursesCommand _target;
         private readonly Fixture _fixture;
 
         private readonly Mock<IGetCourses> _getCoursesMock;

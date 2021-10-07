@@ -1,6 +1,4 @@
-﻿using CodeEditorApi.Features.Courses.CreateCourse;
-using CodeEditorApi.Features.Courses.GetCourses;
-using CodeEditorApiDataAccess.Data;
+﻿using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -9,6 +7,9 @@ using System.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.Extensions.Logging;
+using CodeEditorApi.Features.Courses.CreateCourses;
+using CodeEditorApi.Features.Courses.GetCourses;
+using CodeEditorApi.Features.Courses.UpdateCourses;
 
 namespace CodeEditorApi.Features.Courses
 {
@@ -19,15 +20,17 @@ namespace CodeEditorApi.Features.Courses
     /// <summary>
     /// Controls the direction of which CRUD operation/API request is called
     /// </summary>
-    public class CourseController : ControllerBase
+    public class CoursesController : ControllerBase
     {
         private readonly IGetCourseCommand _getCourseCommand;
         private readonly ICreateCourseCommand _createCourseCommand;
+        private readonly IUpdateCoursesCommand _updateCoursesCommand;
 
-        public CourseController(IGetCourseCommand getCourseCommand, ICreateCourseCommand createCourseCommand)
+        public CoursesController(IGetCourseCommand getCourseCommand, ICreateCourseCommand createCourseCommand, IUpdateCoursesCommand updateCoursesCommand)
         {
             _getCourseCommand = getCourseCommand;
             _createCourseCommand = createCourseCommand;
+            _updateCoursesCommand = updateCoursesCommand;
         }
 
         /// <summary>
@@ -50,6 +53,12 @@ namespace CodeEditorApi.Features.Courses
             await _createCourseCommand.ExecuteAsync(userId, course);
         }
 
+        [HttpPost("UpdateCourse")]
+        [Authorize]
+        public async Task UpdateCourse([FromBody] Course course)
+        {
+            await _updateCoursesCommand.ExecuteAsync(course);
+        }
         private int retrieveRequestUserId()
         {
             var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub).Value;
@@ -57,7 +66,7 @@ namespace CodeEditorApi.Features.Courses
             {
                 return int.Parse(userId);
             }
-            catch(System.FormatException e)
+            catch (System.FormatException e)
             {
                 return -1;
                 //TODO: catch internal error of invalid userId...this should turn into a validation on it's own though. Then call validation in this method.

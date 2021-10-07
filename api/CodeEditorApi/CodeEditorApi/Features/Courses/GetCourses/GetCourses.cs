@@ -13,12 +13,12 @@ namespace CodeEditorApi.Features.Courses.GetCourses
     {
         public Task<IEnumerable<Course>> ExecuteAsync(int userId);
     }
-    public class GetCourse : IGetCourse
+    public class GetCourses : IGetCourse
     {
 
         private readonly CodeEditorApiContext _context;
 
-        public GetCourse(CodeEditorApiContext context)
+        public GetCourses(CodeEditorApiContext context)
         {
             _context = context;
         }
@@ -30,9 +30,9 @@ namespace CodeEditorApi.Features.Courses.GetCourses
             var userCourses = _context.UserRegisteredCourses.Where(urc => urc.UserId == userId).Select(urc => urc.CourseId).ToList();
 
             var courseList = _context.Courses.Where(c => userCourses.Contains(c.Id));
-            
+
             return (Task<IEnumerable<Course>>)courseList;
-            
+
         }
     }
 }
