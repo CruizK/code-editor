@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using CodeEditorApi.Features.Courses.CreateCourses;
 using CodeEditorApi.Features.Courses.GetCourses;
 using CodeEditorApi.Features.Courses.UpdateCourses;
+using CodeEditorApi.Features.Courses.DeleteCourses;
 
 namespace CodeEditorApi.Features.Courses
 {
@@ -25,12 +26,14 @@ namespace CodeEditorApi.Features.Courses
         private readonly IGetCourseCommand _getCourseCommand;
         private readonly ICreateCourseCommand _createCourseCommand;
         private readonly IUpdateCoursesCommand _updateCoursesCommand;
+        private readonly IDeleteCoursesCommand _deleteCoursesCommand;
 
-        public CoursesController(IGetCourseCommand getCourseCommand, ICreateCourseCommand createCourseCommand, IUpdateCoursesCommand updateCoursesCommand)
+        public CoursesController(IGetCourseCommand getCourseCommand, ICreateCourseCommand createCourseCommand, IUpdateCoursesCommand updateCoursesCommand, IDeleteCoursesCommand deleteCoursesCommand)
         {
             _getCourseCommand = getCourseCommand;
             _createCourseCommand = createCourseCommand;
             _updateCoursesCommand = updateCoursesCommand;
+            _deleteCoursesCommand = deleteCoursesCommand;
         }
 
         /// <summary>
@@ -53,11 +56,18 @@ namespace CodeEditorApi.Features.Courses
             await _createCourseCommand.ExecuteAsync(userId, course);
         }
 
-        [HttpPost("UpdateCourse")]
+        [HttpPut("UpdateCourse")]
         [Authorize]
         public async Task UpdateCourse([FromBody] Course course)
         {
             await _updateCoursesCommand.ExecuteAsync(course);
+        }
+
+        [HttpDelete("DeleteCourses")]
+        [Authorize]
+        public async Task DeleteCourse([FromBody] Course course)
+        {
+            await _deleteCoursesCommand.ExecuteAsync(course);
         }
         private int retrieveRequestUserId()
         {
