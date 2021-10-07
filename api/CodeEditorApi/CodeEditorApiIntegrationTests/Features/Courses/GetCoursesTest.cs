@@ -1,11 +1,4 @@
-﻿using AutoFixture;
-using CodeEditorApi.Features.Courses.GetCourses;
-using CodeEditorApiDataAccess.Data;
-using FluentAssertions;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace CodeEditorApiIntegrationTests.Features.Courses
+﻿namespace CodeEditorApiIntegrationTests.Features.Courses
 {
     public class GetCoursesTest : DbTest
     {
@@ -13,7 +6,7 @@ namespace CodeEditorApiIntegrationTests.Features.Courses
         {
 
         }
-
+        /*
         [Fact]
         public async Task ShouldGetCoursesFromDB()
         {
@@ -32,5 +25,6 @@ namespace CodeEditorApiIntegrationTests.Features.Courses
                 result.Should().BeEquivalentTo(courses);
             }
         }
+        */
     }
 }

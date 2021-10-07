@@ -1,5 +1,12 @@
+import { useCookies } from 'react-cookie';
+
+/**
+ * Checks if user cookie is set
+ */
 function loggedIn() {
-    return false;
+    const [cookie, setCookie] = useCookies(["user"]);
+    let status = (typeof cookie.user !== "undefined");
+    return (status);
 }
 
 /**
@@ -23,5 +30,4 @@ function passwordRegEx(email) {
     return fullRegEx;
 };
 
-exports.loggedIn = loggedIn;
-exports.passwordRegEx = passwordRegEx;
+export { loggedIn, passwordRegEx };

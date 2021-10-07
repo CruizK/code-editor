@@ -1,12 +1,60 @@
-import { Box } from "@chakra-ui/layout";
+import { Box, Flex, Grid, GridItem, Heading, HStack } from "@chakra-ui/layout";
+import { Image } from "@chakra-ui/react";
+import { Avatar } from "@chakra-ui/avatar";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+import SNoLink from "@Components/SNoLink/SNoLink";
+import { useEffect, useState } from "react";
+import { loggedIn } from "@Modules/Auth/Auth";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import { getRole } from "@Utils/jwt";
+import { useCookies } from "react-cookie";
 
 /**
  * Contains the shared header for each page. Only render user icon if logged in.
  */
  function Header(props) {
+    const [cookie, setCookie] = useCookies(["user"]);
+    const [userRole, setUserRole] = useState("Student");
+    const [loginStatus, setLogin] = useState(loggedIn());
+    
+    const profileImage = "/defaults/avatar.png"; // TODO: Update with actual avatar.
+
+    useEffect(() => {
+        if (loginStatus) {
+            setUserRole(getRole(cookie.user));
+        }
+    }, [loginStatus])
+
     return(
-        <Box height="50px" bgColor="ce_darkgrey" width="100%">
-            {/** INSERT HEADER STUFF HERE */}
+        <Box height="50px" bgColor="ce_darkgrey" width="100%" color="ce_white">
+            <Grid templateColumns="repeat(5, 1fr)" gap={6} pl={5} pr={5}>
+                <GridItem>
+                    <Image src="/siu_logo.png" alt="SIU Logo" maxHeight="50px" />
+                </GridItem>
+                <GridItem colSpan={2} colEnd={6}>
+                    <Flex height="100%" justifyContent="right" alignItems="center">
+                        {loginStatus && 
+                        <HStack spacing={3}>
+                            {(userRole == "Teacher" || userRole == "Admin") && 
+                            <SNoLink href="/courses/mine">My Content</SNoLink>
+                            }
+                            <SNoLink href="/dashboard">My Courses</SNoLink>
+                            <Avatar size="sm" name="user icon" src={profileImage} />
+                            <Menu>
+                                <MenuButton>
+                                    <ChevronDownIcon />
+                                </MenuButton>
+                                <MenuList color="ce_black">
+                                    <MenuItem>My Account</MenuItem>
+                                    <MenuItem>Sign Out</MenuItem>
+                                </MenuList>
+                            </Menu>
+                        </HStack>
+                        }
+                        
+                    </Flex>
+                </GridItem>
+            </Grid>
         </Box>
     )
 }
