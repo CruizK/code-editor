@@ -37,10 +37,10 @@ namespace CodeEditorApi.Features.Courses
         }
 
         /// <summary>
-        /// Get's all courses
+        /// Get's all courses for a single user
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("GetCourse")]
         [Authorize]
         public async Task<IEnumerable<Course>> GetCourses()
         {
@@ -48,6 +48,13 @@ namespace CodeEditorApi.Features.Courses
             return await _getCourseCommand.ExecuteAsync(userId);
         }
 
+        /// <summary>
+        /// Creates a course for a user (admin/teacher role)
+        /// </summary>
+        /// <param name="course">
+        /// The course details for creating the new course
+        /// </param>
+        /// <returns></returns>
         [HttpPost("CreateCourse")]
         [Authorize]
         public async Task CreateCourse([FromBody] Course course)
@@ -56,6 +63,13 @@ namespace CodeEditorApi.Features.Courses
             await _createCourseCommand.ExecuteAsync(userId, course);
         }
 
+        /// <summary>
+        /// Updates a course for a user (admin/teacher role)
+        /// </summary>
+        /// <param name="course">
+        /// updated Course details for the existing course
+        /// </param>
+        /// <returns></returns>
         [HttpPut("UpdateCourse")]
         [Authorize]
         public async Task UpdateCourse([FromBody] Course course)
@@ -63,6 +77,13 @@ namespace CodeEditorApi.Features.Courses
             await _updateCoursesCommand.ExecuteAsync(course);
         }
 
+        /// <summary>
+        /// Delete a course
+        /// </summary>
+        /// <param name="course">
+        /// Course for deletion
+        /// </param>
+        /// <returns></returns>
         [HttpDelete("DeleteCourses")]
         [Authorize]
         public async Task DeleteCourse([FromBody] Course course)
