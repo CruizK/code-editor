@@ -5,7 +5,7 @@ import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 import CourseList from "@Modules/Courses/components/CourseList/CourseList";
 
-function Mine(props) {
+function Teacher(props) {
 
     return(
         <Main>
@@ -25,4 +25,4 @@ function Mine(props) {
     );
   }
 
-export default Mine;
+export default Teacher;
