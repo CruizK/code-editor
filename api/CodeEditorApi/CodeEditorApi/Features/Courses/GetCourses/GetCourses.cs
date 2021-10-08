@@ -1,4 +1,5 @@
 ﻿using CodeEditorApiDataAccess.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -23,15 +24,13 @@ namespace CodeEditorApi.Features.Courses.GetCourses
             _context = context;
         }
 
-        [HttpGet("User Courses")]
-        [Authorize]
-        public Task<IEnumerable<Course>> ExecuteAsync(int userId)
+        public async Task<IEnumerable<Course>> ExecuteAsync(int userId)
         {
-            var userCourses = _context.UserRegisteredCourses.Where(urc => urc.UserId == userId).Select(urc => urc.CourseId).ToList();
+            var userCourses = _context.UserRegisteredCourses.Where(urc => urc.UserId == userId).Select(urc => urc.CourseId);
 
-            var courseList = _context.Courses.Where(c => userCourses.Contains(c.Id));
+            var courseList = await _context.Courses.Where(c => userCourses.Contains(c.Id)).ToListAsync();
 
-            return (Task<IEnumerable<Course>>)courseList;
+            return courseList;
 
         }
     }
