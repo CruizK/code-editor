@@ -9,11 +9,11 @@ using System;
 namespace CodeEditorApi.Features.Courses.GetCourses
 {
 
-    public interface IGetCourse
+    public interface IGetCourses
     {
         public Task<IEnumerable<Course>> ExecuteAsync(int userId);
     }
-    public class GetCourses : IGetCourse
+    public class GetCourses : IGetCourses
     {
 
         private readonly CodeEditorApiContext _context;

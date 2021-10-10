@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Courses.CreateCourses
 {
-    public interface ICreateCourse
+    public interface ICreateCourses
     {
         public Task ExecuteAsync(int userId, Course course);
     }
-    public class CreateCourses : ICreateCourse
+    public class CreateCourses : ICreateCourses
     {
         private readonly CodeEditorApiContext _context;
 

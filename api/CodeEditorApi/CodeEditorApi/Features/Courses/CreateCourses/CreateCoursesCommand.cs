@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Courses.CreateCourses
 {
-    public interface ICreateCourseCommand
+    public interface ICreateCoursesCommand
     {
         public Task ExecuteAsync(int userId, Course course);
     }
-    public class CreateCoursesCommand : ICreateCourseCommand
+    public class CreateCoursesCommand : ICreateCoursesCommand
     {
-        private readonly ICreateCourse _createCourse;
+        private readonly ICreateCourses _createCourses;
 
-        public CreateCoursesCommand(ICreateCourse createCourse)
+        public CreateCoursesCommand(ICreateCourses createCourses)
         {
-            _createCourse = createCourse;
+            _createCourses = createCourses;
         }
         public Task ExecuteAsync(int userId, Course course)
         {
-            return _createCourse.ExecuteAsync(userId, course);
+            return _createCourses.ExecuteAsync(userId, course);
         }
     }
 }
