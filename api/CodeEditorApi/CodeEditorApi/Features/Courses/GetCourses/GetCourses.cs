@@ -29,7 +29,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
         {
             var userCourses = _context.UserRegisteredCourses.Where(urc => urc.UserId == userId).Select(urc => urc.CourseId).ToList();
 
-            var courseList = _context.Courses.Where(c => userCourses.Contains(c.Id));
+            var courseList = _context.Courses.Where(c => userCourses.Contains(c.Id)).AsEnumerable();
 
             return (Task<IEnumerable<Course>>)courseList;
 
