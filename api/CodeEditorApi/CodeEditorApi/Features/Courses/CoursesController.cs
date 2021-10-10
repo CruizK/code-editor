@@ -23,15 +23,15 @@ namespace CodeEditorApi.Features.Courses
     /// </summary>
     public class CoursesController : ControllerBase
     {
-        private readonly IGetCourseCommand _getCourseCommand;
-        private readonly ICreateCourseCommand _createCourseCommand;
+        private readonly IGetCoursesCommand _getCoursesCommand;
+        private readonly ICreateCoursesCommand _createCoursesCommand;
         private readonly IUpdateCoursesCommand _updateCoursesCommand;
         private readonly IDeleteCoursesCommand _deleteCoursesCommand;
 
-        public CoursesController(IGetCourseCommand getCourseCommand, ICreateCourseCommand createCourseCommand, IUpdateCoursesCommand updateCoursesCommand, IDeleteCoursesCommand deleteCoursesCommand)
+        public CoursesController(IGetCoursesCommand getCoursesCommand, ICreateCoursesCommand createCoursesCommand, IUpdateCoursesCommand updateCoursesCommand, IDeleteCoursesCommand deleteCoursesCommand)
         {
-            _getCourseCommand = getCourseCommand;
-            _createCourseCommand = createCourseCommand;
+            _getCoursesCommand = getCoursesCommand;
+            _createCoursesCommand = createCoursesCommand;
             _updateCoursesCommand = updateCoursesCommand;
             _deleteCoursesCommand = deleteCoursesCommand;
         }
@@ -45,7 +45,7 @@ namespace CodeEditorApi.Features.Courses
         public async Task<IEnumerable<Course>> GetCourses()
         {
             var userId = retrieveRequestUserId();
-            return await _getCourseCommand.ExecuteAsync(userId);
+            return await _getCoursesCommand.ExecuteAsync(userId);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace CodeEditorApi.Features.Courses
         public async Task CreateCourse([FromBody] Course course)
         {
             var userId = retrieveRequestUserId();
-            await _createCourseCommand.ExecuteAsync(userId, course);
+            await _createCoursesCommand.ExecuteAsync(userId, course);
         }
 
         /// <summary>
