@@ -30,17 +30,18 @@ namespace CodeEditorApiUnitTests.Features.Courses
 
         }
 
-        [Fact]
-        public async Task ShouldReturnCourses()
+        [Theory]
+        [InlineData(1)]
+        public async Task ShouldReturnCourses(int userId)
         {
-            // Assemble
+            // Assemble            
             var expected = _fixture.CreateMany<Course>();
             
-            _getCoursesMock.Setup(x => x.ExecuteAsync())
+            _getCoursesMock.Setup(x => x.ExecuteAsync(userId))
                 .ReturnsAsync(expected);
 
             // Act
-            var result = await _target.ExecuteAsync();
+            var result = await _target.ExecuteAsync(userId);
 
             result.Should().BeEquivalentTo(expected);
         }
