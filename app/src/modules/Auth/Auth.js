@@ -1,5 +1,3 @@
-import { useCookies } from 'react-cookie';
-
 /**
  * Checks if user cookie is set
  */

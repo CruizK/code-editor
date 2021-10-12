@@ -3,7 +3,6 @@ import { Image } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import SNoLink from "@Components/SNoLink/SNoLink";
-import { useEffect, useState } from "react";
 import { loggedIn } from "@Modules/Auth/Auth";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { getRole } from "@Utils/jwt";
