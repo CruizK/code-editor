@@ -21,8 +21,6 @@ namespace CodeEditorApi.Features.Courses.CreateCourses
             _context = context;
         }
 
-        [HttpPost("Create New User Course")]
-        [Authorize]
         public async Task ExecuteAsync(int userId, Course course)
         {
             await _context.Courses.AddAsync(course);
