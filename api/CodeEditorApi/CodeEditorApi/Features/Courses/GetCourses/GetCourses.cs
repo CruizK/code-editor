@@ -12,7 +12,9 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 
     public interface IGetCourses
     {
-        public Task<IEnumerable<Course>> ExecuteAsync(int userId);
+        public Task<IEnumerable<Course>> GetUserCourses(int userId);
+
+        public Task<IEnumerable<Course>> GetUserCreatedCourses(int userId);
     }
     public class GetCourses : IGetCourses
     {
@@ -24,7 +26,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
             _context = context;
         }
 
-        public async Task<IEnumerable<Course>> ExecuteAsync(int userId)
+        public async Task<IEnumerable<Course>> GetUserCourses(int userId)
         {
             var userCourses = await _context.UserRegisteredCourses.Where(urc => urc.UserId == userId).Select(urc => urc.CourseId).ToListAsync();
 
@@ -32,6 +34,13 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 
             return courseList;
 
+        }
+
+        public async Task<IEnumerable<Course>> GetUserCreatedCourses(int userId)
+        {
+            var userCreatedCourses = await _context.Courses.Where(c => c.Author == userId).Select(c => c).ToListAsync();
+
+            return userCreatedCourses;
         }
     }
 }
