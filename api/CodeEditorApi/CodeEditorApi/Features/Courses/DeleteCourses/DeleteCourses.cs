@@ -22,8 +22,6 @@ namespace CodeEditorApi.Features.Courses.DeleteCourses
             _context = context;
         }
 
-        [HttpPost("Delete User Course")]
-        [Authorize]
         public async Task<Course> ExecuteAsync(Course course)
         {
             var existingCourse = await _context.Courses.FindAsync(course.Id);

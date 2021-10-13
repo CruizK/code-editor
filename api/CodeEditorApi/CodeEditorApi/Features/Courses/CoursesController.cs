@@ -40,7 +40,7 @@ namespace CodeEditorApi.Features.Courses
         /// Get's all courses for a single user
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetCourse")]
+        [HttpGet("GetUserCourses")]
         [Authorize]
         public async Task<IEnumerable<Course>> GetCourses()
         {
@@ -84,7 +84,7 @@ namespace CodeEditorApi.Features.Courses
         /// Course for deletion
         /// </param>
         /// <returns></returns>
-        [HttpDelete("DeleteCourses")]
+        [HttpDelete("DeleteCourse")]
         [Authorize]
         public async Task DeleteCourse([FromBody] Course course)
         {

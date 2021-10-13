@@ -21,8 +21,6 @@ namespace CodeEditorApi.Features.Courses.UpdateCourses
             _context = context;
         }
 
-        [HttpPost("Update User Course")]
-        [Authorize]
         public async Task<Course> ExecuteAsync(Course course)
         {
             var existingCourse = await _context.Courses.FindAsync(course.Id);

@@ -3,7 +3,6 @@ import { Image } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import SNoLink from "@Components/SNoLink/SNoLink";
-import { useEffect, useState } from "react";
 import { loggedIn } from "@Modules/Auth/Auth";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { getRole } from "@Utils/jwt";
@@ -13,17 +12,11 @@ import { useCookies } from "react-cookie";
  * Contains the shared header for each page. Only render user icon if logged in.
  */
  function Header(props) {
-    const [cookie, setCookie] = useCookies(["user"]);
-    const [userRole, setUserRole] = useState("Student");
-    const [loginStatus, setLogin] = useState(loggedIn());
+    const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+    const isLoggedIn = loggedIn(cookies.user);
+    const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
     
     const profileImage = "/defaults/avatar.png"; // TODO: Update with actual avatar.
-
-    useEffect(() => {
-        if (loginStatus) {
-            setUserRole(getRole(cookie.user));
-        }
-    }, [loginStatus])
 
     return(
         <Box height="50px" bgColor="ce_darkgrey" width="100%" color="ce_white">
@@ -33,7 +26,7 @@ import { useCookies } from "react-cookie";
                 </GridItem>
                 <GridItem colSpan={2} colEnd={6}>
                     <Flex height="100%" justifyContent="right" alignItems="center">
-                        {loginStatus && 
+                        {isLoggedIn && 
                         <HStack spacing={3}>
                             {(userRole == "Teacher" || userRole == "Admin") && 
                             <SNoLink href="/courses/mine">My Content</SNoLink>
@@ -46,7 +39,7 @@ import { useCookies } from "react-cookie";
                                 </MenuButton>
                                 <MenuList color="ce_black">
                                     <MenuItem>My Account</MenuItem>
-                                    <MenuItem>Sign Out</MenuItem>
+                                    <MenuItem><SNoLink href="/auth/logout">Sign Out</SNoLink></MenuItem>
                                 </MenuList>
                             </Menu>
                         </HStack>
