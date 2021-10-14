@@ -3,9 +3,39 @@ import Main from "@Components/Main/Main";
 import SectionHeader from "@Components/SectionHeader/SectionHeader";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
+import { loggedIn } from "@Modules/Auth/Auth";
 import CourseList from "@Modules/Courses/components/CourseList/CourseList";
+import instance from "@Utils/instance";
+
+export async function getServerSideProps(context) {
+    var data = [];
+
+    const cookies = context.req.cookies;
+    const isLoggedIn = loggedIn(cookies.user);
+    const headers = {};
+
+    if (isLoggedIn) {
+        let token = cookies.user;
+        headers["Authorization"] = "Bearer " + token;
+    }
+    
+    let response = await instance.get("/Courses/GetUserCreatedCourses", {
+        headers: {...headers},
+    });
+    
+    if (response.statusText == "OK")
+    data = response.data;
+
+    return {
+      props: {
+          courses: data,
+      }, // will be passed to the page component as props
+    }
+}  
 
 function Teacher(props) {
+
+    console.log(props.courses);
 
     return(
         <Main>
@@ -19,7 +49,7 @@ function Teacher(props) {
                         New Course +
                     </SNoLinkButton>
                 </SectionHeader>
-                <CourseList />
+                <CourseList courses={props.courses} />
             </Grid>
         </Main>
     );
