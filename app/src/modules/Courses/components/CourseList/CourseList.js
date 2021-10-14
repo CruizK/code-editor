@@ -32,43 +32,13 @@ function CourseItem(props) {
 function CourseList(props) {
     const styles = useStyleConfig("AccordionBox", {});
 
-    const courses = [
-        {
-            title: "CS202",
-            tutorials: [
-                {
-                    title: "Hello World",
-                    Language: "Python",
-                    Difficulty: "Easy",
-                }, 
-                {
-                    title: "Linked Lists",
-                    Language: "Java",
-                    Difficulty: "Med",
-                },
-            ],
-        },
-        {
-            title: "CS360",
-            tutorials: [
-                {
-                    title: "Something",
-                    Difficulty: "Med",
-                }, 
-                {
-                    title: "Linked Lists",
-                    Language: "Java",
-                    Difficulty: "Hard",
-                },
-            ],
-        },
-    ]; //TODO: Replace assignment with API Call
+    const courses = props.courses;
 
     return(
         <Box __css={styles}>
             <Accordion>
-                {courses.map((courseData) => {
-                    return <CourseItem key={courseData.title} title={courseData.title} tutorials={courseData.tutorials} />;
+                {courses.map((courseData, index) => {
+                    return <CourseItem key={index} title={courseData.title} tutorials={courseData.tutorials} />;
                 })}
             </Accordion>
         </Box>
