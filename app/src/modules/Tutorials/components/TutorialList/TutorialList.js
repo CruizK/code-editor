@@ -52,9 +52,12 @@ function TutorialItem(props) {
  * Handles displaying an accordion list of courses.
  */
 function TutorialList(props) {
+
+    const { tutorials } = props;
+
     return(
         <>
-            {props.tutorials.map((tutorialData) => {
+            {tutorials.map((tutorialData) => {
                 return <TutorialItem key={tutorialData.title} {...tutorialData} />
             })}            
         </>

@@ -35,6 +35,8 @@ export async function getServerSideProps(context) {
 
 function Teacher(props) {
 
+    const { courses } = props;
+
     return(
         <Main>
             <Grid templateRows="5 1fr" gap={6} width="100%">
@@ -47,7 +49,7 @@ function Teacher(props) {
                         New Course +
                     </SNoLinkButton>
                 </SectionHeader>
-                <CourseList courses={props.courses} />
+                <CourseList courses={courses} />
             </Grid>
         </Main>
     );

@@ -32,7 +32,7 @@ function CourseItem(props) {
 function CourseList(props) {
     const styles = useStyleConfig("AccordionBox", {});
 
-    const courses = props.courses;
+    const { courses } = props;
 
     return(
         <Box __css={styles}>
