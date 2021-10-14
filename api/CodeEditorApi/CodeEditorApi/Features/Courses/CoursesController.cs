@@ -24,13 +24,16 @@ namespace CodeEditorApi.Features.Courses
     public class CoursesController : ControllerBase
     {
         private readonly IGetCoursesCommand _getCoursesCommand;
+        private readonly IGetUserCreatedCoursesCommand _getUserCreatedCoursesCommand;
         private readonly ICreateCoursesCommand _createCoursesCommand;
         private readonly IUpdateCoursesCommand _updateCoursesCommand;
         private readonly IDeleteCoursesCommand _deleteCoursesCommand;
 
-        public CoursesController(IGetCoursesCommand getCoursesCommand, ICreateCoursesCommand createCoursesCommand, IUpdateCoursesCommand updateCoursesCommand, IDeleteCoursesCommand deleteCoursesCommand)
+        public CoursesController(IGetCoursesCommand getCoursesCommand, IGetUserCreatedCoursesCommand getUserCreatedCoursesCommand,
+            ICreateCoursesCommand createCoursesCommand, IUpdateCoursesCommand updateCoursesCommand, IDeleteCoursesCommand deleteCoursesCommand)
         {
             _getCoursesCommand = getCoursesCommand;
+            _getUserCreatedCoursesCommand = getUserCreatedCoursesCommand;
             _createCoursesCommand = createCoursesCommand;
             _updateCoursesCommand = updateCoursesCommand;
             _deleteCoursesCommand = deleteCoursesCommand;
@@ -42,12 +45,19 @@ namespace CodeEditorApi.Features.Courses
         /// <returns></returns>
         [HttpGet("GetUserCourses")]
         [Authorize]
-        public async Task<IEnumerable<Course>> GetCourses()
+        public async Task<IEnumerable<Course>> GetUserCourses()
         {
             var userId = retrieveRequestUserId();
             return await _getCoursesCommand.ExecuteAsync(userId);
         }
 
+        [HttpGet("GetUserCreatedCourses")]
+        [Authorize]
+        public async Task<IEnumerable<Course>> GetUserCreatedCourses()
+        {
+            var userId = retrieveRequestUserId();
+            return await _getUserCreatedCoursesCommand.ExecuteAsync(userId);
+        }
         /// <summary>
         /// Creates a course for a user (admin/teacher role)
         /// </summary>
@@ -97,9 +107,9 @@ namespace CodeEditorApi.Features.Courses
             {
                 return int.Parse(userId);
             }
-            catch (System.FormatException e)
+            catch
             {
-                return -1;
+                throw new System.Exception($"User ID {userId} is invalid");
                 //TODO: catch internal error of invalid userId...this should turn into a validation on it's own though. Then call validation in this method.
             }
         }

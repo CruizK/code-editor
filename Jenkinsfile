@@ -78,7 +78,36 @@ pipeline {
               steps {
                 sshagent(['ssh-for-staging']) {
                   sh 'scp code-editor-ui.tar cruizk@192.168.0.16:/home/cruizk'
-                  sh 'cat scripts/deployStaging.sh | ssh cruizk@192.168.0.16 /bin/bash'
+                  sh 'cat scripts/deployStagingUI.sh | ssh cruizk@192.168.0.16 /bin/bash'
+                }
+              }
+            }
+          }
+        }
+        stage('API Deploy') {
+          agent any
+          when {
+            beforeAgent true
+            branch 'maintest'
+          }
+          stages {
+            stage ('Build Image') {
+              steps {
+                dir('api') {
+                  sh 'docker build -t code-editor-api .'
+                }
+              }
+            }
+            stage('Save Image') {
+              steps {
+                sh 'docker save -o code-editor-api.tar code-editor-api'
+              }
+            }
+            stage('Deploy') {
+              steps {
+                sshagent(['ssh-for-staging']) {
+                  sh 'scp code-editor-api.tar cruizk@192.168.0.16:/home/cruizk'
+                  sh 'cat scripts/deployStagingApi.sh | ssh cruizk@192.168.0.16 /bin/bash'
                 }
               }
             }

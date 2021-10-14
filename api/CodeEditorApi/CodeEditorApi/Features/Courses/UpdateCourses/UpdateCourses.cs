@@ -30,8 +30,8 @@ namespace CodeEditorApi.Features.Courses.UpdateCourses
                 existingCourse.Description = course.Description;
                 existingCourse.ModifyDate = DateTime.Now;
                 existingCourse.IsPublished = course.IsPublished;
-            }          
-
+            }
+            await _context.SaveChangesAsync().ConfigureAwait(false);
             return existingCourse;
         }
     }
