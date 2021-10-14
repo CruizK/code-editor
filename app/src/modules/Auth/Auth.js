@@ -1,12 +1,9 @@
-import { useCookies } from 'react-cookie';
-
 /**
  * Checks if user cookie is set
  */
-function loggedIn() {
-    const [cookie, setCookie] = useCookies(["user"]);
-    let status = (typeof cookie.user !== "undefined");
-    return (status);
+function loggedIn(userCookie) {
+    if (userCookie) return true;
+    return false;
 }
 
 /**

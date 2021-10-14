@@ -17,7 +17,7 @@ namespace CodeEditorApi.Helpers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Role, Enum.GetName(Roles.Student))
+                new Claim(ClaimTypes.Role, Enum.GetName(typeof(Roles), user.RoleId))
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));

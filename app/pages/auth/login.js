@@ -2,9 +2,26 @@ import { Center, Divider, Flex, Grid, Heading } from "@chakra-ui/layout";
 import Main from "@Components/Main/Main";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
+import { loggedIn } from "@Modules/Auth/Auth";
 import LoginForm from "@Modules/Auth/components/LoginForm/LoginForm";
+import { getRole } from "@Utils/jwt";
+import Router from 'next/router';
+import { useCookies } from "react-cookie";
 
 function Login() {
+    const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+    const isLoggedIn = loggedIn(cookies.user);
+    const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
+  
+    if (isLoggedIn) { 
+      Router.push('/dashboard/' + ((userRole == "Student") ? '' : userRole));
+      return(
+        <Main>
+          <Heading as="h2">Redirecting...</Heading>
+        </Main>
+      );
+    }
+
     return(
         <Main>     
             <Center>
@@ -21,6 +38,6 @@ function Login() {
             </Center>
         </Main>
     );
-  }
+}
 
 export default Login;
