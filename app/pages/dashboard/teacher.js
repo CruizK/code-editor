@@ -35,8 +35,6 @@ export async function getServerSideProps(context) {
 
 function Teacher(props) {
 
-    console.log(props.courses);
-
     return(
         <Main>
             <Grid templateRows="5 1fr" gap={6} width="100%">
