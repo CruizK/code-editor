@@ -57,8 +57,8 @@ function TutorialList(props) {
 
     return(
         <>
-            {tutorials.map((tutorialData) => {
-                return <TutorialItem key={tutorialData.title} {...tutorialData} />
+            {tutorials.map((tutorialData, index) => {
+                return <TutorialItem key={index} {...tutorialData} />
             })}            
         </>
     )
