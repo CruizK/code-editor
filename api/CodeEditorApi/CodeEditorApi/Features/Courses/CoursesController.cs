@@ -107,9 +107,9 @@ namespace CodeEditorApi.Features.Courses
             {
                 return int.Parse(userId);
             }
-            catch (System.FormatException e)
+            catch
             {
-                return -1;
+                throw new System.Exception($"User ID {userId} is invalid");
                 //TODO: catch internal error of invalid userId...this should turn into a validation on it's own though. Then call validation in this method.
             }
         }
