@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CodeEditorApiData.publish.xml" />
+    <None Include="CodeEditorApiDataStaging.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment1.sql" />

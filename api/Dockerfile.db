@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS db-env
+WORKDIR /app
+COPY CodeEditorApi/ .
+RUN dotnet build Database.Build -c Release -o out
+
+FROM markhobson/sqlpackage
+WORKDIR /app
+COPY CodeEditorApi/ .
+COPY --from=db-env /app/out /dacpac
+ENTRYPOINT ["sqlpackage", "/action:Publish", "/SourceFile:/dacpac/Database.Build.dacpac", "/Profile:CodeEditorApiData/CodeEditorApiDataStaging.publish.xml"]

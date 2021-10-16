@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
@@ -113,18 +114,41 @@ namespace CodeEditorApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            logger.LogInformation(Configuration.GetConnectionString("DefaultConnection"));
             // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+            if(env.IsDevelopment())
+            {
+                app.UseSwagger(c =>
+                {
+                    c.RouteTemplate = "api/{documentName}/swagger.json";
+                });
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Code Editor API V1");
+                    c.RoutePrefix = "api/swagger";
+                });
+            }
+            else
+            {
+                app.UseSwagger(c =>
+                {
+                    c.RouteTemplate = "api/{documentName}/swagger.json";
+                });
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/api/v1/swagger.json", "Code Editor API V1");
+                    c.RoutePrefix = "api/swagger";
+                });
+            }
+            
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Code Editor API V1");
-                c.RoutePrefix = "api/swagger";
-            });
+
+
+            
 
             if (env.IsDevelopment())
             {

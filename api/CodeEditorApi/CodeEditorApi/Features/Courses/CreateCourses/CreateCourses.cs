@@ -23,7 +23,8 @@ namespace CodeEditorApi.Features.Courses.CreateCourses
 
         public async Task ExecuteAsync(int userId, Course course)
         {
-            await _context.Courses.AddAsync(course);
+            await _context.Courses.AddAsync(course).ConfigureAwait(false);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

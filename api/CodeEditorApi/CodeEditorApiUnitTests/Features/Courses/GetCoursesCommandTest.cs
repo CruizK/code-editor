@@ -32,12 +32,12 @@ namespace CodeEditorApiUnitTests.Features.Courses
 
         [Theory]
         [InlineData(1)]
-        public async Task ShouldReturnCourses(int userId)
+        public async Task ShouldReturnUserCourses(int userId)
         {
             // Assemble            
             var expected = _fixture.CreateMany<Course>();
-            
-            _getCoursesMock.Setup(x => x.ExecuteAsync(userId))
+
+            _getCoursesMock.Setup(x => x.GetUserCourses(userId))
                 .ReturnsAsync(expected);
 
             // Act
