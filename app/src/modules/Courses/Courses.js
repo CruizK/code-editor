@@ -87,4 +87,33 @@ async function updateCourse(isPublished, token) {
     }
 }
 
-export { createCourse, updateCourse }
+/**
+ * A function that deletes a course.
+ * @param {integer} id 
+ * @param {string} token JWT token.
+ */
+async function deleteCourse(id, token) {
+    let isValid = true;
+
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    if (isValid) {    
+        instance.delete("/Courses/DeleteCourse", {
+            data: {
+                id: id
+            },
+            headers: {...headers},
+        })
+        .then((response) => {
+            if (response.statusText == "OK") {
+                // DO SOMETHING
+            }
+        });
+    }
+}
+
+export { createCourse, updateCourse, deleteCourse }

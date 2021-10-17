@@ -2,11 +2,18 @@ import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPane
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Box, Heading, HStack } from "@chakra-ui/layout";
 import { useStyleConfig } from "@chakra-ui/system";
+import { loggedIn } from "@Modules/Auth/Auth";
+import { deleteCourse } from "@Modules/Courses/Courses";
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
 import { storeThenRouteCourse } from "@Utils/storage";
+import { useCookies } from "react-cookie";
 
 function CourseItem(props) {
     const { id, title, description } = props;
+
+    const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+    const isLoggedIn = loggedIn(cookies.user);
+    const token = cookies.user;
 
     return(
         <AccordionItem>
@@ -17,7 +24,7 @@ function CourseItem(props) {
                     </Box>
                     <HStack spacing={3}>                        
                         <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteCourse(id, title, description)} />
-                        <DeleteIcon />
+                        <DeleteIcon onClick={() => deleteCourse(id, token)} />
                         <AccordionIcon />
                     </HStack>
                 </AccordionButton>
