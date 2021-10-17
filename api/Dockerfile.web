@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY CodeEditorApi/ .
 
-ENV ASPNETCORE_ENVIRONMENT="Staging"
 RUN dotnet publish CodeEditorApi -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
