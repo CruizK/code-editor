@@ -3,17 +3,20 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Box, Heading, HStack } from "@chakra-ui/layout";
 import { useStyleConfig } from "@chakra-ui/system";
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
+import { storeThenRouteCourse } from "@Utils/storage";
 
 function CourseItem(props) {
+    const { id, title, description } = props;
+
     return(
         <AccordionItem>
             <Heading as="h2">
                 <AccordionButton>
                     <Box flex="1" textAlign="left" fontSize="md">
-                        {props.title}
+                        {title}
                     </Box>
                     <HStack spacing={3}>                        
-                        <EditIcon color="ce_mainmaroon" />
+                        <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteCourse(id, title, description)} />
                         <DeleteIcon />
                         <AccordionIcon />
                     </HStack>
@@ -38,7 +41,12 @@ function CourseList(props) {
         <Box __css={styles}>
             <Accordion>
                 {courses.map((courseData, index) => {
-                    return <CourseItem key={index} title={courseData.title} tutorials={courseData.tutorials} />;
+                    let courseDefaults = {
+                        id: courseData.id,
+                        title: courseData.title,
+                        description: courseData.description,
+                    }
+                    return <CourseItem key={index} {...courseDefaults} tutorials={courseData.tutorials} />;
                 })}
             </Accordion>
         </Box>
