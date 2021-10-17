@@ -5,6 +5,7 @@ import HeadingStyle from "@Common/styles/Heading.style";
 import InputStyle from "@Common/styles/Input.style";
 import MenuStyle from "@Common/styles/Menu.style";
 import TagStyle from "@Common/styles/Tag.style";
+import TextareaStyle from "@Common/styles/Textarea.style";
 
 // ce_ is prepended to differentiate from default css colors
 const colors = {
@@ -85,6 +86,7 @@ const components = {
   AccordionBox: AccordionBoxStyle,
   Tag: TagStyle,
   Menu: MenuStyle,
+  Textarea: TextareaStyle,
 }
 
 const theme = extendTheme({ colors, config, fonts, fontSizes, styles, components })
