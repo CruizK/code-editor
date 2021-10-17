@@ -14,7 +14,8 @@ function Register() {
     const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
   
     if (isLoggedIn) { 
-      Router.push('/dashboard/' + ((userRole == "Student") ? '' : userRole));
+      let redirect = '/dashboard/' + ((userRole == "Student") ? '' : (userRole.toLowerCase())); 
+      Router.push(redirect);
       return(
         <Main>
           <Heading as="h2">Redirecting...</Heading>

@@ -12,7 +12,8 @@ function storeThenRouteCourse(id, title, description) {
         title: title,
         description: description,
     }));
-    Router.push('/courses/edit');
+    let redirect = '/courses/edit'
+    Router.push(redirect);
 }
 
 /**

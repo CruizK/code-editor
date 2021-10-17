@@ -17,7 +17,8 @@ function Logout() {
     }
 
     if (isLoaded) {
-        Router.push('/');
+      let redirect = '/'; 
+      Router.push(redirect);
     }
 
     return(
