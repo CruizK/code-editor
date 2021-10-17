@@ -7,6 +7,7 @@
 	<ItemGroup>
 		<Content Include="..\CodeEditorApiData\Tables\**\*.sql" />
 		<Content Include="..\CodeEditorApiData\Stored Procedures\**\*.sql" />
+		<PostDeploy Include="..\CodeEditorApiData\Script.PostDeployment1.sql" />
 	</ItemGroup>
 
 </Project>

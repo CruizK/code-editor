@@ -13,6 +13,9 @@ instance.defaults.baseURL = process.env.NEXT_PUBLIC_API;
 // post
 instance.defaults.headers.post['Content-Type'] = 'application/json';
 
+// put
+instance.defaults.headers.put['Content-Type'] = 'application/json';
+
 // END HEADERS
 
 

@@ -29,7 +29,7 @@ import { useCookies } from "react-cookie";
                         {isLoggedIn && 
                         <HStack spacing={3}>
                             {(userRole == "Teacher" || userRole == "Admin") && 
-                            <SNoLink href="/courses/mine">My Content</SNoLink>
+                            <SNoLink href="/dashboard/teacher">My Content</SNoLink>
                             }
                             <SNoLink href="/dashboard">My Courses</SNoLink>
                             <Avatar size="sm" name="user icon" src={profileImage} />
