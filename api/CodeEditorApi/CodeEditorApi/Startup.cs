@@ -37,7 +37,9 @@ namespace CodeEditorApi
                 options.AddPolicy(name: "dev",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:3000").AllowAnyHeader();
+                        builder.WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
                     }
                 );
             });
