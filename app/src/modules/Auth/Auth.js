@@ -1,3 +1,5 @@
+import instance from "@Utils/instance";
+
 /**
  * Checks if user cookie is set
  */
@@ -27,4 +29,76 @@ function passwordRegEx(email) {
     return fullRegEx;
 };
 
-export { loggedIn, passwordRegEx };
+/**
+ * A function that sends form data to the server for login.
+ * Validation is done through attributes on the form's html
+ * @param event submit event from a form.
+ * @returns JWT token
+ */
+async function login(event) {
+    event.preventDefault();
+
+    let isValid = true;
+    let form = event.target;
+    let token;
+    
+    [
+        "email",
+        "password",
+    ].forEach(key => {
+        isValid = (form[key].validity.valid) ? isValid : false;
+    });
+
+    if (isValid) { 
+        try {       
+            let response = await instance.post("/Auth/Login", {
+                email: form["email"].value,
+                password: form["password"].value,
+            });
+
+            token = response.data;
+        } catch (error) {
+            //TODO: Error handling.
+            //console.log(error.response);
+        }
+    }
+    return token;
+}
+
+/**
+ * A function that sends form data to the server for registration.
+ * Validation is done through attributes on the form's html
+ * @param event submit event from a form.
+ * @return The response from the server.
+ */
+async function register(event) {
+    event.preventDefault();
+
+    let isValid = true;
+    let form = event.target;
+    
+    [
+        "name",
+        "email",
+        "password",
+        "admin",
+    ].forEach(key => {
+        isValid = (form[key].validity.valid) ? isValid : false;
+    });
+
+    if (isValid) {        
+        instance.post("/Auth/Register", {
+            name: form["name"].value,
+            email: form["email"].value,
+            password: form["password"].value,
+            admin: form["admin"].checked,
+        })
+        .then((response) => {
+            if (response.statusText == "OK") {
+                // DO SOMETHING
+            }
+        });
+    }
+}
+
+export { loggedIn, passwordRegEx, login, register };

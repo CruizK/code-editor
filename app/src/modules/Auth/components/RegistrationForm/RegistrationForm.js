@@ -3,8 +3,7 @@ import { Checkbox } from "@chakra-ui/checkbox";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Center, Grid } from "@chakra-ui/layout";
-import { passwordRegEx } from "@Modules/Auth/Auth";
-import instance from "@Utils/instance";
+import { passwordRegEx, register } from "@Modules/Auth/Auth";
 import { useState } from "react";
 
 /**
@@ -12,42 +11,6 @@ import { useState } from "react";
  */
 function RegistrationForm() {
     const [email, setEmail] = useState("placeholder");
-
-    /**
-     * A function that sends form data to the server for registration.
-     * Validation is done through attributes on the form's html
-     * @param event submit event from a form.
-     * @return The response from the server.
-     */
-    async function register(event) {
-        event.preventDefault();
-
-        let isValid = true;
-        let form = event.target;
-        
-        [
-            "name",
-            "email",
-            "password",
-            "admin",
-        ].forEach(key => {
-            isValid = (form[key].validity.valid) ? isValid : false;
-        });
-
-        if (isValid) {        
-            instance.post("/Auth/Register", {
-                name: form["name"].value,
-                email: form["email"].value,
-                password: form["password"].value,
-                admin: form["admin"].checked,
-            })
-            .then((response) => {
-                if (response.statusText == "OK") {
-                    // DO SOMETHING
-                }
-            });
-        }
-    }
 
     return(
         <Center>
