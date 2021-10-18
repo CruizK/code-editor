@@ -91,6 +91,7 @@ async function updateCourse(isPublished, token) {
  * A function that deletes a course.
  * @param {integer} id 
  * @param {string} token JWT token.
+ * @returns {boolean} Whether or not the deletion succeeded.
  */
 async function deleteCourse(id, token) {
     let isValid = true;
@@ -101,19 +102,23 @@ async function deleteCourse(id, token) {
         headers["Authorization"] = "Bearer " + token;
     }
 
-    if (isValid) {    
-        instance.delete("/Courses/DeleteCourse", {
-            data: {
-                id: id
-            },
-            headers: {...headers},
-        })
-        .then((response) => {
-            if (response.statusText == "OK") {
-                // DO SOMETHING
-            }
-        });
+    if (isValid) {
+        try { 
+            let response = await instance.delete("/Courses/DeleteCourse", {
+                data: {
+                    id: id
+                },
+                headers: {...headers},
+            });
+                        
+            if (response.statusText == "OK")
+            return true;
+        } catch (error) {
+            
+        }
     }
+
+    return false;
 }
 
 export { createCourse, updateCourse, deleteCourse }

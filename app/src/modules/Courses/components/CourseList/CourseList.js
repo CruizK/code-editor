@@ -3,6 +3,7 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Box, Heading, HStack } from "@chakra-ui/layout";
 import { useStyleConfig } from "@chakra-ui/system";
 import { loggedIn } from "@Modules/Auth/Auth";
+import Router from 'next/router';
 import { deleteCourse } from "@Modules/Courses/Courses";
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
 import { storeThenRouteCourse } from "@Utils/storage";
@@ -15,6 +16,13 @@ function CourseItem(props) {
     const isLoggedIn = loggedIn(cookies.user);
     const token = cookies.user;
 
+    async function handleDeletion(id, token) {
+        let success = await deleteCourse(id, token);
+        if (success) {
+            Router.reload();
+        }
+    }
+
     return(
         <AccordionItem>
             <Heading as="h2">
@@ -24,7 +32,7 @@ function CourseItem(props) {
                     </Box>
                     <HStack spacing={3}>                        
                         <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteCourse(id, title, description)} />
-                        <DeleteIcon onClick={() => deleteCourse(id, token)} />
+                        <DeleteIcon onClick={() => handleDeletion(id, token)} />
                         <AccordionIcon />
                     </HStack>
                 </AccordionButton>
