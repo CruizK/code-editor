@@ -73,22 +73,25 @@ async function updateCourse(isPublished, token) {
         isValid = (form[key].validity.valid) ? isValid : false;
     });
 
-    if (isValid) {    
-        let now = new Date(); 
-        instance.put("/Courses/UpdateCourse", {
-            id: form["course_id"].value,
-            title: form["course_title"].value,
-            description: form["description"].value,
-            isPublished: isPublished,
-        }, {
-            headers: {...headers},
-        })
-        .then((response) => {
-            if (response.statusText == "OK") {
-                // DO SOMETHING
-            }
-        });
+    if (isValid) {
+        try {
+            let response = await instance.put("/Courses/UpdateCourse", {
+                id: form["course_id"].value,
+                title: form["course_title"].value,
+                description: form["description"].value,
+                isPublished: isPublished,
+            }, {
+                headers: {...headers},
+            });
+
+            if (response.statusText == "OK")
+            return true;
+        } catch (error) {
+            
+        }
     }
+    
+    return false;
 }
 
 /**
