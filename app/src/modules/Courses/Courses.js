@@ -24,24 +24,28 @@ async function createCourse(isPublished, token) {
         isValid = (form[key].validity.valid) ? isValid : false;
     });
 
-    if (isValid) {    
-        let now = new Date();    
-        instance.post("/Courses/CreateCourse", {
-            title: form["course_title"].value,
-            author: getID(token), //TODO: Make backend generate this.
-            description: form["description"].value,
-            createDate: now.toISOString(), //TODO: Make backend generate this.
-            modifyDate: now.toISOString(), //TODO: Make backend generate this.
-            isPublished: isPublished,
-        }, {
-            headers: {...headers},
-        })
-        .then((response) => {
-            if (response.statusText == "OK") {
-                // DO SOMETHING
-            }
-        });
+    if (isValid) {
+        try {
+            let now = new Date();    
+            let response = await instance.post("/Courses/CreateCourse", {
+                title: form["course_title"].value,
+                author: getID(token), //TODO: Make backend generate this.
+                description: form["description"].value,
+                createDate: now.toISOString(), //TODO: Make backend generate this.
+                modifyDate: now.toISOString(), //TODO: Make backend generate this.
+                isPublished: isPublished,
+            }, {
+                headers: {...headers},
+            });
+
+            if (response.statusText == "OK")
+            return true;
+        } catch (error) {
+            
+        }
     }
+
+    return false;
 }
 
 /**
@@ -110,7 +114,7 @@ async function deleteCourse(id, token) {
                 },
                 headers: {...headers},
             });
-                        
+
             if (response.statusText == "OK")
             return true;
         } catch (error) {

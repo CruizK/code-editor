@@ -9,11 +9,22 @@ import { Button } from "@chakra-ui/button";
 import { createCourse } from "@Modules/Courses/Courses";
 import { useCookies } from "react-cookie";
 import { loggedIn } from "@Modules/Auth/Auth";
+import Router from 'next/router';
+import { getRole } from "@Utils/jwt";
 
 function NewCourse() {
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const isLoggedIn = loggedIn(cookies.user);
   const token = cookies.user;
+
+  async function handleSubmit(isPublished, token) {
+    let success = await createCourse(isPublished, token);
+    if (success) {
+      const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
+      let redirect = '/dashboard/' + ((userRole == "Student") ? '' : (userRole.toLowerCase())); 
+      Router.push(redirect);
+    }
+  }
 
   return(
       <Main>
@@ -23,10 +34,10 @@ function NewCourse() {
           <SNoLinkButton href="/dashboard/teacher" variant="white">
             Cancel
           </SNoLinkButton>
-          <Button variant="black" onClick={() => createCourse(false, token)}>
+          <Button variant="black" onClick={() => handleSubmit(false, token)}>
             Save As Draft
           </Button>
-          <Button variant="maroon" onClick={() => createCourse(true, token)}>
+          <Button variant="maroon" onClick={() => handleSubmit(true, token)}>
             Publish
           </Button>
           </SectionHeader>
