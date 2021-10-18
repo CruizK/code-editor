@@ -94,11 +94,16 @@ async function register(event) {
                 password: form["password"].value,
                 admin: form["admin"].checked,
             })
+
+            if (response.statusText == "OK")
+            return true;
         } catch (error) {
             //TODO: Error handling.
             //console.log(error.response);
         }
     }
+
+    return false;
 }
 
 export { loggedIn, passwordRegEx, login, register };

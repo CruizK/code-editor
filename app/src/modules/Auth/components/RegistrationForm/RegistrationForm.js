@@ -12,9 +12,17 @@ import { useState } from "react";
 function RegistrationForm() {
     const [email, setEmail] = useState("placeholder");
 
+    async function handleSubmit(event) {
+        let success = await register(event);
+        if (success) {
+            let redirect = '/auth/login'; 
+            Router.push(redirect);
+        }
+    }
+
     return(
         <Center>
-            <form onSubmit={register}>
+            <form onSubmit={handleSubmit}>
                 <Grid templateRows="5 1fr" gap={6} w="56">
                     <FormControl id="email" isRequired>
                         <Input placeholder="Email" type="email" onChange={(e) => setEmail(e.target.value)} />
