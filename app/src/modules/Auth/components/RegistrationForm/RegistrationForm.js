@@ -4,6 +4,7 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Center, Grid } from "@chakra-ui/layout";
 import { passwordRegEx, register } from "@Modules/Auth/Auth";
+import Router from 'next/router';
 import { useState } from "react";
 
 /**
