@@ -86,18 +86,18 @@ async function register(event) {
         isValid = (form[key].validity.valid) ? isValid : false;
     });
 
-    if (isValid) {        
-        instance.post("/Auth/Register", {
-            name: form["name"].value,
-            email: form["email"].value,
-            password: form["password"].value,
-            admin: form["admin"].checked,
-        })
-        .then((response) => {
-            if (response.statusText == "OK") {
-                // DO SOMETHING
-            }
-        });
+    if (isValid) {      
+        try {
+            let response = await instance.post("/Auth/Register", {
+                name: form["name"].value,
+                email: form["email"].value,
+                password: form["password"].value,
+                admin: form["admin"].checked,
+            })
+        } catch (error) {
+            //TODO: Error handling.
+            //console.log(error.response);
+        }
     }
 }
 
