@@ -2,6 +2,14 @@ import instance from "@Utils/instance";
 import { getID } from "@Utils/jwt";
 
 /**
+ * No *, &, !, @, _, or -
+ * Does not start with a number.
+ */
+function courseRegEx() {
+    return "^(?![0-9])[^\*&!_-]+$";
+}
+
+/**
  * A function that sends form data to the server for course creation.
  * Validation is done through attributes on the form's html
  * @param {boolean} isPublished 
@@ -128,4 +136,4 @@ async function deleteCourse(id, token) {
     return false;
 }
 
-export { createCourse, updateCourse, deleteCourse }
+export { createCourse, updateCourse, deleteCourse, courseRegEx }
