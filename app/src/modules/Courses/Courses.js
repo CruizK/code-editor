@@ -6,7 +6,7 @@ import { getID } from "@Utils/jwt";
  * Does not start with a number.
  */
 function courseRegEx() {
-    return "^(?![0-9])[^\*&!_-]+$";
+    return "^(?![0-9])[^\*&!@_-]+$";
 }
 
 /**
