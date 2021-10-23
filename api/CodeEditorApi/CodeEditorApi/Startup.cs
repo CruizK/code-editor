@@ -1,3 +1,4 @@
+using CodeEditorApi.Errors;
 using CodeEditorApi.Helpers;
 using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,7 +45,13 @@ namespace CodeEditorApi
                 );
             });
 
-            services.AddControllers();
+            services.AddControllers().ConfigureApiBehaviorOptions(opt =>
+            {
+                opt.InvalidModelStateResponseFactory = context =>
+                {
+                    return ApiError.BadRequest(context.ModelState.Values.First().Errors.First().ErrorMessage);
+                };
+            });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -113,6 +120,8 @@ namespace CodeEditorApi
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
+
+            // Model messages
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -122,10 +131,7 @@ namespace CodeEditorApi
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             if(env.IsDevelopment())
             {
-                app.UseSwagger(c =>
-                {
-                    c.RouteTemplate = "api/{documentName}/swagger.json";
-                });
+                app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Code Editor API V1");

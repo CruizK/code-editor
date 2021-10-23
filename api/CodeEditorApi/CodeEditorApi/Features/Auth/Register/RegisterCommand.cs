@@ -1,28 +1,43 @@
-﻿using CodeEditorApi.Helpers;
+﻿using CodeEditorApi.Errors;
+using CodeEditorApi.Features.Auth.GetUser;
+using CodeEditorApi.Helpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Auth.Register
 {
     public interface IRegisterCommand
     {
-        Task ExecuteAsync(RegisterBody registerModel);
+        Task<ActionResult<string>> ExecuteAsync(RegisterBody registerModel);
     }
 
     public class RegisterCommand : IRegisterCommand
     {
-        public IRegister _register;
+        private readonly IRegister _register;
+        private readonly IGetUser _getUser;
+        private readonly IConfiguration _configuration;
 
-        public RegisterCommand(IRegister register)
+        public RegisterCommand(IRegister register, IGetUser getUser, IConfiguration configuration)
         {
             _register = register;
+            _getUser = getUser;
+            _configuration = configuration;
         }
 
-        public async Task ExecuteAsync(RegisterBody registerBody)
+        public async Task<ActionResult<string>> ExecuteAsync(RegisterBody registerBody)
         {
-            // Hash the password
+            var existingUser = await _getUser.ExecuteAsync(registerBody.Email);
+
+            if (existingUser != null) return ApiError.BadRequest("User with email already exists");
+
             registerBody.Password = HashHelper.HashPassword(registerBody.Password);
 
-            await _register.ExecuteAsync(registerBody);
+            var newUser = await _register.ExecuteAsync(registerBody);
+
+            var token = JwtHelper.GenerateToken(_configuration, newUser);
+
+            return token;
         }
     }
 }

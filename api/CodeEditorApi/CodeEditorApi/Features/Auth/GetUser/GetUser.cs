@@ -3,26 +3,28 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeEditorApi.Features.Auth.Login
+namespace CodeEditorApi.Features.Auth.GetUser
 {
-    public interface ILogin
+    public interface IGetUser
     {
         Task<User> ExecuteAsync(string email);
     }
-    public class Login : ILogin
+
+    public class GetUser : IGetUser
     {
         private readonly CodeEditorApiContext _context;
-        public Login(CodeEditorApiContext context)
+
+        public GetUser(CodeEditorApiContext context)
         {
             _context = context;
         }
 
         public async Task<User> ExecuteAsync(string email)
         {
+
             var user = await _context.Users
                 .Where(x => x.Email == email)
-                .FirstOrDefaultAsync()
-                .ConfigureAwait(false);
+                .FirstOrDefaultAsync();
 
             return user;
         }

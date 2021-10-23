@@ -1,34 +1,39 @@
-﻿using CodeEditorApi.Helpers;
-using CodeEditorApiDataAccess.Data;
+﻿using CodeEditorApi.Errors;
+using CodeEditorApi.Features.Auth.GetUser;
+using CodeEditorApi.Helpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Auth.Login
 {
     public interface ILoginCommand
     {
-        Task<User> ExecuteAsync(LoginBody loginBody);
+        Task<ActionResult<string>> ExecuteAsync(LoginBody loginBody);
     }
 
     public class LoginCommand : ILoginCommand
     {
-        private readonly ILogin _login;
-        public LoginCommand(ILogin login)
+        private readonly IGetUser _getUser;
+        private readonly IConfiguration _configuration;
+        public LoginCommand(IGetUser getUser, IConfiguration configuration)
         {
-            _login = login;
+            _getUser = getUser;
+            _configuration = configuration;
         }
 
-        public async Task<User> ExecuteAsync(LoginBody loginBody)
+        public async Task<ActionResult<string>> ExecuteAsync(LoginBody loginBody)
         {
-            var user = await _login.ExecuteAsync(loginBody.Email);
+            var user = await _getUser.ExecuteAsync(loginBody.Email);
 
-            if (user == null) return null;
+            if (user == null) return ApiError.BadRequest("User does not exist");
 
             if(HashHelper.ComparePassword(user.Hash, loginBody.Password))
             {
-                return user;
+                return JwtHelper.GenerateToken(_configuration, user);
             }
 
-            return null;
+            return ApiError.BadRequest("Password was incorrect");
         }
     }
 }

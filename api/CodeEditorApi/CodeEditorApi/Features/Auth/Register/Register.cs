@@ -7,7 +7,7 @@ namespace CodeEditorApi.Features.Auth.Register
 
     public interface IRegister
     {
-        Task ExecuteAsync(RegisterBody registerData);
+        Task<User> ExecuteAsync(RegisterBody registerData);
     }
 
     public class Register : IRegister
@@ -19,7 +19,7 @@ namespace CodeEditorApi.Features.Auth.Register
             _context = context;
         }
 
-        public async Task ExecuteAsync(RegisterBody registerData)
+        public async Task<User> ExecuteAsync(RegisterBody registerData)
         {
             var user = new User
             {
@@ -29,8 +29,10 @@ namespace CodeEditorApi.Features.Auth.Register
                 RoleId = (int)Roles.Student
             };
 
-            await _context.Users.AddAsync(user).ConfigureAwait(false);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            return user;
         }
     }
 }
