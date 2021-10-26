@@ -17,7 +17,7 @@ const ButtonStyle = {
             color: "ce_black",
             backgroundColor: "ce_white",
             _hover: {
-                color: "ce_white",
+                color: "ce_black",
                 borderColor: "ce_white",
             }
         },
