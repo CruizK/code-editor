@@ -30,7 +30,7 @@ function LoginForm() {
                         <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                     </FormControl>
                     <FormControl id="password" isRequired pattern={passwordRegEx(email)}>
-                        <Input placeholder="Password" />
+                        <Input placeholder="Password" type="password" />
                     </FormControl>
                     <Button variant="white" type="submit">Sign In</Button>
                 </Grid>
