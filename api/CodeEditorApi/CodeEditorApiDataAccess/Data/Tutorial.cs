@@ -18,9 +18,9 @@ namespace CodeEditorApiDataAccess.Data
         public int CourseId { get; set; }
         public string Prompt { get; set; }
         public DateTime CreateDate { get; set; }
-        public string ModifyDate { get; set; }
+        public DateTime ModifyDate { get; set; }
         public bool IsPublished { get; set; }
-        public int Index { get; set; }
+        public int? Index { get; set; }
         public int? LanguageId { get; set; }
         public int? DifficultyId { get; set; }
         public string Description { get; set; }

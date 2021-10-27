@@ -1,4 +1,5 @@
-﻿using CodeEditorApi.Features.Tutorials.GetTutorials;
+﻿using CodeEditorApi.Features.Tutorials.CreateTutorials;
+using CodeEditorApi.Features.Tutorials.GetTutorials;
 using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,17 +17,19 @@ namespace CodeEditorApi.Features.Tutorials
     public class TutorialsController : ControllerBase
     {
         private readonly IGetTutorialsCommand _getTutorialsCommand;
-        public TutorialsController(IGetTutorialsCommand getTutorialsCommand)
+        private readonly ICreateTutorialsCommand _createTutorialsCommand;
+        public TutorialsController(IGetTutorialsCommand getTutorialsCommand, ICreateTutorialsCommand createTutorialsCommand)
         {
             _getTutorialsCommand = getTutorialsCommand;
+            _createTutorialsCommand = createTutorialsCommand;
         }
 
         /// <summary>
         /// Gets a tutorial created by a User by Tutorial Id
         /// </summary>
-        [HttpGet("GetUserTutorials")]
+        [HttpGet("GetUserTutorials/{TutorialId:int}")]
         [Authorize]
-        public async Task<Tutorial> GetUserTutorials([FromQuery] int TutorialId)
+        public async Task<Tutorial> GetUserTutorials(int TutorialId)
         {
             var tutorial = new GetTutorialsBody{
                 TutorialId = TutorialId
@@ -35,6 +38,11 @@ namespace CodeEditorApi.Features.Tutorials
             return await _getTutorialsCommand.ExecuteAsync(tutorial);
         }
 
-        
+        [HttpPost("CreateTutorials")]
+        [Authorize]
+        public async Task<ActionResult<Tutorial>> CreateTutorial([FromBody] CreateTutorialsBody createTutorialsBody)
+        {
+            return await _createTutorialsCommand.ExecuteAsync(createTutorialsBody);
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace CodeEditorApi.Features.Courses.DeleteCourses
             if (existingCourse != null)
             {
                 _context.Courses.Remove(existingCourse);
-                await _context.SaveChangesAsync().ConfigureAwait(false);
+                await _context.SaveChangesAsync();
             }
             return existingCourse;
         }
