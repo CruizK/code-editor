@@ -8,7 +8,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 {
     public interface IGetTutorialsCommand
     {
-        public Task<IEnumerable<Tutorial>> ExecuteAsync(GetTutorialsBody getTutorialsBody);
+        public Task<Tutorial> ExecuteAsync(GetTutorialsBody getTutorialsBody);
     }
     public class GetTutorialsCommand : IGetTutorialsCommand
     {
@@ -18,7 +18,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         {
             _getTutorials = getTutorials;
         }
-        public async Task<IEnumerable<Tutorial>> ExecuteAsync(GetTutorialsBody getTutorialsBody)
+        public async Task<Tutorial> ExecuteAsync(GetTutorialsBody getTutorialsBody)
         {
             var tutorials = await _getTutorials.GetUserTutorials(getTutorialsBody);
             return tutorials;

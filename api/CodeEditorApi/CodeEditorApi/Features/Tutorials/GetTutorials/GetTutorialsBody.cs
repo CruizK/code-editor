@@ -12,6 +12,6 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         public int TutorialId;
 
         [Required]
-        public int UserId;
+        public int Author;
     }
 }

@@ -8,9 +8,9 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 {
     public interface IGetTutorials
     {
-        public Task<IEnumerable<Tutorial>> GetUserTutorials(GetTutorialsBody getTutorialsBody);
+        public Task<Tutorial> GetUserTutorials(GetTutorialsBody getTutorialsBody);
 
-        public Task<Tutorial> GetUserCreatedTutorials(GetTutorialsBody getTutorialsBody);
+        public Task<IEnumerable<Tutorial>> GetUserCreatedTutorials(GetTutorialsBody getTutorialsBody);
     }
     public class GetTutorials : IGetTutorials
     {
@@ -21,17 +21,17 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             _context = context;
         }
 
-        public async Task<Tutorial> GetUserCreatedTutorials(GetTutorialsBody getTutorialsBody)
+        public Task<IEnumerable<Tutorial>> GetUserCreatedTutorials(GetTutorialsBody getTutorialsBody)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Tutorial> GetUserTutorials(GetTutorialsBody getTutorialsBody)
         {
             var tutorial = await _context.Tutorials.FindAsync(getTutorialsBody.TutorialId);
 
             if (tutorial == null) throw new Exception($"There is no Tutorial that exists with Id {getTutorialsBody.TutorialId}");
             else return tutorial;
-        }
-
-        public Task<IEnumerable<Tutorial>> GetUserTutorials(GetTutorialsBody getTutorialsBody)
-        {
-            throw new NotImplementedException();
         }
     }
 }
