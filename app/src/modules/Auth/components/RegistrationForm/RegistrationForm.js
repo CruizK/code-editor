@@ -3,21 +3,26 @@ import { Checkbox } from "@chakra-ui/checkbox";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Center, Grid } from "@chakra-ui/layout";
-import { passwordRegEx, register } from "@Modules/Auth/Auth";
+import { maxAgeInHours, passwordRegEx, register } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 
 /**
  * Handles displaying form UI and sending formdata to the server.
  */
 function RegistrationForm() {
     const [email, setEmail] = useState("placeholder");
+    const [cookies, setCookie] = useCookies(["user"]);
 
     async function handleSubmit(event) {
-        let success = await register(event);
-        if (success) {
-            let redirect = '/auth/login'; 
-            Router.push(redirect);
+        let token = await register(event);
+        if (token) {
+            setCookie("user", token, { 
+                path: "/",
+                maxAge: maxAgeInHours * 60 * 60, //seconds
+                sameSite: true,
+            })
         }
     }
 
