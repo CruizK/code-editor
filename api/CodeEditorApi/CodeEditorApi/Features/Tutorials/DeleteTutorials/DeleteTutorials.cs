@@ -1,14 +1,16 @@
-﻿using CodeEditorApiDataAccess.Data;
+﻿using CodeEditorApi.Errors;
+using CodeEditorApiDataAccess.Data;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeEditorApi.Features.Tutorials.DeleteCourses
+namespace CodeEditorApi.Features.Tutorials.DeleteTutorials
 {
     public interface IDeleteTutorials
     {
-        public void ExecuteAsync(int id);
+        public Task<ActionResult<Tutorial>> ExecuteAsync(int id);
     }
     public class DeleteTutorials : IDeleteTutorials
     {
@@ -18,14 +20,19 @@ namespace CodeEditorApi.Features.Tutorials.DeleteCourses
             _context = context;
         }
 
-        public async void ExecuteAsync(int id)
+        public async Task<ActionResult<Tutorial>> ExecuteAsync(int id)
         {
             var existingTutorial = await _context.Tutorials.FindAsync(id);
             if(existingTutorial != null)
             {
                 _context.Tutorials.Remove(existingTutorial);
-                await _context.SaveChangesAsync();
+                if (await _context.SaveChangesAsync() != 1)
+                {
+                    return ApiError.BadRequest($"Unable to delete tutorial with id {id}");
+                }                
             }
+
+            return existingTutorial;
             
         }
     }
