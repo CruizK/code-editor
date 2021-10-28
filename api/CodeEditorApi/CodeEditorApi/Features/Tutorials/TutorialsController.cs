@@ -41,14 +41,9 @@ namespace CodeEditorApi.Features.Tutorials
         /// </summary>
         [HttpGet("GetUserTutorials/{TutorialId:int}")]
         [Authorize]
-        public async Task<Tutorial> GetUserTutorials(int tutorialId)
+        public async Task<ActionResult<Tutorial>> GetUserTutorials(int tutorialId)
         {
-            //TODO: don't do the below thing...fix the GetTutorialBody connection
-            var tutorial = new GetTutorialsBody {
-                TutorialId = tutorialId
-            };
-
-            return await _getTutorialsCommand.ExecuteAsync(tutorial);
+            return await _getTutorialsCommand.ExecuteAsync(tutorialId);
         }
 
         [HttpGet("GetUserCreatedTutorials/{UserId:int}")]

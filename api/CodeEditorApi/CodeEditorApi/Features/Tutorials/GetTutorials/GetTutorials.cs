@@ -10,7 +10,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 {
     public interface IGetTutorials
     {
-        public Task<Tutorial> GetUserTutorials(GetTutorialsBody getTutorialsBody);
+        public Task<ActionResult<Tutorial>> GetUserTutorials(int tutorialId);
 
         public Task<ActionResult<List<Tutorial>>> GetUserCreatedTutorials(int userId);
 
@@ -25,11 +25,11 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             _context = context;
         }
 
-        public async Task<Tutorial> GetUserTutorials(GetTutorialsBody getTutorialsBody)
+        public async Task<ActionResult<Tutorial>> GetUserTutorials(int tutorialId)
         {
-            var tutorial = await _context.Tutorials.FindAsync(getTutorialsBody.TutorialId);
+            var tutorial = await _context.Tutorials.FindAsync(tutorialId);
 
-            if (tutorial == null) throw new Exception($"There is no Tutorial that exists with Id {getTutorialsBody.TutorialId}");
+            if (tutorial == null) throw new Exception($"There is no Tutorial that exists with Id {tutorialId}");
             else return tutorial;
         }
 
