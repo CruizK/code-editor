@@ -3,6 +3,7 @@ import AccordionStyle, { AccordionBoxStyle } from "@Common/styles/Accordion.styl
 import ButtonStyle from "@Common/styles/Button.style";
 import HeadingStyle from "@Common/styles/Heading.style";
 import InputStyle from "@Common/styles/Input.style";
+import MainStyle from "@Common/styles/Main.style";
 import MenuStyle from "@Common/styles/Menu.style";
 import TagStyle from "@Common/styles/Tag.style";
 import TextareaStyle from "@Common/styles/Textarea.style";
@@ -87,6 +88,7 @@ const components = {
   Tag: TagStyle,
   Menu: MenuStyle,
   Textarea: TextareaStyle,
+  Main: MainStyle,
 }
 
 const theme = extendTheme({ colors, config, fonts, fontSizes, styles, components })

@@ -1,17 +1,25 @@
 import { Box, Container } from "@chakra-ui/layout";
+import { useBreakpointValue } from "@chakra-ui/media-query";
+import { useMultiStyleConfig } from "@chakra-ui/system";
 import Header from "@Components/Header/Header"
 
 /**
  * Wrapper for main so that nextjs lets us render the header without complaining.
  */
 function Main(props) {
+    const size = useBreakpointValue({ base: "xs", lg: "lg"});
+    const styles = useMultiStyleConfig("Main", {
+        size: size,
+    });
+
+    console.log(styles);
     return(
         <main>
-            <Box minW={{base: "container.xs", lg: "container.lg" }} bgColor="ce_white" w="100%">                
+            <Box __css={styles.outer}>                
                 <Header />
-                <Container maxWidth={{base: "container.xs", lg: "container.lg" }} w="100%" centerContent minHeight="450px">
+                <Box __css={styles.content}>
                     {props.children}
-                </Container>
+                </Box>
             </Box>
         </main>
     )
