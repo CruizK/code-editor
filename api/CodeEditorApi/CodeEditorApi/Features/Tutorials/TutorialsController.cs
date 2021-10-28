@@ -22,13 +22,18 @@ namespace CodeEditorApi.Features.Tutorials
         private readonly ICreateTutorialsCommand _createTutorialsCommand;
         private readonly IDeleteTutorialsCommand _deleteTutorialsCommand;
         private readonly IUpdateTutorialsCommand _updateTutorialsCommand;
+        private readonly IGetUserCreatedTutorialsCommand _getUserCreatedTutorialsCommand;
+        private readonly IGetCourseTutorialsCommand _getCourseTutorialsCommand;
         public TutorialsController(IGetTutorialsCommand getTutorialsCommand, ICreateTutorialsCommand createTutorialsCommand,
-            IDeleteTutorialsCommand deleteTutorialsCommand, IUpdateTutorialsCommand updateTutorialsCommand)
+            IDeleteTutorialsCommand deleteTutorialsCommand, IUpdateTutorialsCommand updateTutorialsCommand,
+            IGetUserCreatedTutorialsCommand getUserCreatedTutorialsCommand, IGetCourseTutorialsCommand getCourseTutorialsCommand)
         {
             _getTutorialsCommand = getTutorialsCommand;
             _createTutorialsCommand = createTutorialsCommand;
             _deleteTutorialsCommand = deleteTutorialsCommand;
             _updateTutorialsCommand = updateTutorialsCommand;
+            _getUserCreatedTutorialsCommand = getUserCreatedTutorialsCommand;
+            _getCourseTutorialsCommand = getCourseTutorialsCommand;
         }
 
         /// <summary>
@@ -44,6 +49,20 @@ namespace CodeEditorApi.Features.Tutorials
             };
 
             return await _getTutorialsCommand.ExecuteAsync(tutorial);
+        }
+
+        [HttpGet("GetUserCreatedTutorials/{UserId:int}")]
+        [Authorize]
+        public async Task<ActionResult<List<Tutorial>>> GetUserCreatedTutorials(int userId)
+        {
+            return await _getUserCreatedTutorialsCommand.ExecuteAsync(userId);
+        }
+
+        [HttpGet("GetCourseTutorials/{CourseId:int}")]
+        [Authorize]
+        public async Task<ActionResult<List<Tutorial>>> GetCourseTutorials(int courseId)
+        {
+            return await _getCourseTutorialsCommand.ExecuteAsync(courseId);
         }
 
         [HttpPost("CreateTutorials")]
