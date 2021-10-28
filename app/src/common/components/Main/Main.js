@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/layout";
+import { Box, Container } from "@chakra-ui/layout";
 import Header from "@Components/Header/Header"
 
 /**
@@ -7,10 +7,12 @@ import Header from "@Components/Header/Header"
 function Main(props) {
     return(
         <main>
-            <Container maxW="container.lg" centerContent minHeight="450px" bgColor="ce_white">
+            <Box minW={{base: "container.xs", lg: "container.lg" }} bgColor="ce_white" w="100%">                
                 <Header />
-                {props.children}
-            </Container>
+                <Container maxWidth={{base: "container.xs", lg: "container.lg" }} w="100%" centerContent minHeight="450px">
+                    {props.children}
+                </Container>
+            </Box>
         </main>
     )
 }
