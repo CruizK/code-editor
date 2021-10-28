@@ -1,6 +1,11 @@
 import instance from "@Utils/instance";
 
 /**
+ * Max age of JWT tokens in hours.
+ */
+const maxAgeInHours = 1;
+
+/**
  * Checks if user cookie is set
  */
 function loggedIn(userCookie) {
@@ -106,4 +111,4 @@ async function register(event) {
     return false;
 }
 
-export { loggedIn, passwordRegEx, login, register };
+export { maxAgeInHours, loggedIn, passwordRegEx, login, register };
