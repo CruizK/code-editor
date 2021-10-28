@@ -26,13 +26,10 @@ namespace CodeEditorApi.Features.Courses.UpdateCourses
             var existingCourse = await _context.Courses.FindAsync(course.Id);
             if(existingCourse != null)
             {
-                existingCourse.Title = course.Title;
-                existingCourse.Description = course.Description;
-                existingCourse.ModifyDate = DateTime.Now;
-                existingCourse.IsPublished = course.IsPublished;
+                _context.Entry(existingCourse).CurrentValues.SetValues(course);
             }
             await _context.SaveChangesAsync().ConfigureAwait(false);
-            return existingCourse;
+            return await _context.Courses.FindAsync(course.Id);
         }
     }
 }

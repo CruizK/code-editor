@@ -1,6 +1,7 @@
 ﻿using CodeEditorApi.Features.Tutorials.CreateTutorials;
 using CodeEditorApi.Features.Tutorials.DeleteTutorials;
 using CodeEditorApi.Features.Tutorials.GetTutorials;
+using CodeEditorApi.Features.Tutorials.UpdateTutorials;
 using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,12 +21,14 @@ namespace CodeEditorApi.Features.Tutorials
         private readonly IGetTutorialsCommand _getTutorialsCommand;
         private readonly ICreateTutorialsCommand _createTutorialsCommand;
         private readonly IDeleteTutorialsCommand _deleteTutorialsCommand;
+        private readonly IUpdateTutorialsCommand _updateTutorialsCommand;
         public TutorialsController(IGetTutorialsCommand getTutorialsCommand, ICreateTutorialsCommand createTutorialsCommand,
-            IDeleteTutorialsCommand deleteTutorialsCommand)
+            IDeleteTutorialsCommand deleteTutorialsCommand, IUpdateTutorialsCommand updateTutorialsCommand)
         {
             _getTutorialsCommand = getTutorialsCommand;
             _createTutorialsCommand = createTutorialsCommand;
             _deleteTutorialsCommand = deleteTutorialsCommand;
+            _updateTutorialsCommand = updateTutorialsCommand;
         }
 
         /// <summary>
@@ -55,6 +58,13 @@ namespace CodeEditorApi.Features.Tutorials
         public async Task<ActionResult<Tutorial>> DeleteTutorials(int tutorialId)
         {
             return await _deleteTutorialsCommand.ExecuteAsync(tutorialId);
+        }
+
+        [HttpPut("UpdateTutorials/{TutorialId:int}")]
+        [Authorize]
+        public async Task<ActionResult<Tutorial>> UpdateTutorials(int tutorialId, [FromBody] CreateTutorialsBody createTutorialsBody)
+        {
+            return await _updateTutorialsCommand.ExecuteAsync(tutorialId, createTutorialsBody);
         }
     }
 }

@@ -35,9 +35,5 @@
 		<ProjectReference Include="..\CodeEditorApiDataAccess\CodeEditorApiDataAccess.csproj" />
 	</ItemGroup>
 	
-	<ItemGroup>
-	  <Folder Include="Features\Tutorials\UpdateTutorials\" />
-	</ItemGroup>
-	
 
 </Project>
