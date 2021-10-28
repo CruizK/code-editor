@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Center, Grid } from "@chakra-ui/layout";
-import { login, passwordRegEx } from "@Modules/Auth/Auth";
+import { login, maxAgeInHours, passwordRegEx } from "@Modules/Auth/Auth";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 
@@ -12,11 +12,10 @@ function LoginForm() {
 
     async function handleSubmit(event) {
         let token = await login(event);
-        let hours = 1;
         if (token) {
             setCookie("user", token, { 
                 path: "/",
-                maxAge: hours * 60 * 60, //seconds
+                maxAge: maxAgeInHours * 60 * 60, //seconds
                 sameSite: true,
             })
         }
@@ -30,7 +29,7 @@ function LoginForm() {
                         <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                     </FormControl>
                     <FormControl id="password" isRequired pattern={passwordRegEx(email)}>
-                        <Input placeholder="Password" />
+                        <Input placeholder="Password" type="password" />
                     </FormControl>
                     <Button variant="white" type="submit">Sign In</Button>
                 </Grid>

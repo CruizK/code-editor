@@ -8,7 +8,6 @@ const ButtonStyle = {
         _hover: {
             backgroundColor: "transparent",
             border: "1px solid",
-            textShadow: "1px 2px #888888", 
             boxShadow: "1px 2px #888888",
         }
     },
@@ -17,7 +16,7 @@ const ButtonStyle = {
             color: "ce_black",
             backgroundColor: "ce_white",
             _hover: {
-                color: "ce_white",
+                color: "ce_black",
                 borderColor: "ce_white",
             }
         },

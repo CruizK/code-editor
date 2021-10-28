@@ -19,7 +19,7 @@ import { useCookies } from "react-cookie";
     const profileImage = "/defaults/avatar.png"; // TODO: Update with actual avatar.
 
     return(
-        <Box height="50px" bgColor="ce_darkgrey" width="100%" color="ce_white">
+        <Box height="50px" bgColor="ce_darkgrey" w="100%" color="ce_white">
             <Grid templateColumns="repeat(5, 1fr)" gap={6} pl={5} pr={5}>
                 <GridItem>
                     <Image src="/siu_logo.png" alt="SIU Logo" maxHeight="50px" />

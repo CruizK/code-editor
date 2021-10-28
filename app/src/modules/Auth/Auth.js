@@ -1,6 +1,11 @@
 import instance from "@Utils/instance";
 
 /**
+ * Max age of JWT tokens in hours.
+ */
+const maxAgeInHours = 1;
+
+/**
  * Checks if user cookie is set
  */
 function loggedIn(userCookie) {
@@ -71,11 +76,12 @@ async function login(event) {
  * @param event submit event from a form.
  * @return The response from the server.
  */
-async function register(event) {
+ async function register(event) {
     event.preventDefault();
 
     let isValid = true;
     let form = event.target;
+    let token;
     
     [
         "name",
@@ -96,14 +102,14 @@ async function register(event) {
             })
 
             if (response.statusText == "OK")
-            return true;
+            token = response.data;
         } catch (error) {
             //TODO: Error handling.
             //console.log(error.response);
         }
     }
 
-    return false;
+    return token;
 }
 
-export { loggedIn, passwordRegEx, login, register };
+export { maxAgeInHours, loggedIn, passwordRegEx, login, register };
