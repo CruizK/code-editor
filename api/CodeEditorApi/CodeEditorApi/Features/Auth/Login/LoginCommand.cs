@@ -1,6 +1,6 @@
 ﻿using CodeEditorApi.Errors;
 using CodeEditorApi.Features.Auth.GetUser;
-using CodeEditorApi.Helpers;
+using CodeEditorApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
@@ -16,10 +16,14 @@ namespace CodeEditorApi.Features.Auth.Login
     {
         private readonly IGetUser _getUser;
         private readonly IConfiguration _configuration;
-        public LoginCommand(IGetUser getUser, IConfiguration configuration)
+        private readonly IJwtService _jwtService;
+        public LoginCommand(IGetUser getUser, 
+            IConfiguration configuration, 
+            IJwtService jwtService)
         {
             _getUser = getUser;
             _configuration = configuration;
+            _jwtService = jwtService;
         }
 
         public async Task<ActionResult<string>> ExecuteAsync(LoginBody loginBody)
@@ -30,7 +34,7 @@ namespace CodeEditorApi.Features.Auth.Login
 
             if(HashHelper.ComparePassword(user.Hash, loginBody.Password))
             {
-                return JwtHelper.GenerateToken(_configuration, user);
+                return _jwtService.GenerateToken(_configuration, user);
             }
 
             return ApiError.BadRequest("Password was incorrect");

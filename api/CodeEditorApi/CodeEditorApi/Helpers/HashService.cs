@@ -2,9 +2,9 @@
 using System;
 using System.Security.Cryptography;
 
-namespace CodeEditorApi.Helpers
+namespace CodeEditorApi.Services
 {
-    public static class HashHelper
+    public static class HashHelper 
     {
         private const int iterationCount = 10000;
 

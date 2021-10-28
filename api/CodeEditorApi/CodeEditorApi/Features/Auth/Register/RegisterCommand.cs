@@ -1,6 +1,6 @@
 ﻿using CodeEditorApi.Errors;
 using CodeEditorApi.Features.Auth.GetUser;
-using CodeEditorApi.Helpers;
+using CodeEditorApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
@@ -17,12 +17,17 @@ namespace CodeEditorApi.Features.Auth.Register
         private readonly IRegister _register;
         private readonly IGetUser _getUser;
         private readonly IConfiguration _configuration;
+        private readonly IJwtService _jwtService;
 
-        public RegisterCommand(IRegister register, IGetUser getUser, IConfiguration configuration)
+        public RegisterCommand(IRegister register, 
+            IGetUser getUser, 
+            IConfiguration configuration, 
+            IJwtService jwtService)
         {
             _register = register;
             _getUser = getUser;
             _configuration = configuration;
+            _jwtService = jwtService;
         }
 
         public async Task<ActionResult<string>> ExecuteAsync(RegisterBody registerBody)
@@ -35,7 +40,7 @@ namespace CodeEditorApi.Features.Auth.Register
 
             var newUser = await _register.ExecuteAsync(registerBody);
 
-            var token = JwtHelper.GenerateToken(_configuration, newUser);
+            var token = _jwtService.GenerateToken(_configuration, newUser);
 
             return token;
         }
