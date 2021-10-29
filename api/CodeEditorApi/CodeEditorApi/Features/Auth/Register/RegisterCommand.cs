@@ -17,16 +17,19 @@ namespace CodeEditorApi.Features.Auth.Register
         private readonly IRegister _register;
         private readonly IGetUser _getUser;
         private readonly IConfiguration _configuration;
+        private readonly IHashService _hashService;
         private readonly IJwtService _jwtService;
 
         public RegisterCommand(IRegister register, 
             IGetUser getUser, 
             IConfiguration configuration, 
+            IHashService hashService,
             IJwtService jwtService)
         {
             _register = register;
             _getUser = getUser;
             _configuration = configuration;
+            _hashService = hashService;
             _jwtService = jwtService;
         }
 
@@ -36,7 +39,7 @@ namespace CodeEditorApi.Features.Auth.Register
 
             if (existingUser != null) return ApiError.BadRequest("User with email already exists");
 
-            registerBody.Password = HashHelper.HashPassword(registerBody.Password);
+            registerBody.Password = _hashService.HashPassword(registerBody.Password);
 
             var newUser = await _register.ExecuteAsync(registerBody);
 

@@ -4,11 +4,18 @@ using System.Security.Cryptography;
 
 namespace CodeEditorApi.Services
 {
-    public static class HashHelper 
+    public interface IHashService
+    {
+        string HashPassword(string password, byte[] salt = null);
+        string HashPassword(string password, string salt);
+        bool ComparePassword(string hash, string password);
+    }
+
+    public class HashService : IHashService
     {
         private const int iterationCount = 10000;
 
-        public static string HashPassword(string password, byte[] salt = null)
+        public string HashPassword(string password, byte[] salt = null)
         {
             if(salt == null)
             {
@@ -32,12 +39,12 @@ namespace CodeEditorApi.Services
             return finalHash;
         }
 
-        public static string HashPassword(string password, string salt)
+        public string HashPassword(string password, string salt)
         {
             return HashPassword(password, Convert.FromBase64String(salt));
         }
 
-        public static bool ComparePassword(string hash, string password)
+        public bool ComparePassword(string hash, string password)
         {
             var parts = hash.Split('-');
             var salt = parts[2];

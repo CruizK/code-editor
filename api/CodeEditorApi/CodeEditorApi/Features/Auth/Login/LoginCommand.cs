@@ -16,13 +16,16 @@ namespace CodeEditorApi.Features.Auth.Login
     {
         private readonly IGetUser _getUser;
         private readonly IConfiguration _configuration;
+        private readonly IHashService _hashService;
         private readonly IJwtService _jwtService;
         public LoginCommand(IGetUser getUser, 
             IConfiguration configuration, 
+            IHashService hashService,
             IJwtService jwtService)
         {
             _getUser = getUser;
             _configuration = configuration;
+            _hashService = hashService;
             _jwtService = jwtService;
         }
 
@@ -32,7 +35,7 @@ namespace CodeEditorApi.Features.Auth.Login
 
             if (user == null) return ApiError.BadRequest("User does not exist");
 
-            if(HashHelper.ComparePassword(user.Hash, loginBody.Password))
+            if(_hashService.ComparePassword(user.Hash, loginBody.Password))
             {
                 return _jwtService.GenerateToken(_configuration, user);
             }

@@ -4,6 +4,7 @@ using CodeEditorApi.Features.Auth.GetUser;
 using CodeEditorApi.Features.Auth.Register;
 using CodeEditorApi.Services;
 using CodeEditorApiDataAccess.Data;
+using CodeEditorApiUnitTests.Helpers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -13,76 +14,90 @@ using Xunit;
 
 namespace CodeEditorApiUnitTests.Features.Auth
 {
-    public class RegisterCommandTest
+    public class RegisterCommandTest : UnitTest<RegisterCommand>
     {
-
-        private readonly RegisterCommand _target;
-        private readonly Fixture _fixture;
-
-        private readonly Mock<IRegister> _registerMock;
-        private readonly Mock<IConfiguration> _configurationMock;
-        private readonly Mock<IGetUser> _getUserMock;
-        private readonly Mock<IJwtService> _jwtServiceMock;
-
-        public RegisterCommandTest()
-        {
-            _registerMock = new Mock<IRegister>();
-            _configurationMock = new Mock<IConfiguration>();
-            _getUserMock = new Mock<IGetUser>();
-            _jwtServiceMock = new Mock<IJwtService>();
-
-            _fixture = new Fixture();
-
-            _fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
-            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-
-            _target = new RegisterCommand(_registerMock.Object,
-                _getUserMock.Object, 
-                _configurationMock.Object, 
-                _jwtServiceMock.Object);
-        }
-
         [Fact]
         public async Task ShouldReturnBadRequestIfUserExists()
         {
-            var body = _fixture.Create<RegisterBody>();
-            var user = _fixture.Create<User>();
+            var body = fixture.Create<RegisterBody>();
+            var user = fixture.Create<User>();
             var expected = new BadRequestError("User with email already exists");
 
-            _getUserMock
+            Freeze<IGetUser>()
                 .Setup(x => x.ExecuteAsync(body.Email))
                 .ReturnsAsync(user);
 
-            var actionResult = await _target.ExecuteAsync(body);
+            var actionResult = await Target().ExecuteAsync(body);
 
             var result = actionResult.Result as BadRequestObjectResult;
             result.Should().NotBeNull();
             result.Value.Should().BeEquivalentTo(expected);
+
+            Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email), Times.Once);
         }
 
         [Fact]
         public async Task ShouldReturnTokenIfUserDoesNotExist()
         {
-            var body = _fixture.Create<RegisterBody>();
-            var user = _fixture.Create<User>();
-            var token = _fixture.Create<string>();
+            var body = fixture.Create<RegisterBody>();
+            var user = fixture.Create<User>();
+            var token = fixture.Create<string>();
 
-            _getUserMock
+            Freeze<IGetUser>()
                 .Setup(x => x.ExecuteAsync(body.Email))
                 .ReturnsAsync((User)null);
 
-            _registerMock
+            Freeze<IRegister>()
                 .Setup(x => x.ExecuteAsync(body))
                 .ReturnsAsync(user);
 
-            _jwtServiceMock
-                .Setup(x => x.GenerateToken(_configurationMock.Object, user))
+            Freeze<IJwtService>()
+                .Setup(x => x.GenerateToken(Freeze<IConfiguration>().Object, user))
                 .Returns(token);
 
-            var actionResult = await _target.ExecuteAsync(body);
+            var actionResult = await Target().ExecuteAsync(body);
 
             actionResult.Result.Should().BeNull();
             actionResult.Value.Should().Be(token);
+
+            Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email), Times.Once);
+            Freeze<IRegister>().Verify(x => x.ExecuteAsync(body), Times.Once);
+            Freeze<IJwtService>().Verify(x => x.GenerateToken(Freeze<IConfiguration>().Object, user), Times.Once);
+        }
+
+        // We test the validation of the model, since it is prety much testing the Regular Expression Used
+
+        [Theory]
+        [InlineData("SecurePassword1!")]
+        [InlineData("LsdSKJ349834@$93845")]
+        [InlineData("abcdefgsLkdjf12@#")]
+
+        public void ShouldReturnTrueForProperPasswords(string password)
+        {
+            var body = fixture.Build<RegisterBody>()
+                .With(x => x.Password, password)
+                .Create();
+
+            var result = ModelValidation.ValidateModel(body, "Password");
+
+            result.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData("short1!")]
+        [InlineData("NoSymbols1")]
+        [InlineData("NOLOWERCASE1!")]
+        [InlineData("nouppercase1!")]
+
+        public void ShouldReturnFalseForPasswordsNotMeetingValidation(string password)
+        {
+            var body = fixture.Build<RegisterBody>()
+                .With(x => x.Password, password)
+                .Create();
+
+            var result = ModelValidation.ValidateModel(body, "Password");
+
+            result.Should().BeFalse();
         }
     }
 }
