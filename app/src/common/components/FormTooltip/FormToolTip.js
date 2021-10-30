@@ -2,7 +2,14 @@ import { QuestionIcon } from "@chakra-ui/icons";
 import { Box } from "@chakra-ui/layout";
 import { Tooltip } from "@chakra-ui/tooltip";
 
+/**
+ * Pass hovertext as an array of strings, with the assumption being that each string is rendered on its own line.
+ * @param {{lines:string[]}} props 
+ * @returns A wrapper for any element that causes it to display hover-text
+ */
 function FormToolTip(props) {
+    // chakra Tooltip's don't handle whitespace="pre" or any similar setting
+    // hence the messy workaround
     let label = 
     <ul>
         {props.lines.map((line) => {
