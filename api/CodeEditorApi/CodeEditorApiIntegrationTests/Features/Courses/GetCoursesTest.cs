@@ -1,6 +1,8 @@
-﻿namespace CodeEditorApiIntegrationTests.Features.Courses
+﻿using CodeEditorApi.Features.Courses.GetCourses;
+
+namespace CodeEditorApiIntegrationTests.Features.Courses
 {
-    public class GetCoursesTest : DbTest
+    public class GetCoursesTest : DbTest<GetCourses>
     {
         public GetCoursesTest() : base()
         {

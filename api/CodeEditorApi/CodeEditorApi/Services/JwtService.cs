@@ -7,11 +7,17 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace CodeEditorApi.Helpers
+namespace CodeEditorApi.Services
 {
-    public static class JwtHelper
+
+    public interface IJwtService
     {
-        public static string GenerateToken(IConfiguration configuration, User user)
+        string GenerateToken(IConfiguration configuration, User user);
+    }
+
+    public class JwtService : IJwtService
+    {
+        public string GenerateToken(IConfiguration configuration, User user)
         {
 
             var secret = configuration["Jwt:Key"];
