@@ -37,10 +37,7 @@ namespace CodeEditorApi.Features.Tutorials.CreateTutorials
             };
 
             await _context.Tutorials.AddAsync(insertTutorial);
-            if (await _context.SaveChangesAsync() != 1)
-            {
-                return ApiError.BadRequest($"Unable to add Tutorial {createTutorialsBody.Title} to database");
-            }
+            await _context.SaveChangesAsync();
                 
             return insertTutorial;
         }

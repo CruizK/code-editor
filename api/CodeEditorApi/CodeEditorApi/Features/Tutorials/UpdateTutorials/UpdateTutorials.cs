@@ -27,10 +27,7 @@ namespace CodeEditorApi.Features.Tutorials.UpdateTutorials
             if(existingTutorial != null)
             {
                 _context.Entry(existingTutorial).CurrentValues.SetValues(createTutorialsBody);
-                if (await _context.SaveChangesAsync() != 1)
-                {
-                    return ApiError.BadRequest($"Could not update Tutorial with ID: {tutorialId}");
-                }
+                await _context.SaveChangesAsync();
             }
 
             return await _context.Tutorials.FindAsync(tutorialId);

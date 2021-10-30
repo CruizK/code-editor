@@ -10,7 +10,7 @@ namespace CodeEditorApi.Features.Tutorials.DeleteTutorials
 {
     public interface IDeleteTutorials
     {
-        public Task<ActionResult<Tutorial>> ExecuteAsync(int id);
+        public Task<ActionResult<Tutorial>> ExecuteAsync(int tutorialId);
     }
     public class DeleteTutorials : IDeleteTutorials
     {
@@ -20,16 +20,13 @@ namespace CodeEditorApi.Features.Tutorials.DeleteTutorials
             _context = context;
         }
 
-        public async Task<ActionResult<Tutorial>> ExecuteAsync(int id)
+        public async Task<ActionResult<Tutorial>> ExecuteAsync(int tutorialId)
         {
-            var existingTutorial = await _context.Tutorials.FindAsync(id);
+            var existingTutorial = await _context.Tutorials.FindAsync(tutorialId);
             if(existingTutorial != null)
             {
                 _context.Tutorials.Remove(existingTutorial);
-                if (await _context.SaveChangesAsync() != 1)
-                {
-                    return ApiError.BadRequest($"Unable to delete tutorial with id {id}");
-                }                
+                await _context.SaveChangesAsync();            
             }
 
             return existingTutorial;
