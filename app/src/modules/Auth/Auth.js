@@ -35,6 +35,18 @@ function passwordRegEx(email) {
 };
 
 /**
+ * For use in FormTooltip
+ */
+const passwordTooltipLines = [
+    'At least eight characters, but no more than twenty.',
+    'At least one lowercase letter.',
+    'At least one uppercase letter.',
+    'At least one number.',
+    'At least one special character: !, @, #, $, %, ^, &, *.',
+    'Cannot be same as email.',
+];
+
+/**
  * A function that sends form data to the server for login.
  * Validation is done through attributes on the form's html
  * @param event submit event from a form.
@@ -112,4 +124,4 @@ async function login(event) {
     return token;
 }
 
-export { maxAgeInHours, loggedIn, passwordRegEx, login, register };
+export { maxAgeInHours, loggedIn, passwordRegEx, passwordTooltipLines, login, register };
