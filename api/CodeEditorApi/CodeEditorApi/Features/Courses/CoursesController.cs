@@ -1,16 +1,14 @@
-﻿using CodeEditorApiDataAccess.Data;
+﻿using CodeEditorApi.Features.Courses.CreateCourses;
+using CodeEditorApi.Features.Courses.DeleteCourses;
+using CodeEditorApi.Features.Courses.GetCourses;
+using CodeEditorApi.Features.Courses.UpdateCourses;
+using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.Extensions.Logging;
-using CodeEditorApi.Features.Courses.CreateCourses;
-using CodeEditorApi.Features.Courses.GetCourses;
-using CodeEditorApi.Features.Courses.UpdateCourses;
-using CodeEditorApi.Features.Courses.DeleteCourses;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Courses
 {
@@ -18,9 +16,7 @@ namespace CodeEditorApi.Features.Courses
     [Produces("application/json")]
     [ApiController]
 
-    /// <summary>
-    /// Controls the direction of which CRUD operation/API request is called
-    /// </summary>
+
     public class CoursesController : ControllerBase
     {
         private readonly IGetCoursesCommand _getCoursesCommand;
@@ -29,8 +25,12 @@ namespace CodeEditorApi.Features.Courses
         private readonly IUpdateCoursesCommand _updateCoursesCommand;
         private readonly IDeleteCoursesCommand _deleteCoursesCommand;
 
-        public CoursesController(IGetCoursesCommand getCoursesCommand, IGetUserCreatedCoursesCommand getUserCreatedCoursesCommand,
-            ICreateCoursesCommand createCoursesCommand, IUpdateCoursesCommand updateCoursesCommand, IDeleteCoursesCommand deleteCoursesCommand)
+        public CoursesController(
+            IGetCoursesCommand getCoursesCommand, 
+            IGetUserCreatedCoursesCommand getUserCreatedCoursesCommand,
+            ICreateCoursesCommand createCoursesCommand, 
+            IUpdateCoursesCommand updateCoursesCommand, 
+            IDeleteCoursesCommand deleteCoursesCommand)
         {
             _getCoursesCommand = getCoursesCommand;
             _getUserCreatedCoursesCommand = getUserCreatedCoursesCommand;
@@ -43,7 +43,7 @@ namespace CodeEditorApi.Features.Courses
         /// Get's all courses for a single user
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetUserCourses")]
+        [HttpGet("/")]
         [Authorize]
         public async Task<IEnumerable<Course>> GetUserCourses()
         {
@@ -51,7 +51,7 @@ namespace CodeEditorApi.Features.Courses
             return await _getCoursesCommand.ExecuteAsync(userId);
         }
 
-        [HttpGet("GetUserCreatedCourses")]
+        [HttpGet("/Created")]
         [Authorize]
         public async Task<IEnumerable<Course>> GetUserCreatedCourses()
         {
@@ -61,45 +61,47 @@ namespace CodeEditorApi.Features.Courses
         /// <summary>
         /// Creates a course for a user (admin/teacher role)
         /// </summary>
-        /// <param name="course">
+        /// <param name="createCourseBody">
         /// The course details for creating the new course
         /// </param>
         /// <returns></returns>
-        [HttpPost("CreateCourse")]
+        [HttpPost("/")]
         [Authorize]
-        public async Task CreateCourse([FromBody] Course course)
+        public async Task<ActionResult<Course>> CreateCourse([FromBody] CreateCourseBody createCourseBody)
         {
             var userId = retrieveRequestUserId();
-            await _createCoursesCommand.ExecuteAsync(userId, course);
+            return await _createCoursesCommand.ExecuteAsync(userId, createCourseBody);
         }
 
         /// <summary>
         /// Updates a course for a user (admin/teacher role)
         /// </summary>
-        /// <param name="course">
-        /// updated Course details for the existing course
-        /// </param>
+        /// <param name="updateCourseBody">updated Course details for the existing course</param>
+        /// <param name="courseId"></param>
         /// <returns></returns>
-        [HttpPut("UpdateCourse")]
+        [HttpPut("/{courseId:int}")]
         [Authorize]
-        public async Task UpdateCourse([FromBody] Course course)
+        public async Task<ActionResult<Course>> UpdateCourse(int courseId, [FromBody] UpdateCourseBody updateCourseBody)
         {
-            await _updateCoursesCommand.ExecuteAsync(course);
+            var userId = retrieveRequestUserId();
+            return await _updateCoursesCommand.ExecuteAsync(courseId, userId, updateCourseBody);
         }
 
         /// <summary>
         /// Delete a course
         /// </summary>
-        /// <param name="course">
+        /// <param name="courseId">
         /// Course for deletion
         /// </param>
         /// <returns></returns>
-        [HttpDelete("DeleteCourse")]
+        [HttpDelete("/{courseId:int}")]
         [Authorize]
-        public async Task DeleteCourse([FromBody] Course course)
+        public async Task<ActionResult<Course>> DeleteCourse(int courseId)
         {
-            await _deleteCoursesCommand.ExecuteAsync(course);
+            var userId = retrieveRequestUserId();
+            return await _deleteCoursesCommand.ExecuteAsync(userId, courseId);
         }
+
         private int retrieveRequestUserId()
         {
             var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub).Value;
@@ -113,18 +115,5 @@ namespace CodeEditorApi.Features.Courses
                 //TODO: catch internal error of invalid userId...this should turn into a validation on it's own though. Then call validation in this method.
             }
         }
-        //[HttpGet("all")]
-        //[Authorize(Roles = "Student")]
-        //public async Task<IEnumerable<Course>> GetAllCourses()
-        //{
-        //    var user = HttpContext.User;
-        //    // This is how you would get the id, or any other information stored in the JWT
-        //    var userId = user.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
-
-        //    // You can check if something is in a role like so
-        //    var isInRole = user.IsInRole("Student");
-
-        //    return await _getCoursesCommand.ExecuteAsync();
-        //}
     }
 }

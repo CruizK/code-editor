@@ -1,9 +1,4 @@
 ﻿using CodeEditorApiDataAccess.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Courses.DeleteCourses
@@ -11,7 +6,7 @@ namespace CodeEditorApi.Features.Courses.DeleteCourses
 
     public interface IDeleteCourses
     {
-        public Task<Course> ExecuteAsync(Course course);
+        public Task<Course> ExecuteAsync(int courseId);
     }
     public class DeleteCourses : IDeleteCourses
     {
@@ -22,13 +17,13 @@ namespace CodeEditorApi.Features.Courses.DeleteCourses
             _context = context;
         }
 
-        public async Task<Course> ExecuteAsync(Course course)
+        public async Task<Course> ExecuteAsync(int courseId)
         {
-            var existingCourse = await _context.Courses.FindAsync(course.Id);
+            var existingCourse = await _context.Courses.FindAsync(courseId);
             if (existingCourse != null)
             {
                 _context.Courses.Remove(existingCourse);
-                await _context.SaveChangesAsync().ConfigureAwait(false);
+                await _context.SaveChangesAsync();
             }
             return existingCourse;
         }

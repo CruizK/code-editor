@@ -1,16 +1,12 @@
 ﻿using CodeEditorApiDataAccess.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Courses.UpdateCourses
 {
     public interface IUpdateCourses
     {
-        public Task<Course> ExecuteAsync(Course course);
+        public Task<Course> ExecuteAsync(int courseId, UpdateCourseBody updateCourseBody);
     }
     public class UpdateCourses : IUpdateCourses
     {
@@ -21,17 +17,19 @@ namespace CodeEditorApi.Features.Courses.UpdateCourses
             _context = context;
         }
 
-        public async Task<Course> ExecuteAsync(Course course)
+        public async Task<Course> ExecuteAsync(int courseId, UpdateCourseBody updateCourseBody)
         {
-            var existingCourse = await _context.Courses.FindAsync(course.Id);
+            var existingCourse = await _context.Courses.FindAsync(courseId);
+
             if(existingCourse != null)
             {
-                existingCourse.Title = course.Title;
-                existingCourse.Description = course.Description;
+                existingCourse.Title = updateCourseBody.Title ?? existingCourse.Title;
+                existingCourse.Description = updateCourseBody.Description ?? existingCourse.Description;
                 existingCourse.ModifyDate = DateTime.Now;
-                existingCourse.IsPublished = course.IsPublished;
             }
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+
+            await _context.SaveChangesAsync();
+
             return existingCourse;
         }
     }

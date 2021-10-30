@@ -1,16 +1,11 @@
 ﻿using CodeEditorApiDataAccess.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Courses.CreateCourses
 {
     public interface ICreateCourses
     {
-        public Task ExecuteAsync(int userId, Course course);
+        public Task<Course> ExecuteAsync(int userId, Course course);
     }
     public class CreateCourses : ICreateCourses
     {
@@ -21,10 +16,11 @@ namespace CodeEditorApi.Features.Courses.CreateCourses
             _context = context;
         }
 
-        public async Task ExecuteAsync(int userId, Course course)
+        public async Task<Course> ExecuteAsync(int userId, Course course)
         {
-            await _context.Courses.AddAsync(course).ConfigureAwait(false);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.Courses.AddAsync(course);
+            await _context.SaveChangesAsync();
+            return course;
         }
     }
 }

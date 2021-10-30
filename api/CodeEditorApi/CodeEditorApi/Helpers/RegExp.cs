@@ -11,5 +11,11 @@
          * Cannot be same as email.
          */
         public const string PasswordExpression = @"^(?!placeholder$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,20}$";
+
+        /**
+        * No *, &, !, @, _, or -
+        * Does not start with a number.
+        */
+        public const string CourseTitleExpression = @"^(?![0-9])[^\*&!@_-]+$";
     }
 }
