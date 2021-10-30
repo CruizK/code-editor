@@ -29,9 +29,9 @@ function LoginForm() {
                     <FormControl id="email" isRequired>
                         <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                     </FormControl>
-                    <FormControl id="password" isRequired pattern={passwordRegEx(email)}>
+                    <FormControl id="password" isRequired>
                         <FormLabel display="flex" alignItems="center">
-                            <Input placeholder="Password" type="password" />
+                            <Input placeholder="Password" type="password" pattern={passwordRegEx(email)} />
                             <FormToolTip lines={passwordTooltipLines}/>
                         </FormLabel>
                     </FormControl>
