@@ -11,8 +11,6 @@ function Main(props) {
     const styles = useMultiStyleConfig("Main", {
         size: size,
     });
-
-    console.log(styles);
     return(
         <main>
             <Box __css={styles.outer}>                
