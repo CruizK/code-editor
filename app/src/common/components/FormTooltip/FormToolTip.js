@@ -5,7 +5,7 @@ import { Tooltip } from "@chakra-ui/tooltip";
 /**
  * Pass hovertext as an array of strings, with the assumption being that each string is rendered on its own line.
  * @param {{lines:string[]}} props 
- * @returns A wrapper for any element that causes it to display hover-text
+ * @returns A form element which displays relevant hovertext
  */
 function FormToolTip(props) {
     // chakra Tooltip's don't handle whitespace="pre" or any similar setting
