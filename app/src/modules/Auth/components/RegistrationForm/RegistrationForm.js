@@ -3,7 +3,8 @@ import { Checkbox } from "@chakra-ui/checkbox";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Center, Grid } from "@chakra-ui/layout";
-import { maxAgeInHours, passwordRegEx, register } from "@Modules/Auth/Auth";
+import FormToolTip from "@Components/FormTooltip/FormToolTip";
+import { maxAgeInHours, passwordRegEx, passwordTooltipLines, register } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { useState } from "react";
 import { useCookies } from "react-cookie";
@@ -37,7 +38,10 @@ function RegistrationForm() {
                         <Input placeholder="Name" />
                     </FormControl>
                     <FormControl id="password" isRequired>
-                        <Input placeholder="Password" type="password" pattern={passwordRegEx(email)} />
+                        <FormLabel display="flex" alignItems="center">
+                            <Input placeholder="Password" type="password" pattern={passwordRegEx(email)} />
+                            <FormToolTip lines={passwordTooltipLines}/>
+                        </FormLabel>
                     </FormControl>
                     <Checkbox id="admin" size="sm">Request admin access</Checkbox>
                     <Button variant="white" type="submit">Sign Up</Button>

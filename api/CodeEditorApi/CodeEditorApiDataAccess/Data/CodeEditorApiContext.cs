@@ -106,10 +106,7 @@ namespace CodeEditorApiDataAccess.Data
 
                 entity.Property(e => e.Description).HasMaxLength(255);
 
-                entity.Property(e => e.ModifyDate)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsFixedLength(true);
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Prompt).HasColumnType("text");
 
