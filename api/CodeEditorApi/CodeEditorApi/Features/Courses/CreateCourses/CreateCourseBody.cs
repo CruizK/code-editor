@@ -7,13 +7,13 @@ namespace CodeEditorApi.Features.Courses.CreateCourses
     {
         [RegularExpression(RegExp.CourseTitleExpression, ErrorMessage = "Title does not meet criteria")]
         [Required]
-        public string Title;
+        public string Title { get; set; }
 
         [Required]
-        public string Description;
+        public string Description { get; set; }
 
         [Required]
-        public bool IsPublished;
+        public bool IsPublished { get; set; }
         
     }
 }

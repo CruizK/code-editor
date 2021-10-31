@@ -15,8 +15,6 @@ namespace CodeEditorApi.Features.Courses
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-
-
     public class CoursesController : ControllerBase
     {
         private readonly IGetCoursesCommand _getCoursesCommand;
