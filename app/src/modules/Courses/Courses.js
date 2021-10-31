@@ -34,13 +34,9 @@ async function createCourse(isPublished, token) {
 
     if (isValid) {
         try {
-            let now = new Date();    
-            let response = await instance.post("/Courses/CreateCourse", {
+            let response = await instance.post("/Courses", {
                 title: form["course_title"].value,
-                author: getID(token), //TODO: Make backend generate this.
                 description: form["description"].value,
-                createDate: now.toISOString(), //TODO: Make backend generate this.
-                modifyDate: now.toISOString(), //TODO: Make backend generate this.
                 isPublished: isPublished,
             }, {
                 headers: {...headers},
@@ -83,8 +79,7 @@ async function updateCourse(isPublished, token) {
 
     if (isValid) {
         try {
-            let response = await instance.put("/Courses/UpdateCourse", {
-                id: form["course_id"].value,
+            let response = await instance.put("/Courses/" + form["course_id"].value, {
                 title: form["course_title"].value,
                 description: form["description"].value,
                 isPublished: isPublished,

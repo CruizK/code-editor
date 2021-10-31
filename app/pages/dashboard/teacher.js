@@ -19,7 +19,7 @@ export async function getServerSideProps(context) {
         headers["Authorization"] = "Bearer " + token;
     }
     
-    let response = await instance.get("/Courses/GetUserCreatedCourses", {
+    let response = await instance.get("/Courses/Created", {
         headers: {...headers},
     });
     
