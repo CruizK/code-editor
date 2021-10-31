@@ -43,7 +43,7 @@ namespace CodeEditorApi.Features.Courses
         /// Get's all courses for a single user
         /// </summary>
         /// <returns></returns>
-        [HttpGet("/")]
+        [HttpGet("")]
         [Authorize]
         public async Task<IEnumerable<Course>> GetUserCourses()
         {
@@ -51,7 +51,7 @@ namespace CodeEditorApi.Features.Courses
             return await _getCoursesCommand.ExecuteAsync(userId);
         }
 
-        [HttpGet("/Created")]
+        [HttpGet("Created")]
         [Authorize]
         public async Task<IEnumerable<Course>> GetUserCreatedCourses()
         {
@@ -65,7 +65,7 @@ namespace CodeEditorApi.Features.Courses
         /// The course details for creating the new course
         /// </param>
         /// <returns></returns>
-        [HttpPost("/")]
+        [HttpPost("")]
         [Authorize]
         public async Task<ActionResult<Course>> CreateCourse([FromBody] CreateCourseBody createCourseBody)
         {
@@ -79,7 +79,7 @@ namespace CodeEditorApi.Features.Courses
         /// <param name="updateCourseBody">updated Course details for the existing course</param>
         /// <param name="courseId"></param>
         /// <returns></returns>
-        [HttpPut("/{courseId:int}")]
+        [HttpPut("{courseId:int}")]
         [Authorize]
         public async Task<ActionResult<Course>> UpdateCourse(int courseId, [FromBody] UpdateCourseBody updateCourseBody)
         {
@@ -94,7 +94,7 @@ namespace CodeEditorApi.Features.Courses
         /// Course for deletion
         /// </param>
         /// <returns></returns>
-        [HttpDelete("/{courseId:int}")]
+        [HttpDelete("{courseId:int}")]
         [Authorize]
         public async Task<ActionResult<Course>> DeleteCourse(int courseId)
         {
