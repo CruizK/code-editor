@@ -43,7 +43,7 @@ namespace CodeEditorApi.Features.Courses
         /// <returns></returns>
         [HttpGet("")]
         [Authorize]
-        public async Task<IEnumerable<Course>> GetUserCourses()
+        public async Task<ActionResult<List<Course>>> GetUserCourses()
         {
             var userId = retrieveRequestUserId();
             return await _getCoursesCommand.ExecuteAsync(userId);
@@ -51,7 +51,7 @@ namespace CodeEditorApi.Features.Courses
 
         [HttpGet("Created")]
         [Authorize]
-        public async Task<IEnumerable<Course>> GetUserCreatedCourses()
+        public async Task<ActionResult<List<Course>>> GetUserCreatedCourses()
         {
             var userId = retrieveRequestUserId();
             return await _getUserCreatedCoursesCommand.ExecuteAsync(userId);

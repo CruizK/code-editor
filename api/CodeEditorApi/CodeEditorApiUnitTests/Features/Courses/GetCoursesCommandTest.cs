@@ -1,49 +1,39 @@
 ﻿using AutoFixture;
 using CodeEditorApi.Features.Courses.GetCourses;
 using CodeEditorApiDataAccess.Data;
+using CodeEditorApiUnitTests.Helpers;
 using FluentAssertions;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace CodeEditorApiUnitTests.Features.Courses
 {
-    public class GetCoursesCommandTest
+    public class GetCoursesCommandTest : UnitTest<GetCoursesCommand>
     {
-
-        private readonly GetCoursesCommand _target;
-        private readonly Fixture _fixture;
-
-        private readonly Mock<IGetCourses> _getCoursesMock;
-
-        public GetCoursesCommandTest()
+        [Fact]
+        public async Task ShouldReturnUserRegisteredCourses()
         {
-            _getCoursesMock = new Mock<IGetCourses>();
+            var user = fixture.Create<User>();
+            var courses = fixture.CreateMany<Course>().ToList();
 
-            //TODO: Should be abstracted into test base class that auto does this with a protected fixture
-            _fixture = new Fixture();
+            var userRegisteredCourses = new List<UserRegisteredCourse>();
 
-            _fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
-            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            foreach(var course in courses)
+            {
+                var userRegisteredCourse = fixture.Build<UserRegisteredCourse>().With(urc => urc.UserId, user.Id).With(urc => urc.CourseId, course.Id).Create();
+                userRegisteredCourses.Add(userRegisteredCourse);
+            }   
+            
+            Freeze<IGetCourses>().Setup(gc => gc.GetUserCourses(user.Id)).ReturnsAsync(courses);
 
-            _target = new GetCoursesCommand(_getCoursesMock.Object);
+            var actionResult = await Target().ExecuteAsync(user.Id);
 
-        }
+            actionResult.Value.Should().BeEquivalentTo(courses);
 
-        [Theory]
-        [InlineData(1)]
-        public async Task ShouldReturnUserCourses(int userId)
-        {
-            // Assemble            
-            var expected = _fixture.CreateMany<Course>();
 
-            _getCoursesMock.Setup(x => x.GetUserCourses(userId))
-                .ReturnsAsync(expected);
-
-            // Act
-            var result = await _target.ExecuteAsync(userId);
-
-            result.Should().BeEquivalentTo(expected);
         }
     }
 }

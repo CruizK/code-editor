@@ -1,11 +1,12 @@
 ﻿using CodeEditorApiDataAccess.Data;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Courses.CreateCourses
 {
     public interface ICreateCourses
     {
-        public Task<Course> ExecuteAsync(int userId, Course course);
+        public Task<ActionResult<Course>> ExecuteAsync(Course course);
     }
     public class CreateCourses : ICreateCourses
     {
@@ -16,7 +17,7 @@ namespace CodeEditorApi.Features.Courses.CreateCourses
             _context = context;
         }
 
-        public async Task<Course> ExecuteAsync(int userId, Course course)
+        public async Task<ActionResult<Course>> ExecuteAsync(Course course)
         {
             await _context.Courses.AddAsync(course);
             await _context.SaveChangesAsync();

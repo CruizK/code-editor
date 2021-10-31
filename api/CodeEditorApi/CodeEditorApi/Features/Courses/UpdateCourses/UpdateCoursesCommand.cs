@@ -28,7 +28,7 @@ namespace CodeEditorApi.Features.Courses.UpdateCourses
         {
             var createdCourses = await _getCourses.GetUserCreatedCourses(userId);
 
-            if (!createdCourses.Select(x => x.Id).Contains(courseId))
+            if (!createdCourses.Value.Select(x => x.Id).Contains(courseId))
             {
                 return ApiError.BadRequest("Only the author of a course may edit it");
             }

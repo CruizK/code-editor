@@ -29,7 +29,7 @@ namespace CodeEditorApi.Features.Courses.CreateCourses
                 IsPublished = createCourseBody.IsPublished
             };
 
-            var createdCourse = await _createCourses.ExecuteAsync(userId, course);
+            var createdCourse = await _createCourses.ExecuteAsync(course);
 
             return createdCourse;
         }
