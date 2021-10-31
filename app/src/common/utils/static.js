@@ -4,18 +4,45 @@
  */
 
 const difficultylevels = [
-    'Easy',
-    'Medium',
-    'Hard',
+    {
+        value: 'Easy',
+        dbIndex: 1,
+    },
+    {
+        value: 'Medium',
+        dbIndex: 2,
+    },
+    {
+        value: 'Hard',
+        dbIndex: 3,
+    },
 ];
 
 const programmingLanguages = [
-    'CSS', 
-    'CSharp', 
-    'HTML',
-    'Java',
-    'Javascript',
-    'Python',
+    {
+        value: 'CSS',
+        dbIndex: 1,
+    }, 
+    {
+        value: 'CSharp',
+        dbIndex: 2,
+    }, 
+    {
+        value: 'HTML',
+        dbIndex: 3,
+    },
+    {
+        value: 'Java',
+        dbIndex: 4,
+    },
+    {
+        value: 'Javascript',
+        dbIndex: 5,
+    },
+    {
+        value: 'Python',
+        dbIndex: 6,
+    },
 ];
 
 export { difficultylevels, programmingLanguages };
