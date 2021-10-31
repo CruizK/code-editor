@@ -1,44 +1,44 @@
 ﻿using AutoFixture;
+using CodeEditorApi.Errors;
 using CodeEditorApi.Features.Tutorials.GetTutorials;
 using CodeEditorApiDataAccess.Data;
+using CodeEditorApiUnitTests.Helpers;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace CodeEditorApiUnitTests.Features.Tutorials
 {
-    public class GetTutorialsCommandTest
+    public class GetTutorialsCommandTest : UnitTest<GetTutorialsCommand>
     {
-        private readonly IGetTutorialsCommand _target;
-        private readonly Fixture _fixture;
-
-        private readonly Mock<IGetTutorials> _getTutorialsMock;
-
-        public GetTutorialsCommandTest()
+        [Fact]
+        public async Task ShouldReturnBadRequestIfTutorialDoesNotExist()
         {
-            _getTutorialsMock = new Mock<IGetTutorials>();
+            int tutorialId = int.MaxValue;
+            var expected = new BadRequestError($"Cannot retrieve Tutorial with id {tutorialId}");
 
-            _fixture = new Fixture();
+            Freeze<IGetTutorials>()
+                .Setup(g => g.GetUserTutorials(tutorialId))
+                .ReturnsAsync((Tutorial)null);
 
-            _fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
-            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            var actionResult = await Target().ExecuteAsync(tutorialId);
 
-            _target = new GetTutorialsCommand(_getTutorialsMock.Object);
+            var result = actionResult.Result as BadRequestObjectResult;
+            result.Should().NotBeNull();
+            result.Value.Should().BeEquivalentTo(expected);
         }
-
         [Fact]
         public async Task ShouldReturnTutorial()
         {
-            var tutorial = _fixture.Create<Tutorial>();
+            var tutorial = fixture.Create<Tutorial>();
 
-            var actionResult = await _target.ExecuteAsync(tutorial.Id);
+            Freeze<IGetTutorials>().Setup(g => g.GetUserTutorials(tutorial.Id)).ReturnsAsync(tutorial);
 
-            actionResult.Should().BeEquivalentTo(tutorial);
+            var actionResult = await Target().ExecuteAsync(tutorial.Id);
+
+            actionResult.Value.Should().Be(tutorial);
         }
     }
 }

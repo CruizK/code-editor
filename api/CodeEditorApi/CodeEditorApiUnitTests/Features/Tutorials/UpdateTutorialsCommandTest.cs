@@ -2,47 +2,30 @@
 using CodeEditorApi.Features.Tutorials.CreateTutorials;
 using CodeEditorApi.Features.Tutorials.UpdateTutorials;
 using CodeEditorApiDataAccess.Data;
+using CodeEditorApiUnitTests.Helpers;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace CodeEditorApiUnitTests.Features.Tutorials
 {
-    public class UpdateTutorialsCommandTest
+    public class UpdateTutorialsCommandTest : UnitTest<UpdateTutorialsCommand>
     {
-        private readonly IUpdateTutorialsCommand _target;
-        private readonly Fixture _fixture;
-
-        private readonly Mock<IUpdateTutorials> _updateTutorialsMock;
-
-        public UpdateTutorialsCommandTest()
-        {
-            _updateTutorialsMock = new Mock<IUpdateTutorials>();
-
-            _fixture = new Fixture();
-
-            _fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
-            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-
-            _target = new UpdateTutorialsCommand(_updateTutorialsMock.Object);
-        }
-
         [Fact]
         public async Task ShouldReturnTutorial()
         {
-            var body = _fixture.Create<CreateTutorialsBody>();
-            var user = _fixture.Create<User>();
-            var tutorial = _fixture.Create<Tutorial>();
+            var user = fixture.Create<User>();
+            var tutorial = fixture.Build<Tutorial>()
+                .With(t => t.Author, user.Id)
+                .Create();
+            var body = fixture.Build<CreateTutorialsBody>().With(b => b.Author, tutorial.Author).Create();
 
-            var actionResult = await _target.ExecuteAsync(user.Id, body);
+            Freeze<IUpdateTutorials>().Setup(u => u.ExecuteAsync(tutorial.Id, body)).ReturnsAsync(tutorial);
 
-            actionResult.Should().BeEquivalentTo(tutorial);
+            var actionResult = await Target().ExecuteAsync(tutorial.Id, body);
+
+            actionResult.Value.Should().Be(tutorial);
         }
     }
 }
