@@ -28,7 +28,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 
         public async Task<ActionResult<Tutorial>> GetUserTutorials(int tutorialId)
         {
-            var tutorial = await _context.Tutorials.FindAsync(tutorialId);            
+            var tutorial = await _context.Tutorials.Where(t => t.Id == tutorialId).Select(t => t).FirstOrDefaultAsync();
             
             return tutorial;
         }

@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using CodeEditorApi.Errors;
+using CodeEditorApi.Features.Tutorials.CreateTutorials;
 using CodeEditorApi.Features.Tutorials.GetTutorials;
 using CodeEditorApiDataAccess.Data;
 using CodeEditorApiUnitTests.Helpers;
@@ -34,11 +35,13 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
         {
             var tutorial = fixture.Create<Tutorial>();
 
-            Freeze<IGetTutorials>().Setup(g => g.GetUserTutorials(tutorial.Id)).ReturnsAsync(tutorial);
+           Freeze<IGetTutorials>().Setup(g => g.GetUserTutorials(tutorial.Id)).ReturnsAsync(tutorial);
 
             var actionResult = await Target().ExecuteAsync(tutorial.Id);
 
+            actionResult.Value.Should().NotBeNull();
             actionResult.Value.Should().Be(tutorial);
+
         }
     }
 }

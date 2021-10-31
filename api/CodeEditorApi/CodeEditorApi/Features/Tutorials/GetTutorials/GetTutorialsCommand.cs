@@ -23,7 +23,10 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         public async Task<ActionResult<Tutorial>> ExecuteAsync(int tutorialId)
         {
             var tutorial = await _getTutorials.GetUserTutorials(tutorialId);
-            if (tutorial.Result == null) return ApiError.BadRequest($"Cannot retrieve Tutorial with id {tutorialId}");
+            if (tutorial.Value == null)
+            {
+                return ApiError.BadRequest($"Cannot retrieve Tutorial with id {tutorialId}");
+            }
             return tutorial;
         }
     }
