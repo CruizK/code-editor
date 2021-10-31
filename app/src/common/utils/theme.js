@@ -5,6 +5,7 @@ import HeadingStyle from "@Common/styles/Heading.style";
 import InputStyle from "@Common/styles/Input.style";
 import MainStyle from "@Common/styles/Main.style";
 import MenuStyle from "@Common/styles/Menu.style";
+import SelectStyle from "@Common/styles/Select.style";
 import TagStyle from "@Common/styles/Tag.style";
 import TextareaStyle from "@Common/styles/Textarea.style";
 
@@ -89,6 +90,7 @@ const components = {
   Menu: MenuStyle,
   Textarea: TextareaStyle,
   Main: MainStyle,
+  Select: SelectStyle,
 }
 
 const theme = extendTheme({ colors, config, fonts, fontSizes, styles, components })
