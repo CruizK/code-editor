@@ -10,8 +10,41 @@ import { loggedIn } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { getRole } from "@Utils/jwt";
 import TutorialForm from "@Modules/Tutorials/components/TutorialForm/TutorialForm";
+import instance from "@Utils/instance";
 
-function NewTutorial() {
+export async function getServerSideProps(context) {
+  var data = [];
+
+  const cookies = context.req.cookies;
+  const isLoggedIn = loggedIn(cookies.user);
+  const headers = {};
+
+  if (isLoggedIn) {
+    let token = cookies.user;
+    headers["Authorization"] = "Bearer " + token;
+  }
+  
+  let response = await instance.get("/Courses/Created", {
+    headers: {...headers},
+  });
+  
+  if (response.statusText == "OK")
+  data = response.data.map((courseData) => {
+    // we only need the titles for each course
+    return {
+      id: courseData.id,
+      title: courseData.title + ' (' + courseData.id + ')',
+    };
+  });
+
+  return {
+    props: {
+      courses: data,
+    }, // will be passed to the page component as props
+  }
+}
+
+function NewTutorial(props) {
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const isLoggedIn = loggedIn(cookies.user);
   const token = cookies.user;
@@ -40,7 +73,7 @@ function NewTutorial() {
             Publish
           </Button>
           </SectionHeader>
-          <TutorialForm />
+          <TutorialForm courses={props.courses} />
         </Grid>
       </Main>
   );

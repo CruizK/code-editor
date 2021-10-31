@@ -3,6 +3,7 @@ import { Input } from "@chakra-ui/input";
 import { Flex, Grid } from "@chakra-ui/layout";
 import { Select } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
+import { difficultylevels, programmingLanguages } from "@Utils/static";
 
 /**
  * Handles displaying form UI
@@ -17,23 +18,10 @@ function TutorialForm(props) {
         dD = v["description"];
     }
 
-    const courseOptions = [
-        'Option 1', 
-        'Option 2', 
-        'Option 3',
-    ]; //TODO: Replace with api call
+    const courseOptions = props.courses || [];
 
-    const languageOptions = [
-        'Python', 
-        'Java', 
-        'Lisp',
-    ]; //TODO: Replace with api call
-
-    const difficultyOptions = [
-        'Easy',
-        'Medium',
-        'Hard',
-    ]; //TODO: Replace with api call
+    const difficultyOptions = difficultylevels;
+    const languageOptions = programmingLanguages;
 
     return(
         <Flex alignItems="end" flexDir="column">
@@ -44,8 +32,12 @@ function TutorialForm(props) {
                     }
                     <FormLabel display="flex" alignItems="center">Course
                         <Select ml={15}>
-                            {courseOptions.map((courseTitle, index) => {
-                                return <option id={index} value={courseTitle}>{courseTitle}</option>
+                            {courseOptions.map((option, index) => {
+                                const {title, id} = option;
+                                console.log(title, id, option);
+                                return(
+                                    <option id={index} value={id}>{title}</option>
+                                );
                             })}
                         </Select>
                     </FormLabel>
@@ -62,14 +54,14 @@ function TutorialForm(props) {
                     <FormLabel display="flex" alignItems="center">Language
                         <Select ml={15}>
                             {languageOptions.map((languageTitle, index) => {
-                                return <option id={index} value={languageTitle}>{languageTitle}</option>
+                                return <option id={index} value={index}>{languageTitle}</option>
                             })}
                         </Select>
                     </FormLabel>
                     <FormLabel display="flex" alignItems="center">Difficulty
                         <Select ml={15}>
                             {difficultyOptions.map((difficultyTitle, index) => {
-                                return <option id={index} value={difficultyTitle}>{difficultyTitle}</option>
+                                return <option id={index} value={index}>{difficultyTitle}</option>
                             })}
                         </Select>
                     </FormLabel>
