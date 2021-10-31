@@ -31,7 +31,7 @@ function TutorialForm(props) {
                     <Input id="tutorial_id" type="hidden" defaultValue={dID} /> 
                     }
                     <FormLabel display="flex" alignItems="center">Course
-                        <Select ml={15}>
+                        <Select id="course_id" ml={15}>
                             {courseOptions.map((option, index) => {
                                 const {title, id} = option;
                                 console.log(title, id, option);
@@ -52,16 +52,18 @@ function TutorialForm(props) {
                         </FormLabel>
                     </FormControl>
                     <FormLabel display="flex" alignItems="center">Language
-                        <Select ml={15}>
-                            {languageOptions.map((languageTitle, index) => {
-                                return <option id={index} value={index}>{languageTitle}</option>
+                        <Select id="language" ml={15}>
+                            {languageOptions.map((option, index) => {
+                                const {dbIndex, value} = option;
+                                return <option id={index} value={dbIndex}>{value}</option>
                             })}
                         </Select>
                     </FormLabel>
                     <FormLabel display="flex" alignItems="center">Difficulty
-                        <Select ml={15}>
-                            {difficultyOptions.map((difficultyTitle, index) => {
-                                return <option id={index} value={index}>{difficultyTitle}</option>
+                        <Select id="difficulty" ml={15}>
+                            {difficultyOptions.map((option, index) => {
+                                const {dbIndex, value} = option;
+                                return <option id={index} value={dbIndex}>{value}</option>
                             })}
                         </Select>
                     </FormLabel>
