@@ -10,6 +10,14 @@ function courseRegEx() {
 }
 
 /**
+ * For use in FormTooltip
+ */
+ const courseTitleTooltipLines = [
+    'No *, &, !, @, _, or -',
+    'Does not start with a number.',
+];
+
+/**
  * A function that sends form data to the server for course creation.
  * Validation is done through attributes on the form's html
  * @param {boolean} isPublished 
@@ -131,4 +139,4 @@ async function deleteCourse(id, token) {
     return false;
 }
 
-export { createCourse, updateCourse, deleteCourse, courseRegEx }
+export { createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines }
