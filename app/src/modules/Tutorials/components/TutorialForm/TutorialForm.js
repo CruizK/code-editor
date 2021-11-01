@@ -10,12 +10,15 @@ import { difficultylevels, programmingLanguages } from "@Utils/static";
  * Formdata is sent through the tutorials route, using document.getElementById to grab the form DOM object
  */
 function TutorialForm(props) {
-    let dT, dD, dID;
+    let dCID, dT, dD, dID, dDiff, dLan;
     if (props.defaultValues) {
         let v = props.defaultValues;
+        dCID = v["courseId"],
         dID = v["id"];
         dT = v["title"];
-        dD = v["description"];
+        dD = v["description"]
+        dDiff = v["difficultyId"],
+        dLan = v["languageId"];
     }
 
     const courseOptions = props.courses || [];
@@ -31,7 +34,7 @@ function TutorialForm(props) {
                     <Input id="tutorial_id" type="hidden" defaultValue={dID} /> 
                     }
                     <FormLabel display="flex" alignItems="center">Course
-                        <Select id="course_id" ml={15}>
+                        <Select id="course_id" ml={15} defaultValue={dCID}>
                             {courseOptions.map((option, index) => {
                                 const {title, id} = option;
                                 console.log(title, id, option);
@@ -52,7 +55,7 @@ function TutorialForm(props) {
                         </FormLabel>
                     </FormControl>
                     <FormLabel display="flex" alignItems="center">Language
-                        <Select id="language" ml={15}>
+                        <Select id="language" ml={15} defaultValue={dLan}>
                             {languageOptions.map((option, index) => {
                                 const {dbIndex, value} = option;
                                 return <option id={index} value={dbIndex}>{value}</option>
@@ -60,7 +63,7 @@ function TutorialForm(props) {
                         </Select>
                     </FormLabel>
                     <FormLabel display="flex" alignItems="center">Difficulty
-                        <Select id="difficulty" ml={15}>
+                        <Select id="difficulty" ml={15} defaultValue={dDiff}>
                             {difficultyOptions.map((option, index) => {
                                 const {dbIndex, value} = option;
                                 return <option id={index} value={dbIndex}>{value}</option>

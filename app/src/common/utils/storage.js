@@ -51,4 +51,21 @@ const useCourseSession = () => {
     return value;
 }
 
-export { useCourseSession, storeThenRouteCourse, storeThenRouteTutorial };
+/**
+ * 
+ * @returns The course a user is currently editing. If a user switches tabs, this will be empty. 
+ */
+ const useTutorialSession = () => {
+    const [value, setValue] = useState({})
+
+    useEffect(function() {
+        let tempValue = sessionStorage.getItem('tutorialDefaults');
+        if (tempValue) {
+            setValue(JSON.parse(tempValue));
+        }
+    }, [])
+
+    return value;
+}
+
+export { useCourseSession, useTutorialSession, storeThenRouteCourse, storeThenRouteTutorial };
