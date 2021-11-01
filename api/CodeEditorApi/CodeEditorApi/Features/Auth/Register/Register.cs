@@ -26,7 +26,7 @@ namespace CodeEditorApi.Features.Auth.Register
                 Email = registerData.Email,
                 Name = registerData.Name,
                 Hash = registerData.Password,
-                RoleId = (int)Roles.Student
+                RoleId = (int)Roles.Teacher
             };
 
             await _context.Users.AddAsync(user);
