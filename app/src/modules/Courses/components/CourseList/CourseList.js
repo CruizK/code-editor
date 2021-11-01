@@ -25,6 +25,8 @@ function CourseItem(props) {
 
     return(
         <AccordionItem>
+            {({ isExpanded }) => (
+            <>
             <Heading as="h2">
                 <AccordionButton>
                     <Box flex="1" textAlign="left" fontSize="md">
@@ -38,8 +40,10 @@ function CourseItem(props) {
                 </AccordionButton>
             </Heading>
             <AccordionPanel pb={4}>
-                <TutorialList tutorials={props.tutorials}/>
+                <TutorialList courseId={id} getTutorials={isExpanded} />
             </AccordionPanel>
+            </>
+            )}
         </AccordionItem>
     )
 }
@@ -61,7 +65,7 @@ function CourseList(props) {
                         title: courseData.title,
                         description: courseData.description,
                     }
-                    return <CourseItem key={index} {...courseDefaults} tutorials={courseData.tutorials} />;
+                    return <CourseItem key={index} {...courseDefaults} />;
                 })}
             </Accordion>
         </Box>

@@ -1,6 +1,10 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Box, Flex, Grid, GridItem, HStack, Divider, Center } from "@chakra-ui/layout";
 import { Tag, TagLabel } from "@chakra-ui/tag";
+import instance from "@Utils/instance";
+import { useCookies } from "react-cookie";
+import { loggedIn } from "@Modules/Auth/Auth";
+import { useEffect, useState } from "react";
 
 function TutorialItem(props) {
     const tags = [];
@@ -52,8 +56,30 @@ function TutorialItem(props) {
  * Handles displaying an accordion list of courses.
  */
 function TutorialList(props) {
+    const [tutorials, setTutorials] = useState([]);
+    const { courseId, getTutorials } = props;
+    const headers = {};
 
-    const { tutorials } = props;
+    const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+    const isLoggedIn = loggedIn(cookies.user);
+    const token = cookies.user;
+
+    if (isLoggedIn) {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    useEffect(async function() {
+        try {       
+            let response = await instance.get("/Tutorials/GetCourseTutorials/" + courseId, {
+                headers: {...headers},
+            });
+            if (response.statusText == "OK")
+            setTutorials(response.data);
+        } catch (error) {
+            //TODO: Error handling.
+            //console.log(error.response);
+        }
+    }, [getTutorials]);
 
     return(
         <>
