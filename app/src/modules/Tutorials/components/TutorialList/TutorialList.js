@@ -5,8 +5,12 @@ import instance from "@Utils/instance";
 import { useCookies } from "react-cookie";
 import { loggedIn } from "@Modules/Auth/Auth";
 import { useEffect, useState } from "react";
+import { storeThenRouteTutorial } from "@Utils/storage";
+import { deleteTutorial } from "@Modules/Tutorials/Tutorials";
+import Router from "next/router";
 
 function TutorialItem(props) {
+    const { id, token } = props;
     const tags = [];
     if (props.Difficulty) {
         tags.push({
@@ -19,6 +23,13 @@ function TutorialItem(props) {
             name: props.Language,
             type: 'languages',
         });
+    }
+
+    async function handleDeletion(id, token) {
+        let success = await deleteTutorial(id, token);
+        if (success) {
+            Router.reload();
+        }
     }
 
     return(
@@ -39,8 +50,8 @@ function TutorialItem(props) {
             </GridItem>
             <GridItem colStart={6}>
                 <HStack spacing={3}>                        
-                    <EditIcon color="ce_mainmaroon" />
-                    <DeleteIcon />
+                    <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteTutorial(id, title, description)} />
+                    <DeleteIcon onClick={() => handleDeletion(id, token)} />
                 </HStack>
             </GridItem>
             <GridItem colSpan={6}>
@@ -84,7 +95,7 @@ function TutorialList(props) {
     return(
         <>
             {tutorials.map((tutorialData, index) => {
-                return <TutorialItem key={index} {...tutorialData} />
+                return <TutorialItem key={index} {...tutorialData} token={token} />
             })}            
         </>
     )

@@ -52,4 +52,35 @@ async function createTutorial(isPublished, token) {
     return false;
 }
 
-export { createTutorial }
+/**
+ * A function that deletes a tutorial.
+ * @param {integer} id 
+ * @param {string} token JWT token.
+ * @returns {boolean} Whether or not the deletion succeeded.
+ */
+ async function deleteTutorial(id, token) {
+    let isValid = true;
+
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    if (isValid) {
+        try { 
+            let response = await instance.delete("/Tutorials/DeleteTutorials/" + id, {
+                headers: {...headers},
+            });
+
+            if (response.statusText == "OK")
+            return true;
+        } catch (error) {
+            
+        }
+    }
+
+    return false;
+}
+
+export { createTutorial, deleteTutorial }
