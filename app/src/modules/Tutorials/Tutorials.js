@@ -26,8 +26,6 @@ async function createTutorial(isPublished, token) {
         isValid = (form[key].validity.valid) ? isValid : false;
     });
 
-    console.log(isValid);
-
     if (isValid) {
         try {
             let response = await instance.post("/Tutorials/CreateTutorials", {

@@ -37,7 +37,6 @@ function TutorialForm(props) {
                         <Select id="course_id" ml={15} defaultValue={dCID}>
                             {courseOptions.map((option, index) => {
                                 const {title, id} = option;
-                                console.log(title, id, option);
                                 return(
                                     <option id={index} value={id}>{title}</option>
                                 );
