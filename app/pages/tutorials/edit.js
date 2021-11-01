@@ -11,7 +11,7 @@ import Router from 'next/router';
 import { getRole } from "@Utils/jwt";
 import TutorialForm from "@Modules/Tutorials/components/TutorialForm/TutorialForm";
 import instance from "@Utils/instance";
-import { createTutorial } from "@Modules/Tutorials/Tutorials";
+import { createTutorial, updateTutorial } from "@Modules/Tutorials/Tutorials";
 import { useTutorialSession } from "@Utils/storage";
 
 export async function getServerSideProps(context) {
@@ -54,7 +54,7 @@ function EditTutorial(props) {
   const defaultValues = useTutorialSession();
 
   async function handleSubmit(isPublished, token) {
-    let success = await createTutorial(isPublished, token);
+    let success = await updateTutorial(isPublished, token);
     if (success) {
       const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
       let redirect = '/dashboard/' + ((userRole == "Student") ? '' : (userRole.toLowerCase())); 
