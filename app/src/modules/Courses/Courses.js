@@ -122,10 +122,7 @@ async function deleteCourse(id, token) {
 
     if (isValid) {
         try { 
-            let response = await instance.delete("/Courses/DeleteCourse", {
-                data: {
-                    id: id
-                },
+            let response = await instance.delete("/Courses/" + id, {
                 headers: {...headers},
             });
 
