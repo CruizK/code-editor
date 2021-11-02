@@ -8,6 +8,7 @@ import { deleteCourse } from "@Modules/Courses/Courses";
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
 import { storeThenRouteCourse } from "@Utils/storage";
 import { useCookies } from "react-cookie";
+import Barrier from "@Components/Barrier/Barrier";
 
 function CourseItem(props) {
     const { id, title, description } = props;
@@ -34,7 +35,12 @@ function CourseItem(props) {
                     </Box>
                     <HStack spacing={3}>                        
                         <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteCourse(id, title, description)} />
-                        <DeleteIcon onClick={() => handleDeletion(id, token)} />
+                        <Barrier 
+                            buttonText={<DeleteIcon />}
+                            title="Confirmation"
+                            text="Are you sure you want to delete this course and its associated tutorials?"
+                            callback={() => handleDeletion(id, token)}
+                        />
                         <AccordionIcon />
                     </HStack>
                 </AccordionButton>
