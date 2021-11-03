@@ -39,21 +39,21 @@ namespace CodeEditorApi.Features.Tutorials
         /// <summary>
         /// Gets a tutorial created by a User by Tutorial Id
         /// </summary>
-        [HttpGet("GetUserTutorials/{TutorialId:int}")]
+        [HttpGet("GetUserTutorials/{tutorialId:int}")]
         [Authorize]
         public async Task<ActionResult<Tutorial>> GetUserTutorials(int tutorialId)
         {
             return await _getTutorialsCommand.ExecuteAsync(tutorialId);
         }
 
-        [HttpGet("GetUserCreatedTutorials/{UserId:int}")]
+        [HttpGet("GetUserCreatedTutorials/{userId:int}")]
         [Authorize]
         public async Task<ActionResult<List<Tutorial>>> GetUserCreatedTutorials(int userId)
         {
             return await _getUserCreatedTutorialsCommand.ExecuteAsync(userId);
         }
 
-        [HttpGet("GetCourseTutorials/{CourseId:int}")]
+        [HttpGet("GetCourseTutorials/{courseId:int}")]
         [Authorize]
         public async Task<ActionResult<List<Tutorial>>> GetCourseTutorials(int courseId)
         {
@@ -67,14 +67,14 @@ namespace CodeEditorApi.Features.Tutorials
             return await _createTutorialsCommand.ExecuteAsync(createTutorialsBody);
         }
 
-        [HttpDelete("DeleteTutorials/{TutorialId:int}")]
+        [HttpDelete("DeleteTutorials/{tutorialId:int}")]
         [Authorize]
         public async Task<ActionResult<Tutorial>> DeleteTutorials(int tutorialId)
         {
             return await _deleteTutorialsCommand.ExecuteAsync(tutorialId);
         }
 
-        [HttpPut("UpdateTutorials/{TutorialId:int}")]
+        [HttpPut("UpdateTutorials/{tutorialId:int}")]
         [Authorize]
         public async Task<ActionResult<Tutorial>> UpdateTutorials(int tutorialId, [FromBody] CreateTutorialsBody createTutorialsBody)
         {
