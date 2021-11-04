@@ -16,6 +16,8 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         public Task<ActionResult<List<Tutorial>>> GetUserCreatedTutorials(int userId);
 
         public Task<ActionResult<List<Tutorial>>> GetCourseTutorials(int courseId);
+
+        public Task<ActionResult<Tutorial>> GetUserLastInProgressTutorial(int userId, int courseId);
     }
     public class GetTutorials : IGetTutorials
     {
