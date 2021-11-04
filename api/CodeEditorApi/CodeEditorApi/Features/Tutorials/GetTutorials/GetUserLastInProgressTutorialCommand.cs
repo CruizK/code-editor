@@ -9,7 +9,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 {
     public interface IGetUserLastInProgressTutorialCommand
     {
-        public Task<ActionResult<Tutorial>> GetUserLastInProgressTutorial(int userId, int courseId)
+        public Task<ActionResult<Tutorial>> GetUserLastInProgressTutorial(int userId, int courseId);
     }
     public class GetUserLastInProgressTutorialCommand : IGetUserLastInProgressTutorialCommand
     {
