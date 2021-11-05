@@ -24,9 +24,11 @@ namespace CodeEditorApi.Features.Tutorials
         private readonly IUpdateTutorialsCommand _updateTutorialsCommand;
         private readonly IGetUserCreatedTutorialsCommand _getUserCreatedTutorialsCommand;
         private readonly IGetCourseTutorialsCommand _getCourseTutorialsCommand;
+        private readonly IGetUserLastInProgressTutorialCommand _getUserLastInProgressTutorialCommand;
         public TutorialsController(IGetTutorialsCommand getTutorialsCommand, ICreateTutorialsCommand createTutorialsCommand,
             IDeleteTutorialsCommand deleteTutorialsCommand, IUpdateTutorialsCommand updateTutorialsCommand,
-            IGetUserCreatedTutorialsCommand getUserCreatedTutorialsCommand, IGetCourseTutorialsCommand getCourseTutorialsCommand)
+            IGetUserCreatedTutorialsCommand getUserCreatedTutorialsCommand, IGetCourseTutorialsCommand getCourseTutorialsCommand,
+            IGetUserLastInProgressTutorialCommand getUserLastInProgressTutorialCommand)
         {
             _getTutorialsCommand = getTutorialsCommand;
             _createTutorialsCommand = createTutorialsCommand;
@@ -34,47 +36,90 @@ namespace CodeEditorApi.Features.Tutorials
             _updateTutorialsCommand = updateTutorialsCommand;
             _getUserCreatedTutorialsCommand = getUserCreatedTutorialsCommand;
             _getCourseTutorialsCommand = getCourseTutorialsCommand;
+            _getUserLastInProgressTutorialCommand = getUserLastInProgressTutorialCommand;
         }
 
         /// <summary>
-        /// Gets a tutorial created by a User by Tutorial Id
+        /// Get a Tutorial's details based on the User who created it
         /// </summary>
-        [HttpGet("GetUserTutorials/{tutorialId:int}")]
+        /// <param name="tutorialId"></param>
+        /// <returns></returns>
+        [HttpGet("UserTutorialDetails/{tutorialId:int}")]
         [Authorize]
-        public async Task<ActionResult<Tutorial>> GetUserTutorials(int tutorialId)
+        public async Task<ActionResult<Tutorial>> GetUserTutorialDetails(int tutorialId)
         {
             return await _getTutorialsCommand.ExecuteAsync(tutorialId);
         }
 
-        [HttpGet("GetUserCreatedTutorials/{userId:int}")]
+        /// <summary>
+        /// Get all tutorials that a User created
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet("UserCreatedTutorials/{userId:int}")]
         [Authorize]
         public async Task<ActionResult<List<Tutorial>>> GetUserCreatedTutorials(int userId)
         {
             return await _getUserCreatedTutorialsCommand.ExecuteAsync(userId);
         }
 
-        [HttpGet("GetCourseTutorials/{courseId:int}")]
+        /// <summary>
+        /// Get all tutorials under a Course
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
+        [HttpGet("CourseTutorials/{courseId:int}")]
         [Authorize]
         public async Task<ActionResult<List<Tutorial>>> GetCourseTutorials(int courseId)
         {
             return await _getCourseTutorialsCommand.ExecuteAsync(courseId);
         }
 
-        [HttpPost("CreateTutorials")]
+        /// <summary>
+        /// get the Tutorial a User was last working on (in progress) for a Course view
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
+        [HttpGet("GetUserLastInProgressTutorial/{courseId:int}")]
+        [Authorize]
+        public async Task<ActionResult<Tutorial>> GetUserLastInProgressTutorial(int courseId)
+        {
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
+            return await _getUserLastInProgressTutorialCommand.ExecuteAsync(userId, courseId);
+            
+        }
+
+        /// <summary>
+        /// Create a Tutorial
+        /// </summary>
+        /// <param name="createTutorialsBody"></param>
+        /// <returns></returns>
+        [HttpPost("")]
         [Authorize]
         public async Task<ActionResult<Tutorial>> CreateTutorial([FromBody] CreateTutorialsBody createTutorialsBody)
         {
             return await _createTutorialsCommand.ExecuteAsync(createTutorialsBody);
         }
 
-        [HttpDelete("DeleteTutorials/{tutorialId:int}")]
+        /// <summary>
+        /// Delete A Tutorial based on its ID
+        /// </summary>
+        /// <param name="tutorialId"></param>
+        /// <returns></returns>
+        [HttpDelete("{tutorialId:int}")]
         [Authorize]
         public async Task<ActionResult<Tutorial>> DeleteTutorials(int tutorialId)
         {
             return await _deleteTutorialsCommand.ExecuteAsync(tutorialId);
         }
 
-        [HttpPut("UpdateTutorials/{tutorialId:int}")]
+        /// <summary>
+        /// Update a Tutorial based on its ID
+        /// </summary>
+        /// <param name="tutorialId"></param>
+        /// <param name="createTutorialsBody"></param>
+        /// <returns></returns>
+        [HttpPut("{tutorialId:int}")]
         [Authorize]
         public async Task<ActionResult<Tutorial>> UpdateTutorials(int tutorialId, [FromBody] CreateTutorialsBody createTutorialsBody)
         {

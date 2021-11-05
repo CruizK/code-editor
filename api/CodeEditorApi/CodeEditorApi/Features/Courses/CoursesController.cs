@@ -45,7 +45,7 @@ namespace CodeEditorApi.Features.Courses
         [Authorize]
         public async Task<ActionResult<List<Course>>> GetUserCourses()
         {
-            var userId = retrieveRequestUserId();
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _getCoursesCommand.ExecuteAsync(userId);
         }
 
@@ -53,7 +53,7 @@ namespace CodeEditorApi.Features.Courses
         [Authorize]
         public async Task<ActionResult<List<Course>>> GetUserCreatedCourses()
         {
-            var userId = retrieveRequestUserId();
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _getUserCreatedCoursesCommand.ExecuteAsync(userId);
         }
         /// <summary>
@@ -67,7 +67,7 @@ namespace CodeEditorApi.Features.Courses
         [Authorize]
         public async Task<ActionResult<Course>> CreateCourse([FromBody] CreateCourseBody createCourseBody)
         {
-            var userId = retrieveRequestUserId();
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _createCoursesCommand.ExecuteAsync(userId, createCourseBody);
         }
 
@@ -81,7 +81,7 @@ namespace CodeEditorApi.Features.Courses
         [Authorize]
         public async Task<ActionResult<Course>> UpdateCourse(int courseId, [FromBody] UpdateCourseBody updateCourseBody)
         {
-            var userId = retrieveRequestUserId();
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _updateCoursesCommand.ExecuteAsync(courseId, userId, updateCourseBody);
         }
 
@@ -96,22 +96,10 @@ namespace CodeEditorApi.Features.Courses
         [Authorize]
         public async Task<ActionResult<Course>> DeleteCourse(int courseId)
         {
-            var userId = retrieveRequestUserId();
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _deleteCoursesCommand.ExecuteAsync(userId, courseId);
         }
 
-        private int retrieveRequestUserId()
-        {
-            var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub).Value;
-            try
-            {
-                return int.Parse(userId);
-            }
-            catch
-            {
-                throw new System.Exception($"User ID {userId} is invalid");
-                //TODO: catch internal error of invalid userId...this should turn into a validation on it's own though. Then call validation in this method.
-            }
-        }
+        
     }
 }

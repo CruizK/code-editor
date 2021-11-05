@@ -9,7 +9,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 {
     public interface IGetUserLastInProgressTutorialCommand
     {
-        public Task<ActionResult<Tutorial>> GetUserLastInProgressTutorial(int userId, int courseId);
+        public Task<ActionResult<Tutorial>> ExecuteAsync(int userId, int courseId);
     }
     public class GetUserLastInProgressTutorialCommand : IGetUserLastInProgressTutorialCommand
     {
@@ -20,7 +20,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             _getTutorials = getTutorials;
         }
 
-        public async Task<ActionResult<Tutorial>> GetUserLastInProgressTutorial(int userId, int courseId)
+        public async Task<ActionResult<Tutorial>> ExecuteAsync(int userId, int courseId)
         {
             return await _getTutorials.GetUserLastInProgressTutorial(userId, courseId);
         }
