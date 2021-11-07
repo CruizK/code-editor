@@ -6,11 +6,12 @@ import Router from "next/router";
  * @param {string} title The title of an existing course.
  * @param {string} description The description of an existing course.
  */
-function storeThenRouteCourse(id, title, description) {
+function storeThenRouteCourse(id, title, description, isPublished) {
     sessionStorage.setItem('courseDefaults', JSON.stringify({
         id: id,
         title: title,
         description: description,
+        isPublished: isPublished,
     }));
     let redirect = '/courses/edit'
     Router.push(redirect);
