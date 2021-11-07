@@ -12,6 +12,7 @@ import { loggedIn } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { useCourseSession } from "@Utils/storage";
 import { getRole } from "@Utils/jwt";
+import Barrier from "@Components/Barrier/Barrier";
 
 function EditCourse() {
     const [cookies, setCookie, removeCookie] = useCookies(["user"]);
@@ -29,6 +30,28 @@ function EditCourse() {
         }
     }
 
+    const hasPresetPublishValue = (typeof defaultValues["isPublished"] != 'undefined');
+    var draftButton, publishButton;
+
+    if (hasPresetPublishValue == false || defaultValues["isPublished"]) {
+        draftButton =
+        <Barrier 
+            buttonText={<Button variant="black">Save As Draft</Button>}
+            title="Confirmation"
+            text="Doing this will hide your course from public view, are you sure you want this?"
+            callback={() => handleSubmit(false, token)}
+        />;
+    }
+    if (hasPresetPublishValue == false || !defaultValues["isPublished"]) {
+        publishButton =
+        <Barrier 
+            buttonText={<Button variant="maroon">Publish</Button>}
+            title="Confirmation"
+            text="Doing this will display your course to the public, are you sure you want this?"
+            callback={() => handleSubmit(true, token)}
+        />;
+    }
+
     return(
         <Main>
             <Grid templateRows="5 1fr" gap={6} width="100%">
@@ -37,12 +60,17 @@ function EditCourse() {
                 <SNoLinkButton href="/dashboard/teacher" variant="white">
                     Cancel
                 </SNoLinkButton>
-                <Button variant="black" onClick={() => handleSubmit(false, token)}>
-                    Save As Draft
-                </Button>
-                <Button variant="maroon" onClick={() => handleSubmit(true, token)}>
-                    Publish
-                </Button>
+
+                {draftButton ||
+                    <Button variant="black" onClick={() => handleSubmit(false, token)}>
+                        Save As Draft
+                    </Button>
+                }
+                {publishButton ||
+                    <Button variant="maroon" onClick={() => handleSubmit(true, token)}>
+                        Publish
+                    </Button>
+                }
                 </SectionHeader>
                 <CourseForm defaultValues={defaultValues} />
             </Grid>
