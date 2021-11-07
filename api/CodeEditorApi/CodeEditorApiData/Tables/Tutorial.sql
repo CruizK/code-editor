@@ -13,7 +13,7 @@
     [DifficultyId] INT NULL, 
     [Description] NVARCHAR(255) NULL, 
     CONSTRAINT [FK_Tutorial_UserId] FOREIGN KEY ([Author]) REFERENCES [User]([Id]), 
-    CONSTRAINT [FK_Tutorial_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Course]([Id]), 
+    CONSTRAINT [FK_Tutorial_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Course]([Id]) ON DELETE CASCADE, 
     CONSTRAINT [FK_Tutorial_cfgDifficultyLevel] FOREIGN KEY ([DifficultyId]) REFERENCES [cfgDifficultyLevel]([Id]), 
     CONSTRAINT [FK_Tutorial_cfgProgrammingLanguage] FOREIGN KEY ([LanguageId]) REFERENCES [cfgProgrammingLanguage]([Id])
 )
