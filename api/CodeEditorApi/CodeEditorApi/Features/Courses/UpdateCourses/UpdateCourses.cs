@@ -26,6 +26,7 @@ namespace CodeEditorApi.Features.Courses.UpdateCourses
             {
                 existingCourse.Title = updateCourseBody.Title ?? existingCourse.Title;
                 existingCourse.Description = updateCourseBody.Description ?? existingCourse.Description;
+                existingCourse.IsPublished = updateCourseBody.IsPublished;
                 existingCourse.ModifyDate = DateTime.Now;
             }
 
