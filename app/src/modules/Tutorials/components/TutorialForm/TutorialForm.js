@@ -4,6 +4,7 @@ import { Flex, Grid } from "@chakra-ui/layout";
 import { Select } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
 import { difficultylevels, programmingLanguages } from "@Utils/static";
+import MarkdownEditor from "../MarkdownEditor/MarkdownEditor";
 
 /**
  * Handles displaying form UI
@@ -69,6 +70,7 @@ function TutorialForm(props) {
                             })}
                         </Select>
                     </FormLabel>
+                    <MarkdownEditor />
                 </Grid>
             </form>
         </Flex>
