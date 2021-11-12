@@ -7,7 +7,7 @@ import { getID } from "@Utils/jwt";
  * @param {boolean} isPublished 
  * @param {string} token JWT token.
  */
-async function createTutorial(isPublished, token) {
+async function createTutorial(isPublished, token, prompt) {
     let isValid = true;
     let author; //TODO: Make backend not need this explicitly set.
     let form = document.getElementById("tutorial_form");
@@ -36,6 +36,7 @@ async function createTutorial(isPublished, token) {
                 isPublished: isPublished,
                 languageId: form["language"].value,
                 difficultyId: form["difficulty"].value,
+                prompt: form["md"].value,
             }, {
                 headers: {...headers},
             });
@@ -85,6 +86,7 @@ async function createTutorial(isPublished, token) {
                 isPublished: isPublished,
                 languageId: form["language"].value,
                 difficultyId: form["difficulty"].value,
+                prompt: form["md"].value,
             }, {
                 headers: {...headers},
             });
