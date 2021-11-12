@@ -4,7 +4,11 @@ import { Flex, Grid } from "@chakra-ui/layout";
 import { Select } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
 import { difficultylevels, programmingLanguages } from "@Utils/static";
-import MarkdownEditor from "../MarkdownEditor/MarkdownEditor";
+import dynamic from 'next/dynamic'; 
+const MarkdownEditor = dynamic(
+    () => import('../MarkdownEditor/MarkdownEditor').then(mod => mod.default),
+    { ssr: false }
+);
 
 /**
  * Handles displaying form UI
