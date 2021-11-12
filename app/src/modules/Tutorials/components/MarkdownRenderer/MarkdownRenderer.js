@@ -1,19 +1,18 @@
+import { useBreakpointValue } from '@chakra-ui/media-query';
+import { Box } from '@chakra-ui/react';
 import toMarkdown from 'draftjs-to-markdown';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 function MarkdownRenderer(props) {
-
-    const [md, setMD] = useState("No md passed");
-    useEffect(() => {
-        if (typeof window !== 'undefined')
-        setMD(toMarkdown(props.raw));
-    }, [props.raw])
+    const maxWidth = useBreakpointValue({ base: "350px", lg: "768px"});
 
     return(
-        <ReactMarkdown>
-            {md}
-        </ReactMarkdown>
+        <Box id="rendered" whiteSpace="pre-wrap" maxWidth={maxWidth}>
+            <ReactMarkdown className="Huh?">
+                {props.children}
+            </ReactMarkdown>
+        </Box>
     )
 }
 
