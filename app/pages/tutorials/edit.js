@@ -9,10 +9,13 @@ import { useCookies } from "react-cookie";
 import { loggedIn } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { getRole } from "@Utils/jwt";
-import TutorialForm from "@Modules/Tutorials/components/TutorialForm/TutorialForm";
+import dynamic from 'next/dynamic'; 
+const TutorialForm = dynamic(
+  () => import('@Modules/Tutorials/components/TutorialForm/TutorialForm').then(mod => mod.default),
+  { ssr: false }
+);
 import instance from "@Utils/instance";
 import { createTutorial, updateTutorial } from "@Modules/Tutorials/Tutorials";
-import { getTutorialSession } from "@Utils/storage";
 
 export async function getServerSideProps(context) {
   var data = [];
@@ -51,8 +54,6 @@ function EditTutorial(props) {
   const isLoggedIn = loggedIn(cookies.user);
   const token = cookies.user;
 
-  const defaultValues = getTutorialSession();
-
   async function handleSubmit(isPublished, token) {
     let success = await updateTutorial(isPublished, token);
     if (success) {
@@ -77,7 +78,7 @@ function EditTutorial(props) {
             Publish
           </Button>
           </SectionHeader>
-          <TutorialForm courses={props.courses} defaultValues={defaultValues} />
+          <TutorialForm courses={props.courses} getDefaults={true} />
         </Grid>
       </Main>
   );

@@ -7,9 +7,9 @@ import { Editor } from 'react-draft-wysiwyg';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 function MarkdownEditor(props) {
+    const {prompt} = props;
     const [editorState, setEditorState] = useState(
         () => {
-            const {prompt} = props;
             if (prompt) {
                 let parsedContentState = convertFromRaw(markdownToDraft(prompt));
                 return EditorState.createWithContent(parsedContentState);
@@ -18,7 +18,7 @@ function MarkdownEditor(props) {
             }
         },
     );
-    const [markdown, setMarkdown] = useState('');
+    const [markdown, setMarkdown] = useState(prompt || '');
 
     const handleEditorChange = (state) => {
         setEditorState(state);
