@@ -32,8 +32,8 @@ namespace CodeEditorApi.Features.Tutorials.CreateTutorials
                 CreateDate = DateTime.Now,
                 ModifyDate = DateTime.Now,
                 LanguageId = createTutorialsBody.LanguageId,
-                DifficultyId = createTutorialsBody.DifficultyId
-                //TODO: determine what datatype to use for prompt
+                DifficultyId = createTutorialsBody.DifficultyId,
+                Prompt = createTutorialsBody.Prompt
             };
 
             await _context.Tutorials.AddAsync(insertTutorial);
