@@ -41,17 +41,14 @@ function storeThenRouteCourse(id, title, description, isPublished) {
  * 
  * @returns The course a user is currently editing. If a user switches tabs, this will be empty. 
  */
-const useCourseSession = () => {
-    const [value, setValue] = useState({})
+const getCourseSession = () => {
+    let tempValue = sessionStorage.getItem('courseDefaults');
+    if (tempValue) {
+        const value = JSON.parse(tempValue);
+        return value;
+    }
 
-    useEffect(function() {
-        let tempValue = sessionStorage.getItem('courseDefaults');
-        if (tempValue) {
-            setValue(JSON.parse(tempValue));
-        }
-    }, [])
-
-    return value;
+    return {};
 }
 
 /**
@@ -68,4 +65,4 @@ const useCourseSession = () => {
     return {};
 }
 
-export { useCourseSession, getTutorialSession, storeThenRouteCourse, storeThenRouteTutorial };
+export { getCourseSession, getTutorialSession, storeThenRouteCourse, storeThenRouteTutorial };

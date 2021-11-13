@@ -3,23 +3,27 @@ import Main from "@Components/Main/Main";
 import SectionHeader from "@Components/SectionHeader/SectionHeader";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
-import CourseForm from "@Modules/Courses/components/CourseForm/CourseForm";
+import dynamic from 'next/dynamic'; 
+const CourseForm = dynamic(
+    () => import('@Modules/Courses/components/CourseForm/CourseForm').then(mod => mod.default),
+    { ssr: false }
+);
 import { Center, Flex, Grid } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { updateCourse } from "@Modules/Courses/Courses";
 import { useCookies } from "react-cookie";
 import { loggedIn } from "@Modules/Auth/Auth";
 import Router from 'next/router';
-import { useCourseSession } from "@Utils/storage";
 import { getRole } from "@Utils/jwt";
 import Barrier from "@Components/Barrier/Barrier";
+import { useState } from "react";
 
 function EditCourse() {
     const [cookies, setCookie, removeCookie] = useCookies(["user"]);
     const isLoggedIn = loggedIn(cookies.user);
     const token = cookies.user;
-    
-    const defaultValues = useCourseSession();
+
+    const [presetPublishValue, setPreset] = useState(null); // this will be called in CourseForm
 
     async function handleSubmit(isPublished, token) {
         let success = await updateCourse(isPublished, token);
@@ -30,10 +34,9 @@ function EditCourse() {
         }
     }
 
-    const hasPresetPublishValue = (typeof defaultValues["isPublished"] != 'undefined');
     var draftButton, publishButton;
 
-    if (hasPresetPublishValue == false || defaultValues["isPublished"]) {
+    if (presetPublishValue != null && presetPublishValue) {
         draftButton =
         <Barrier 
             buttonText={<Button variant="black">Save As Draft</Button>}
@@ -42,7 +45,7 @@ function EditCourse() {
             callback={() => handleSubmit(false, token)}
         />;
     }
-    if (hasPresetPublishValue == false || !defaultValues["isPublished"]) {
+    if (presetPublishValue != null && !presetPublishValue) {
         publishButton =
         <Barrier 
             buttonText={<Button variant="maroon">Publish</Button>}
@@ -72,7 +75,7 @@ function EditCourse() {
                     </Button>
                 }
                 </SectionHeader>
-                <CourseForm defaultValues={defaultValues} />
+                <CourseForm getDefaults={true} setPreset={setPreset} />
             </Grid>
         </Main>
     );
