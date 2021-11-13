@@ -11,7 +11,7 @@ import { useCookies } from "react-cookie";
 import Barrier from "@Components/Barrier/Barrier";
 
 function CourseItem(props) {
-    const { id, title, description, isPublished } = props;
+    const { id, title, description, isPublished } = props.data;
 
     const [cookies, setCookie, removeCookie] = useCookies(["user"]);
     const isLoggedIn = loggedIn(cookies.user);
@@ -72,7 +72,7 @@ function CourseList(props) {
                         description: courseData.description,
                         isPublished: courseData.isPublished,
                     }
-                    return <CourseItem key={index} {...courseDefaults} />;
+                    return <CourseItem key={index} data={courseDefaults} />;
                 })}
             </Accordion>
         </Box>
