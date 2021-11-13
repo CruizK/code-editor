@@ -34,7 +34,7 @@ function CourseItem(props) {
                         {title}
                     </Box>
                     <HStack spacing={3}>                        
-                        <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteCourse(id, title, description, isPublished)} />
+                        <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteCourse(props.data)} />
                         <Barrier 
                             buttonText={<DeleteIcon />}
                             title="Confirmation"
