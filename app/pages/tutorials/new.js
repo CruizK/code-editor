@@ -9,7 +9,11 @@ import { useCookies } from "react-cookie";
 import { loggedIn } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { getRole } from "@Utils/jwt";
-import TutorialForm from "@Modules/Tutorials/components/TutorialForm/TutorialForm";
+import dynamic from 'next/dynamic'; 
+const TutorialForm = dynamic(
+  () => import('@Modules/Tutorials/components/TutorialForm/TutorialForm').then(mod => mod.default),
+  { ssr: false }
+);
 import instance from "@Utils/instance";
 import { createTutorial } from "@Modules/Tutorials/Tutorials";
 
