@@ -15,7 +15,7 @@ const MarkdownEditor = dynamic(
  * Formdata is sent through the tutorials route, using document.getElementById to grab the form DOM object
  */
 function TutorialForm(props) {
-    let dCID, dT, dD, dID, dDiff, dLan;
+    let dCID, dT, dD, dID, dDiff, dLan, dPrompt;
     if (props.defaultValues) {
         let v = props.defaultValues;
         dCID = v["courseId"],
@@ -24,6 +24,7 @@ function TutorialForm(props) {
         dD = v["description"]
         dDiff = v["difficultyId"],
         dLan = v["languageId"];
+        dPrompt = v["prompt"];
     }
 
     const courseOptions = props.courses || [];
@@ -74,7 +75,7 @@ function TutorialForm(props) {
                             })}
                         </Select>
                     </FormLabel>
-                    <MarkdownEditor />
+                    <MarkdownEditor default={dPrompt} />
                 </Grid>
             </form>
         </Flex>

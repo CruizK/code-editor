@@ -1,6 +1,6 @@
 import { useBreakpointValue } from '@chakra-ui/media-query';
 import { Input } from '@chakra-ui/react';
-import { convertToRaw, EditorState } from 'draft-js';
+import { ContentState, convertToRaw, EditorState } from 'draft-js';
 import toMarkdown from 'draftjs-to-markdown';
 import dynamic from 'next/dynamic'; 
 import { useState } from 'react';
@@ -10,9 +10,12 @@ const Editor = dynamic(
 );
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-function MarkdownEditor() {
+function MarkdownEditor(props) {
+    console.log(props.default);
     const [editorState, setEditorState] = useState(
-        () => EditorState.createEmpty(),
+        () => { 
+            return (props.default) ? EditorState.createWithContent(ContentState.createFromText(props.default)) : EditorState.createEmpty()
+        },
     );
     const [markdown, setMarkdown] = useState('');
 

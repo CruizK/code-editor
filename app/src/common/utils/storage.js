@@ -22,7 +22,7 @@ function storeThenRouteCourse(id, title, description, isPublished) {
  * @param {string} title The title of an existing tutorial.
  * @param {string} description The description of an existing tutorial.
  */
- function storeThenRouteTutorial(courseId, id, title, description, diff, lan) {
+ function storeThenRouteTutorial(courseId, id, title, description, diff, lan, prompt) {
     sessionStorage.setItem('tutorialDefaults', JSON.stringify({
         courseId,
         id: id,
@@ -30,6 +30,7 @@ function storeThenRouteCourse(id, title, description, isPublished) {
         description: description,
         difficultyId: diff,
         languageId: lan,
+        prompt: prompt,
     }));
     let redirect = '/tutorials/edit'
     Router.push(redirect);

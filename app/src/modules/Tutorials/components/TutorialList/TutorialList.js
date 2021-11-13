@@ -10,7 +10,7 @@ import { deleteTutorial } from "@Modules/Tutorials/Tutorials";
 import Router from "next/router";
 
 function TutorialItem(props) {
-    const { courseId, id, token, title, description, difficultyId, languageId } = props;
+    const { courseId, id, token, title, description, difficultyId, languageId, prompt } = props;
     const tags = [];
     if (props.Difficulty) {
         tags.push({
@@ -50,7 +50,7 @@ function TutorialItem(props) {
             </GridItem>
             <GridItem colStart={6}>
                 <HStack spacing={3}>                        
-                    <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteTutorial(courseId, id, title, description, difficultyId, languageId)} />
+                    <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteTutorial(courseId, id, title, description, difficultyId, languageId, prompt)} />
                     <DeleteIcon onClick={() => handleDeletion(id, token)} />
                 </HStack>
             </GridItem>
