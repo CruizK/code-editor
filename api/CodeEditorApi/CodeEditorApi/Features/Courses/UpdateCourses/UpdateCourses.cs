@@ -1,5 +1,4 @@
 ﻿using CodeEditorApiDataAccess.Data;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
@@ -7,7 +6,7 @@ namespace CodeEditorApi.Features.Courses.UpdateCourses
 {
     public interface IUpdateCourses
     {
-        public Task<ActionResult<Course>> ExecuteAsync(int courseId, UpdateCourseBody updateCourseBody);
+        public Task<Course> ExecuteAsync(int courseId, UpdateCourseBody updateCourseBody);
     }
     public class UpdateCourses : IUpdateCourses
     {
@@ -18,7 +17,7 @@ namespace CodeEditorApi.Features.Courses.UpdateCourses
             _context = context;
         }
 
-        public async Task<ActionResult<Course>> ExecuteAsync(int courseId, UpdateCourseBody updateCourseBody)
+        public async Task<Course> ExecuteAsync(int courseId, UpdateCourseBody updateCourseBody)
         {
             var existingCourse = await _context.Courses.FindAsync(courseId);
 

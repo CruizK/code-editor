@@ -1,6 +1,8 @@
 ﻿using CodeEditorApi.Features.Courses.CreateCourses;
 using CodeEditorApi.Features.Courses.DeleteCourses;
 using CodeEditorApi.Features.Courses.GetCourses;
+using CodeEditorApi.Features.Courses.RegisterUser;
+using CodeEditorApi.Features.Courses.UnregisterUser;
 using CodeEditorApi.Features.Courses.UpdateCourses;
 using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -15,26 +17,32 @@ namespace CodeEditorApi.Features.Courses
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class CoursesController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IGetCoursesCommand _getCoursesCommand;
         private readonly IGetUserCreatedCoursesCommand _getUserCreatedCoursesCommand;
         private readonly ICreateCoursesCommand _createCoursesCommand;
         private readonly IUpdateCoursesCommand _updateCoursesCommand;
         private readonly IDeleteCoursesCommand _deleteCoursesCommand;
+        private readonly IRegisterUserCommand _registerUserCommand;
+        private readonly IUnregisterUserCommand _unregisterUserCommand;
 
-        public CoursesController(
+        public UsersController(
             IGetCoursesCommand getCoursesCommand, 
             IGetUserCreatedCoursesCommand getUserCreatedCoursesCommand,
             ICreateCoursesCommand createCoursesCommand, 
             IUpdateCoursesCommand updateCoursesCommand, 
-            IDeleteCoursesCommand deleteCoursesCommand)
+            IDeleteCoursesCommand deleteCoursesCommand,
+            IRegisterUserCommand registerUserCommand,
+            IUnregisterUserCommand unregisterUserCommand)
         {
             _getCoursesCommand = getCoursesCommand;
             _getUserCreatedCoursesCommand = getUserCreatedCoursesCommand;
             _createCoursesCommand = createCoursesCommand;
             _updateCoursesCommand = updateCoursesCommand;
             _deleteCoursesCommand = deleteCoursesCommand;
+            _registerUserCommand = registerUserCommand;
+            _unregisterUserCommand = unregisterUserCommand;
         }
 
         /// <summary>
@@ -69,6 +77,36 @@ namespace CodeEditorApi.Features.Courses
         {
             var userId = retrieveRequestUserId();
             return await _createCoursesCommand.ExecuteAsync(userId, createCourseBody);
+        }
+
+        /// <summary>
+        /// Creates a course for a user (admin/teacher role)
+        /// </summary>
+        /// <param name="registerUserBody">
+        /// The course details for registering a user
+        /// </param>
+        /// <returns></returns>
+        [HttpPost("register")]
+        [Authorize]
+        public async Task<ActionResult<UserRegisteredCourse>> RegisterUser([FromBody] RegisterUserBody registerUserBody)
+        {
+            var userId = retrieveRequestUserId();
+            return await _registerUserCommand.ExecuteAsync(userId, registerUserBody);
+        }
+
+        /// <summary>
+        /// Creates a course for a user (admin/teacher role)
+        /// </summary>
+        /// <param name="unregisterUserBody">
+        /// The course details for unregistering a user
+        /// </param>
+        /// <returns></returns>
+        [HttpPost("unregister")]
+        [Authorize]
+        public async Task<ActionResult<UserRegisteredCourse>> UnregisterUser([FromBody] UnregisterUserBody unregisterUserBody)
+        {
+            var userId = retrieveRequestUserId();
+            return await _unregisterUserCommand.ExecuteAsync(userId, unregisterUserBody);
         }
 
         /// <summary>
