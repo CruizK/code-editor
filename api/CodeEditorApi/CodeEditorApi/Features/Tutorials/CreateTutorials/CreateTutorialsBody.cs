@@ -23,13 +23,13 @@ namespace CodeEditorApi.Features.Tutorials.CreateTutorials
 
         public string Description { get; set; }
 
+        public string Prompt { get; set; }
+
         public int? LanguageId { get; set; }  //should eventually be required and NOT NULLable
 
         public int? DifficultyId { get; set; } //should eventually be required and NOT NULLable
 
         public int? Index { get; set; }   //should eventually be required and NOT NULLable
-
-        //TODO: add Prompt with correct datatype for storing into DB
 
     }
 }

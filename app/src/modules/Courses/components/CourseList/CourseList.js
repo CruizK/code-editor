@@ -11,7 +11,7 @@ import { useCookies } from "react-cookie";
 import Barrier from "@Components/Barrier/Barrier";
 
 function CourseItem(props) {
-    const { id, title, description } = props;
+    const { id, title, description, isPublished } = props.data;
 
     const [cookies, setCookie, removeCookie] = useCookies(["user"]);
     const isLoggedIn = loggedIn(cookies.user);
@@ -34,7 +34,7 @@ function CourseItem(props) {
                         {title}
                     </Box>
                     <HStack spacing={3}>                        
-                        <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteCourse(id, title, description)} />
+                        <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteCourse(props.data)} />
                         <Barrier 
                             buttonText={<DeleteIcon />}
                             title="Confirmation"
@@ -70,8 +70,9 @@ function CourseList(props) {
                         id: courseData.id,
                         title: courseData.title,
                         description: courseData.description,
+                        isPublished: courseData.isPublished,
                     }
-                    return <CourseItem key={index} {...courseDefaults} />;
+                    return <CourseItem key={index} data={courseDefaults} />;
                 })}
             </Accordion>
         </Box>

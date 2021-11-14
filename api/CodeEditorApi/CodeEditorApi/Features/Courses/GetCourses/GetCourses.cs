@@ -1,19 +1,17 @@
 ﻿using CodeEditorApiDataAccess.Data;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Courses.GetCourses
 {
 
     public interface IGetCourses
     {
-        public Task<ActionResult<List<Course>>> GetUserCourses(int userId);
+        public Task<List<Course>> GetUserCourses(int userId);
 
-        public Task<ActionResult<List<Course>>> GetUserCreatedCourses(int userId);
+        public Task<List<Course>> GetUserCreatedCourses(int userId);
     }
     public class GetCourses : IGetCourses
     {
@@ -25,17 +23,14 @@ namespace CodeEditorApi.Features.Courses.GetCourses
             _context = context;
         }
 
-        public async Task<ActionResult<List<Course>>> GetUserCourses(int userId)
+        public async Task<List<Course>> GetUserCourses(int userId)
         {
-            var userCourses = await _context.UserRegisteredCourses.Where(urc => urc.UserId == userId).Select(urc => urc.CourseId).ToListAsync();
-
-            var courseList = await _context.Courses.Where(c => userCourses.Contains(c.Id)).ToListAsync();
+            var courseList = await _context.UserRegisteredCourses.Where(urc => urc.UserId == userId).Select(urc => urc.Course).ToListAsync();
 
             return courseList;
-
         }
 
-        public async Task<ActionResult<List<Course>>> GetUserCreatedCourses(int userId)
+        public async Task<List<Course>> GetUserCreatedCourses(int userId)
         {
             return await _context.Courses.Where(c => c.Author == userId).Select(c => c).ToListAsync();
         }

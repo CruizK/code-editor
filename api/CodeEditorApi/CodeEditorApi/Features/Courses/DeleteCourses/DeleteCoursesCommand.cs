@@ -2,7 +2,6 @@
 using CodeEditorApi.Features.Courses.GetCourses;
 using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,7 +26,7 @@ namespace CodeEditorApi.Features.Courses.DeleteCourses
         {
             var createdCourses = await _getCourses.GetUserCreatedCourses(userId);
 
-            if (createdCourses.Value.Count() == 0 || !createdCourses.Value.Select(c => c.Id).Contains(courseId))
+            if (createdCourses.Count() == 0 || !createdCourses.Select(c => c.Id).Contains(courseId))
             {
                 return ApiError.BadRequest("Only the author of a course may delete it");
             }

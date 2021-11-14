@@ -1,4 +1,10 @@
 const InputStyle = {
+    baseStyle: {
+        field: {
+            minWidth: "172px",
+            maxWidth: "200px",
+        }
+    },
     defaultProps: {
         size: "xs",
     },

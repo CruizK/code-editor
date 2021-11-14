@@ -3,7 +3,11 @@ import Main from "@Components/Main/Main";
 import SectionHeader from "@Components/SectionHeader/SectionHeader";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
-import CourseForm from "@Modules/Courses/components/CourseForm/CourseForm";
+import dynamic from 'next/dynamic'; 
+const CourseForm = dynamic(
+    () => import('@Modules/Courses/components/CourseForm/CourseForm').then(mod => mod.default),
+    { ssr: false }
+);
 import { Center, Grid } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { createCourse } from "@Modules/Courses/Courses";
