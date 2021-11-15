@@ -17,7 +17,7 @@ namespace CodeEditorApi.Features.Courses
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class CoursesController : ControllerBase
     {
         private readonly IGetCoursesCommand _getCoursesCommand;
         private readonly IGetUserCreatedCoursesCommand _getUserCreatedCoursesCommand;
@@ -27,7 +27,7 @@ namespace CodeEditorApi.Features.Courses
         private readonly IRegisterUserCommand _registerUserCommand;
         private readonly IUnregisterUserCommand _unregisterUserCommand;
 
-        public UsersController(
+        public CoursesController(
             IGetCoursesCommand getCoursesCommand, 
             IGetUserCreatedCoursesCommand getUserCreatedCoursesCommand,
             ICreateCoursesCommand createCoursesCommand, 
