@@ -10,7 +10,8 @@ import { deleteTutorial } from "@Modules/Tutorials/Tutorials";
 import Router from "next/router";
 
 function TutorialItem(props) {
-    const { id, token, title } = props.data;
+    const { token } = props;
+    const { id, title } = props.data;
     const tags = [];
     if (props.Difficulty) {
         tags.push({
