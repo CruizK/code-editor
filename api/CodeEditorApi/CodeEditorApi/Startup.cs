@@ -51,6 +51,8 @@ namespace CodeEditorApi
                 {
                     return ApiError.BadRequest(context.ModelState.Values.First().Errors.First().ErrorMessage);
                 };
+            }).AddNewtonsoftJson(options => {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
             // Register the Swagger generator, defining 1 or more Swagger documents

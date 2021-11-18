@@ -15,9 +15,10 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 
         public Task<ActionResult<List<Tutorial>>> GetUserCreatedTutorials(int userId);
 
-        public Task<ActionResult<List<Tutorial>>> GetCourseTutorials(int courseId);
+        public Task<List<Tutorial>> GetCourseTutorials(int courseId);
 
-        public Task<ActionResult<Tutorial>> GetUserLastInProgressTutorial(int userId, int courseId);
+        public Task<Tutorial> GetUserLastInProgressTutorial(int userId, int courseId);
+        public Task<List<UserTutorial>> GetUserRegisteredTutorials(int userId);
     }
     public class GetTutorials : IGetTutorials
     {
@@ -40,36 +41,39 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             return await _context.Tutorials.Where(t => t.Author == userId).Select(t => t).ToListAsync();
         }
 
-        public async Task<ActionResult<List<Tutorial>>> GetCourseTutorials(int courseId)
+        public async Task<List<Tutorial>> GetCourseTutorials(int courseId)
         {
             return await _context.Tutorials.Where(t => t.CourseId == courseId).Select(t => t).ToListAsync();
         }
 
-        public async Task<ActionResult<Tutorial>> GetUserLastInProgressTutorial(int userId, int courseId)
+        public async Task<List<UserTutorial>> GetUserRegisteredTutorials(int userId)
         {
-            var userIsRegisteredForCourse = await _context.UserRegisteredCourses.Where(urc => urc.UserId == userId)
+            return await _context.UserTutorials.Where(t => t.UserId == userId).Select(t => t).ToListAsync();
+        }
+
+        public async Task<Tutorial> GetUserLastInProgressTutorial(int userId, int courseId)
+        {
+            /*var userIsRegisteredForCourse = await _context.UserRegisteredCourses.Where(urc => urc.UserId == userId)
                    .Select(urc => urc).AnyAsync();
             if (!userIsRegisteredForCourse) {
                 return ApiError.BadRequest($"User is not registered for course with id {courseId}");
             }
-
+*/
             var courseTutorials = await _context.Tutorials.Where(t => t.CourseId == courseId).Select(t => t.Id).ToListAsync();
-            var userTutorialInProgress = await _context.UserTutorials.Where(ut => courseTutorials.Contains(ut.TutorialId)
-                                        && ut.UserId == userId && ut.InProgress == true).Select(ut => ut.TutorialId).ToListAsync();
+            var userTutorials = await _context.UserTutorials.Where(ut => courseTutorials.Contains(ut.TutorialId) && ut.UserId == userId).Select(o => o).ToListAsync();
+
+            var inProgressTutorialId = userTutorials.Where(ut => ut.InProgress == true).Select(ut => ut.TutorialId).FirstOrDefault();
 
 
-            if (userTutorialInProgress == null)
+            /*if (userTutorialInProgress.Count() == 0)
             {
                 return ApiError.BadRequest($"User has not started any tutorial for course with id {courseId}");
-            }
-            var tutorialInProgressId = userTutorialInProgress.FirstOrDefault();
-            var tutorial = _context.Tutorials.Where(t => t.Id == tutorialInProgressId).Select(t => t).FirstOrDefault();
+            }*/
 
-            if(tutorial == null)
-            {
-                return ApiError.BadRequest($"In Progress Tutorial with id {tutorialInProgressId} could not be found.");
-            }
+            var tutorial = await _context.Tutorials.Where(t => t.Id == inProgressTutorialId).Select(t => t).FirstOrDefaultAsync();
+
             return tutorial;
         }
+
     }
 }
