@@ -22,12 +22,22 @@ namespace CodeEditorApi.Features.Auth
             _loginCommand = loginCommand;
         }
 
+        /// <summary>
+        /// Registers a user
+        /// </summary>
+        /// <param name="registerBody"></param>
+        /// <returns></returns>
         [HttpPost("Register")]
         public async Task<ActionResult<string>> Register([FromBody] RegisterBody registerBody)
         {
             return await _registerCommand.ExecuteAsync(registerBody);
         }
 
+        /// <summary>
+        /// Logs a user in
+        /// </summary>
+        /// <param name="loginBody"></param>
+        /// <returns></returns>
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginBody loginBody)
         {

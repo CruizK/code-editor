@@ -52,7 +52,7 @@ namespace CodeEditorApi.Features.Courses
         }
 
         /// <summary>
-        /// Get's all courses for a single user
+        /// Gets all courses for a single user
         /// </summary>
         /// <returns></returns>
         [HttpGet("")]
@@ -63,6 +63,10 @@ namespace CodeEditorApi.Features.Courses
             return await _getCoursesCommand.ExecuteAsync(userId);
         }
 
+        /// <summary>
+        /// Gets all courses created by a user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetUserCreatedCourses")]
         [Authorize]
         public async Task<ActionResult<List<Course>>> GetUserCreatedCourses()
@@ -71,6 +75,11 @@ namespace CodeEditorApi.Features.Courses
             return await _getUserCreatedCoursesCommand.ExecuteAsync(userId);
         }
 
+        /// <summary>
+        /// Gets all the details for a single course
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
         [HttpGet("GetCourseDetails/{courseId:int}")]
         [Authorize]
         public async Task<ActionResult<Course>> GetCourseDetails(int courseId)
@@ -78,6 +87,10 @@ namespace CodeEditorApi.Features.Courses
             return await _getCourseDetailsCommand.ExecuteAsync(courseId);
         }
 
+        /// <summary>
+        /// Gets all courses that are published
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAllPublishedCourses")]
         [Authorize]
         public async Task<ActionResult<List<Course>>> GetAllPublishedCourses()

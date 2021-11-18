@@ -21,6 +21,10 @@ namespace CodeEditorApi.Features.Languages
             _getProgrammingLanguagesCommand = getProgrammingLanguagesCommand;
         }
 
+        /// <summary>
+        /// Gets the programming languages available for tutorials
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<CfgProgrammingLanguage>>> GetLanguages()

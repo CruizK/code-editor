@@ -19,6 +19,11 @@ namespace CodeEditorApi.Features.Levels
         {
             _difficultyLevelsCommand = difficultyLevelsCommmand;
         }
+
+        /// <summary>
+        /// Retrieves the difficulty levels available for tutorials
+        /// </summary>
+        /// <returns></returns>
         [HttpGet()]
         [Authorize]
         public async Task<ActionResult<List<CfgDifficultyLevel>>> GetLevels()
