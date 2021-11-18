@@ -90,7 +90,7 @@ namespace CodeEditorApi.Features.Courses
         [Authorize]
         public async Task<ActionResult<UserRegisteredCourse>> RegisterUser([FromBody] RegisterUserBody registerUserBody)
         {
-            var userId = retrieveRequestUserId();
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _registerUserCommand.ExecuteAsync(userId, registerUserBody);
         }
 
@@ -105,7 +105,7 @@ namespace CodeEditorApi.Features.Courses
         [Authorize]
         public async Task<ActionResult<UserRegisteredCourse>> UnregisterUser([FromBody] UnregisterUserBody unregisterUserBody)
         {
-            var userId = retrieveRequestUserId();
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _unregisterUserCommand.ExecuteAsync(userId, unregisterUserBody);
         }
 
