@@ -24,5 +24,6 @@ namespace CodeEditorApiDataAccess.Data
         public virtual User AuthorNavigation { get; set; }
         public virtual ICollection<Tutorial> Tutorials { get; set; }
         public virtual ICollection<UserRegisteredCourse> UserRegisteredCourses { get; set; }
+
     }
 }

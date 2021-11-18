@@ -27,6 +27,7 @@ namespace CodeEditorApi.Features.Courses
         private readonly IRegisterUserCommand _registerUserCommand;
         private readonly IUnregisterUserCommand _unregisterUserCommand;
         private readonly IGetCourseDetailsCommand _getCourseDetailsCommand;
+        private readonly IGetAllPublishedCoursesCommand _getAllPublishedCoursesCommand;
 
         public CoursesController(
             IGetCoursesCommand getCoursesCommand, 
@@ -36,7 +37,8 @@ namespace CodeEditorApi.Features.Courses
             IDeleteCoursesCommand deleteCoursesCommand,
             IRegisterUserCommand registerUserCommand,
             IUnregisterUserCommand unregisterUserCommand,
-            IGetCourseDetailsCommand getCourseDetailsCommand)
+            IGetCourseDetailsCommand getCourseDetailsCommand,
+            IGetAllPublishedCoursesCommand getAllPublishedCoursesCommand)
         {
             _getCoursesCommand = getCoursesCommand;
             _getUserCreatedCoursesCommand = getUserCreatedCoursesCommand;
@@ -46,6 +48,7 @@ namespace CodeEditorApi.Features.Courses
             _registerUserCommand = registerUserCommand;
             _unregisterUserCommand = unregisterUserCommand;
             _getCourseDetailsCommand = getCourseDetailsCommand;
+            _getAllPublishedCoursesCommand = getAllPublishedCoursesCommand;
         }
 
         /// <summary>
@@ -74,6 +77,14 @@ namespace CodeEditorApi.Features.Courses
         {
             return await _getCourseDetailsCommand.ExecuteAsync(courseId);
         }
+
+        [HttpGet("GetAllPublishedCourses")]
+        [Authorize]
+        public async Task<ActionResult<List<Course>>> GetAllPublishedCourses()
+        {
+            return await _getAllPublishedCoursesCommand.ExecuteAsync();
+        }
+
         /// <summary>
         /// Creates a course for a user (admin/teacher role)
         /// </summary>
