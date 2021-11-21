@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, HStack } from "@chakra-ui/layout";
+import { Box, Grid, GridItem, HStack } from "@chakra-ui/layout";
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
 import { useEffect, useState } from "react";
 
@@ -48,7 +48,18 @@ function Carousel(props) {
                 <ChevronLeftIcon onClick={decrementPage} />
             }
             {subsetOfItems.map((item) => {
-                return <Box height="70px" w="122px" border="solid green 1px" borderRadius="md" bgColor="green">{item}</Box>
+                const { id, title, author } = item;
+                let smallTitle = (title.length > 6) ? title.substr(0, 6) + "..." : title;
+                return (
+                    <Grid height="70px" w="122px" border="solid green 1px" borderRadius="md" bgColor="green">
+                        <GridItem colStart={2} colSpan={2} display="flex" justifyContent="right" mr={1}>
+                            Java
+                        </GridItem>
+                        <GridItem colSpan={2}  display="flex" alignItems="end">
+                            {smallTitle}
+                        </GridItem>
+                    </Grid>
+                );
             })}
             {page != Math.ceil(items.length / itemsPerPage) &&
                 <ChevronRightIcon onClick={incrementPage} />
