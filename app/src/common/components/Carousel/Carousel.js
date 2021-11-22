@@ -62,7 +62,7 @@ function Carousel(props) {
                         <Flex height="50%" w="100%" justifyContent="right" pr={1}>
                             <Image src="/defaults/card_icon.png" alt="SIU Logo" height="100%" />
                         </Flex>
-                        <Flex height="50%" w="100%" fontSize="md" pl={1}>
+                        <Flex height="50%" w="100%" fontWeight="bold" fontFamily="button" fontSize="md" pl={1}>
                             {smallTitle.toUpperCase()}
                         </Flex>
                     </VStack>
