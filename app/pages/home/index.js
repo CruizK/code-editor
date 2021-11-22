@@ -1,6 +1,8 @@
+import { Center } from "@chakra-ui/layout";
 import Carousel from "@Components/Carousel/Carousel";
 import Main from "@Components/Main/Main";
 import SectionHeader from "@Components/SectionHeader/SectionHeader";
+import SNoLink from "@Components/SNoLink/SNoLink";
 import { loggedIn } from "@Modules/Auth/Auth";
 import instance from "@Utils/instance";
 
@@ -39,6 +41,7 @@ function Home(props) {
 
   return(
     <Main>
+      <Center><SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink></Center>
       <SectionHeader title="ALL COURSES" />
       <Carousel items={carouselItems} />
     </Main>
