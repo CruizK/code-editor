@@ -3,6 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Grid, GridItem, Heading, HStack, VStack } from "@chakra-ui/layout";
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
+import { getRainbowAtIteration } from "@Utils/color";
 import { useEffect, useState } from "react";
 
 /**
@@ -48,11 +49,16 @@ function Carousel(props) {
             {page != 1 &&
                 <ChevronLeftIcon onClick={decrementPage} />
             }
-            {subsetOfItems.map((item) => {
+            {subsetOfItems.map((item, subsetIndex) => {
                 const { id, title, author } = item;
                 let smallTitle = (title.length > 6) ? title.substr(0, 6) + "..." : title;
+                
+                // page is assumed to at minimum be one, so this is fine to do
+                let colorIterator = (((page - 1) * itemsPerPage) + subsetIndex) % 32;
+                let color = getRainbowAtIteration(colorIterator, 0.3);
+
                 return (
-                    <VStack height="70px" w="122px" border="solid green 1px" borderRadius="md" bgColor="green" spacing={0}>
+                    <VStack height="70px" w="122px" border={`solid ${color} 1px`} borderRadius="md" bgColor={color} spacing={0}>
                         <Flex height="50%" w="100%" justifyContent="right" pr={1}>
                             <Image src="/defaults/card_icon.png" alt="SIU Logo" height="100%" />
                         </Flex>
