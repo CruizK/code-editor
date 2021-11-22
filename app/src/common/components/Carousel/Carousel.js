@@ -1,6 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Grid, GridItem, HStack } from "@chakra-ui/layout";
+import { Image } from "@chakra-ui/image";
+import { Box, Flex, Grid, GridItem, Heading, HStack, VStack } from "@chakra-ui/layout";
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
 import { useEffect, useState } from "react";
 
@@ -51,14 +52,15 @@ function Carousel(props) {
                 const { id, title, author } = item;
                 let smallTitle = (title.length > 6) ? title.substr(0, 6) + "..." : title;
                 return (
-                    <Grid height="70px" w="122px" border="solid green 1px" borderRadius="md" bgColor="green">
-                        <GridItem colStart={2} colSpan={2} display="flex" justifyContent="right" mr={1}>
-                            Java
-                        </GridItem>
-                        <GridItem colSpan={2}  display="flex" alignItems="end">
-                            {smallTitle}
-                        </GridItem>
-                    </Grid>
+                    <VStack height="70px" w="122px" border="solid green 1px" borderRadius="md" bgColor="green" spacing={0}>
+                        <Flex height="50%" w="100%" justifyContent="right" pr={1}>
+                            <Image src="/defaults/card_icon.png" alt="SIU Logo" height="100%" />
+                        </Flex>
+                        <Flex height="50%" w="100%" fontSize="md" pl={1}>
+                            {smallTitle.toUpperCase()}
+                        </Flex>
+                    </VStack>
+                    
                 );
             })}
             {page != Math.ceil(items.length / itemsPerPage) &&
