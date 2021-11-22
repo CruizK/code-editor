@@ -3,6 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Grid, GridItem, Heading, HStack, VStack } from "@chakra-ui/layout";
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
+import { Tooltip } from "@chakra-ui/tooltip";
 import { getRainbowAtIteration } from "@Utils/color";
 import { useEffect, useState } from "react";
 
@@ -58,15 +59,16 @@ function Carousel(props) {
                 let color = getRainbowAtIteration(colorIterator, 0.3);
 
                 return (
-                    <VStack height="70px" w="122px" border={`solid ${color} 1px`} borderRadius="md" bgColor={color} spacing={0}>
-                        <Flex height="50%" w="100%" justifyContent="right" pr={1}>
-                            <Image src="/defaults/card_icon.png" alt="SIU Logo" height="100%" />
-                        </Flex>
-                        <Flex height="50%" w="100%" fontWeight="bold" fontFamily="button" fontSize="md" pl={1}>
-                            {smallTitle.toUpperCase()}
-                        </Flex>
-                    </VStack>
-                    
+                    <Tooltip label={title} aria-label={title} placement="right" borderRadius="md">
+                        <VStack height="70px" w="122px" border={`solid ${color} 1px`} borderRadius="md" bgColor={color} spacing={0}>
+                            <Flex height="50%" w="100%" justifyContent="right" pr={1}>
+                                <Image src="/defaults/card_icon.png" alt="SIU Logo" height="100%" />
+                            </Flex>
+                            <Flex height="50%" w="100%" fontWeight="bold" fontFamily="button" fontSize="md" pl={1}>
+                                {smallTitle.toUpperCase()}
+                            </Flex>
+                        </VStack>
+                    </Tooltip>
                 );
             })}
             {page != Math.ceil(items.length / itemsPerPage) &&
