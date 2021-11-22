@@ -60,11 +60,11 @@ function Carousel(props) {
 
                 return (
                     <Tooltip label={title} aria-label={title} placement="right" borderRadius="md">
-                        <VStack height="70px" w="122px" border={`solid ${color} 1px`} borderRadius="md" bgColor={color} spacing={0}>
+                        <VStack height="70px" w="122px" border={`solid ${color} 1px`} borderRadius="xl" bgColor={color} spacing={0}>
                             <Flex height="50%" w="100%" justifyContent="right" pr={1}>
                                 <Image src="/defaults/card_icon.png" alt="SIU Logo" height="100%" />
                             </Flex>
-                            <Flex height="50%" w="100%" fontWeight="bold" fontFamily="button" fontSize="md" pl={1}>
+                            <Flex height="50%" w="100%" color="ce_white" fontWeight="bold" fontFamily="button" fontSize="md" pl={1}>
                                 {smallTitle.toUpperCase()}
                             </Flex>
                         </VStack>
