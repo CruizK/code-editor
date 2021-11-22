@@ -4,7 +4,7 @@ import { Image } from "@chakra-ui/image";
 import { Box, Flex, Grid, GridItem, Heading, HStack, VStack } from "@chakra-ui/layout";
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
 import { Tooltip } from "@chakra-ui/tooltip";
-import { getRainbowAtIteration } from "@Utils/color";
+import paletteToRGB, { getRainbowAtIteration } from "@Utils/color";
 import { useEffect, useState } from "react";
 
 /**
@@ -48,7 +48,7 @@ function Carousel(props) {
     return (
         <HStack spacing="35px" mt="15px" mb="15px" alignContent="center" justifyContent="center">
             {page != 1 &&
-                <ChevronLeftIcon onClick={decrementPage} />
+                <ChevronLeftIcon onClick={decrementPage} boxSize="2em" color="ce_white" bgColor="ce_mainmaroon" borderRadius="2xl" />
             }
             {subsetOfItems.map((item, subsetIndex) => {
                 const { id, title, author } = item;
@@ -72,7 +72,7 @@ function Carousel(props) {
                 );
             })}
             {page != Math.ceil(items.length / itemsPerPage) &&
-                <ChevronRightIcon onClick={incrementPage} />
+                <ChevronRightIcon onClick={incrementPage} boxSize="2em" color="ce_white" bgColor="ce_mainmaroon" borderRadius="2xl" />
             }
         </HStack>
     )
