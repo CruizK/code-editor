@@ -16,7 +16,6 @@ import { loggedIn } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { getRole } from "@Utils/jwt";
 import Barrier from "@Components/Barrier/Barrier";
-import { useState } from "react";
 import instance from "@Utils/instance";
 
 export async function getServerSideProps(context) {
@@ -59,8 +58,6 @@ function EditCourse(props) {
     const isLoggedIn = loggedIn(cookies.user);
     const token = cookies.user;
 
-    const [presetPublishValue, setPreset] = useState(null); // this will be called in CourseForm
-
     async function handleSubmit(isPublished, token) {
         let success = await updateCourse(isPublished, token);
         if (success) {
@@ -72,7 +69,7 @@ function EditCourse(props) {
 
     var draftButton, publishButton;
 
-    if (presetPublishValue != null && presetPublishValue) {
+    if (props.defaultValues["isPublished"]) {
         draftButton =
         <Barrier 
             buttonText={<Button variant="black">Save As Draft</Button>}
@@ -80,8 +77,7 @@ function EditCourse(props) {
             text="Doing this will hide your course from public view, are you sure you want this?"
             callback={() => handleSubmit(false, token)}
         />;
-    }
-    if (presetPublishValue != null && !presetPublishValue) {
+    } else {
         publishButton =
         <Barrier 
             buttonText={<Button variant="maroon">Publish</Button>}
@@ -111,7 +107,7 @@ function EditCourse(props) {
                     </Button>
                 }
                 </SectionHeader>
-                <CourseForm defaultValues={props.defaultValues} getDefaults={true} setPreset={setPreset} />
+                <CourseForm defaultValues={props.defaultValues} />
             </Grid>
         </Main>
     );

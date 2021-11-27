@@ -11,7 +11,6 @@ import { courseRegEx, courseTitleTooltipLines } from "@Modules/Courses/Courses";
  */
 function CourseForm(props) {
     const dvs = (props.defaultValues) ? props.defaultValues : {};
-    if (props.getDefaults && typeof dvs["isPublished"] != 'undefined') props.setPreset(dvs["isPublished"]);
 
     return(
         <Flex alignItems="end" flexDir="column">
