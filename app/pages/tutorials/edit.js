@@ -18,7 +18,8 @@ import instance from "@Utils/instance";
 import { createTutorial, updateTutorial } from "@Modules/Tutorials/Tutorials";
 
 export async function getServerSideProps(context) {
-  var data = [];
+  var courses = [];
+  var tutorial = {};
 
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
@@ -29,22 +30,29 @@ export async function getServerSideProps(context) {
     headers["Authorization"] = "Bearer " + token;
   }
   
-  let response = await instance.get("/Courses/GetUserCreatedCourses", {
-    headers: {...headers},
-  });
-  
-  if (response.statusText == "OK")
-  data = response.data.map((courseData) => {
-    // we only need the titles for each course
-    return {
-      id: courseData.id,
-      title: courseData.title + ' (' + courseData.id + ')',
-    };
-  });
+  let courseResponse;
+
+  try {
+    courseResponse = await instance.get("/Courses/GetUserCreatedCourses", {
+      headers: {...headers},
+    });
+    
+    if (courseResponse.statusText == "OK")
+    courses = courseResponse.data.map((courseData) => {
+      // we only need the titles for each course
+      return {
+        id: courseData.id,
+        title: courseData.title + ' (' + courseData.id + ')',
+      };
+    });
+  } catch (error) {
+    console.log(error);
+  }
 
   return {
     props: {
-      courses: data,
+      courses: courses,
+      tutorial: tutorial,
     }, // will be passed to the page component as props
   }
 }
