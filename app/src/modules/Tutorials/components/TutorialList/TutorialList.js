@@ -82,7 +82,7 @@ function TutorialList(props) {
 
     useEffect(async function() {
         try {       
-            let response = await instance.get("/Tutorials/GetCourseTutorials/" + courseId, {
+            let response = await instance.get("/Tutorials/CourseTutorials/" + courseId, {
                 headers: {...headers},
             });
             if (response.statusText == "OK")
