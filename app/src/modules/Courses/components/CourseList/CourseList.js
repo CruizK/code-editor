@@ -6,7 +6,6 @@ import { loggedIn } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { deleteCourse } from "@Modules/Courses/Courses";
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
-import { storeThenRouteCourse } from "@Utils/storage";
 import { useCookies } from "react-cookie";
 import Barrier from "@Components/Barrier/Barrier";
 
@@ -34,7 +33,10 @@ function CourseItem(props) {
                         {title}
                     </Box>
                     <HStack spacing={3}>                        
-                        <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteCourse(props.data)} />
+                        <EditIcon color="ce_mainmaroon" onClick={() => {
+                            let redirect = '/courses/edit/' + id; 
+                            Router.push(redirect);
+                        }} />
                         <Barrier 
                             buttonText={<DeleteIcon />}
                             title="Confirmation"

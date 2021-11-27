@@ -17,8 +17,44 @@ import Router from 'next/router';
 import { getRole } from "@Utils/jwt";
 import Barrier from "@Components/Barrier/Barrier";
 import { useState } from "react";
+import instance from "@Utils/instance";
 
-function EditCourse() {
+export async function getServerSideProps(context) {
+    const { id } = context.query;
+
+    var defaultValues = {};
+
+    const cookies = context.req.cookies;
+    const isLoggedIn = loggedIn(cookies.user);
+    const headers = {};
+
+    if (isLoggedIn) {
+        let token = cookies.user;
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    let courseResponse;
+
+    try {
+        courseResponse = await instance.get("/Courses/GetCourseDetails/" + id, {
+            headers: {...headers},
+        });
+        
+        if (courseResponse.statusText == "OK")
+        defaultValues = courseResponse.data;
+        console.log(courseResponse.data);
+    } catch (error) {
+        console.log(error);
+    }
+
+    return {
+        props: {
+            defaultValues: defaultValues,
+        }, // will be passed to the page component as props
+    }
+}
+
+function EditCourse(props) {
     const [cookies, setCookie, removeCookie] = useCookies(["user"]);
     const isLoggedIn = loggedIn(cookies.user);
     const token = cookies.user;
@@ -75,7 +111,7 @@ function EditCourse() {
                     </Button>
                 }
                 </SectionHeader>
-                <CourseForm getDefaults={true} setPreset={setPreset} />
+                <CourseForm defaultValues={props.defaultValues} getDefaults={true} setPreset={setPreset} />
             </Grid>
         </Main>
     );

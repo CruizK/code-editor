@@ -4,14 +4,13 @@ import { Flex, Grid } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import FormToolTip from "@Components/FormTooltip/FormToolTip";
 import { courseRegEx, courseTitleTooltipLines } from "@Modules/Courses/Courses";
-import { getCourseSession } from "@Utils/storage";
 
 /**
  * Handles displaying form UI
  * Formdata is sent through the courses route, using document.getElementById to grab the form DOM object
  */
 function CourseForm(props) {
-    const dvs = (props.getDefaults) ? getCourseSession() : {};
+    const dvs = (props.defaultValues) ? props.defaultValues : {};
     if (props.getDefaults && typeof dvs["isPublished"] != 'undefined') props.setPreset(dvs["isPublished"]);
 
     return(
