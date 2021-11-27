@@ -5,7 +5,6 @@ import instance from "@Utils/instance";
 import { useCookies } from "react-cookie";
 import { loggedIn } from "@Modules/Auth/Auth";
 import { useEffect, useState } from "react";
-import { storeThenRouteTutorial } from "@Utils/storage";
 import { deleteTutorial } from "@Modules/Tutorials/Tutorials";
 import Router from "next/router";
 
@@ -51,7 +50,10 @@ function TutorialItem(props) {
             </GridItem>
             <GridItem colStart={6}>
                 <HStack spacing={3}>                        
-                    <EditIcon color="ce_mainmaroon" onClick={() => storeThenRouteTutorial(props.data)} />
+                    <EditIcon color="ce_mainmaroon" onClick={() => {
+                        let redirect = '/tutorials/edit/' + id; 
+                        Router.push(redirect);
+                    }} />
                     <DeleteIcon onClick={() => handleDeletion(id, token)} />
                 </HStack>
             </GridItem>

@@ -18,8 +18,10 @@ import instance from "@Utils/instance";
 import { createTutorial, updateTutorial } from "@Modules/Tutorials/Tutorials";
 
 export async function getServerSideProps(context) {
+  const { id } = context.query;
+
   var courses = [];
-  var tutorial = {};
+  var defaultValues = {};
 
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
@@ -49,10 +51,23 @@ export async function getServerSideProps(context) {
     console.log(error);
   }
 
+  let tutorialResponse;
+
+  try {
+    tutorialResponse = await instance.get("/Tutorials/UserTutorialDetails/" + id, {
+      headers: {...headers},
+    });
+    
+    if (tutorialResponse.statusText == "OK")
+    defaultValues = tutorialResponse.data;
+  } catch (error) {
+    console.log(error);
+  }
+
   return {
     props: {
       courses: courses,
-      tutorial: tutorial,
+      defaultValues: defaultValues,
     }, // will be passed to the page component as props
   }
 }
@@ -86,7 +101,7 @@ function EditTutorial(props) {
             Publish
           </Button>
           </SectionHeader>
-          <TutorialForm courses={props.courses} getDefaults={true} />
+          <TutorialForm courses={props.courses} defaultValues={props.defaultValues} getDefaults={true} />
         </Grid>
       </Main>
   );

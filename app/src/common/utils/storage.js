@@ -19,26 +19,6 @@ function storeThenRouteCourse(data) {
 }
 
 /**
- * Stores tutorial data in sessionStorage, then reroutes the user.
- * @param {string} title The title of an existing tutorial.
- * @param {string} description The description of an existing tutorial.
- */
- function storeThenRouteTutorial(data) {
-    const store = {
-        courseId: data["courseId"],
-        id: data["id"],
-        title: data["title"],
-        description: data["description"],
-        difficultyId: data["difficultyId"],
-        languageId: data["languageId"],
-        prompt: data["prompt"],
-    };
-    sessionStorage.setItem('tutorialDefaults', JSON.stringify(store));
-    let redirect = '/tutorials/edit'
-    Router.push(redirect);
-}
-
-/**
  * 
  * @returns The course a user is currently editing. If a user switches tabs, this will be empty. 
  */
@@ -52,18 +32,4 @@ const getCourseSession = () => {
     return {};
 }
 
-/**
- * 
- * @returns The course a user is currently editing. If a user switches tabs, this will be empty. 
- */
- const getTutorialSession = () => {
-    let tempValue = sessionStorage.getItem('tutorialDefaults');
-    if (tempValue) {
-        const value = JSON.parse(tempValue);
-        return value;
-    }
-
-    return {};
-}
-
-export { getCourseSession, getTutorialSession, storeThenRouteCourse, storeThenRouteTutorial };
+export { getCourseSession, storeThenRouteCourse };

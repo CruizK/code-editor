@@ -9,14 +9,13 @@ const MarkdownEditor = dynamic(
     () => import('../MarkdownEditor/MarkdownEditor').then(mod => mod.default),
     { ssr: false }
 );
-import { getTutorialSession } from "@Utils/storage";
 
 /**
  * Handles displaying form UI
  * Formdata is sent through the tutorials route, using document.getElementById to grab the form DOM object
  */
 function TutorialForm(props) {
-    const dvs = (props.getDefaults) ? getTutorialSession() : {};
+    const dvs = (props.defaultValues) ? props.defaultValues : {};
     const courseOptions = props.courses || [];
 
     const difficultyOptions = difficultylevels;
