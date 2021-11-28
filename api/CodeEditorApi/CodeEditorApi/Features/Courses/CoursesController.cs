@@ -95,7 +95,18 @@ namespace CodeEditorApi.Features.Courses
         [Authorize]
         public async Task<ActionResult<List<Course>>> GetAllPublishedCourses()
         {
-            return await _getAllPublishedCoursesCommand.ExecuteAsync();
+            return await _getAllPublishedCoursesCommand.GetAllPublishedCourses();
+        }
+
+        /// <summary>
+        /// Gets all courses that are published according to the latest updated courses
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetAllPublishedCoursesSortByModifyDate")]
+        [Authorize]
+        public async Task<ActionResult<List<Course>>> GetAllPublishedCoursesSortByModifyDate()
+        {
+            return await _getAllPublishedCoursesCommand.GetAllPublishedCoursesSortByModifyDate();
         }
 
         /// <summary>
