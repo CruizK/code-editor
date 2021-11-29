@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, ViewIcon } from "@chakra-ui/icons";
 import { Box, Flex, Grid, GridItem, HStack, Divider, Center } from "@chakra-ui/layout";
 import { Tag, TagLabel } from "@chakra-ui/tag";
 import instance from "@Utils/instance";
@@ -49,7 +49,11 @@ function TutorialItem(props) {
                 </HStack>
             </GridItem>
             <GridItem colStart={6}>
-                <HStack spacing={3}>                        
+                <HStack spacing={3}>            
+                    <ViewIcon onClick={() => {
+                        let redirect = '/tutorials/' + id; 
+                        Router.push(redirect);
+                    }} />            
                     <EditIcon color="ce_mainmaroon" onClick={() => {
                         let redirect = '/tutorials/edit/' + id; 
                         Router.push(redirect);
