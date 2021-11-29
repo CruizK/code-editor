@@ -1,7 +1,5 @@
 import { useBreakpointValue } from '@chakra-ui/media-query';
 import { Box } from '@chakra-ui/react';
-import toMarkdown from 'draftjs-to-markdown';
-import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 function MarkdownRenderer(props) {
