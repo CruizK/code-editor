@@ -46,8 +46,7 @@ export async function getServerSideProps(context) {
 }
 
 function Tutorial(props) {
-  const { values } = props;
-  const { prompt } = values;
+  const { prompt } = props.values;
 
   const [editorText, setText] = useState("<button onClick=\"document.getElementById('demo').innerHTML = \n\t'Change me!'\"\n>\n\tClick Me!\n</button>\n");
 
