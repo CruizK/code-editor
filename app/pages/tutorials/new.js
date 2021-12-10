@@ -54,6 +54,8 @@ function NewTutorial(props) {
   const isLoggedIn = loggedIn(cookies.user);
   const token = cookies.user;
 
+  const hasCourses = props.courses.length > 0;
+
   async function handleSubmit(isPublished, token) {
     let success = await createTutorial(isPublished, token);
     if (success) {
@@ -71,10 +73,10 @@ function NewTutorial(props) {
           <SNoLinkButton href="/dashboard/teacher" variant="white">
             Cancel
           </SNoLinkButton>
-          <Button variant="black" onClick={() => handleSubmit(false, token)}>
+          <Button variant="black" onClick={() => handleSubmit(false, token)} disabled={!hasCourses}>
             Save As Draft
           </Button>
-          <Button variant="maroon" onClick={() => handleSubmit(true, token)}>
+          <Button variant="maroon" onClick={() => handleSubmit(true, token)} disabled={!hasCourses}>
             Publish
           </Button>
           </SectionHeader>
