@@ -46,7 +46,7 @@ function Course(props) {
                 </Center>
                 <Box borderColor="ce_grey" borderWidth="2px" borderRadius="md" pl={15} pr={15}>
                     <Heading size="sm" fontWeight="bold">Tutorial</Heading>
-                    <TutorialList courseId={id} getTutorials={true} />
+                    <TutorialList courseId={id} getTutorials={true} editable={false} />
                 </Box>
             </Box>
         </Main>
