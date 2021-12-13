@@ -17,13 +17,12 @@ function Course(props) {
     const { title, id } = props;
 
     async function handleSubmit(event) {
-        let token = await login(event);
-        if (token) {
-            setCookie("user", token, { 
-                path: "/",
-                maxAge: maxAgeInHours * 60 * 60, //seconds
-                sameSite: true,
-            })
+        /**
+         * Add handler code here.
+         */
+        let success = await someFunction(event);
+        if (success) {
+            // do something
         }
     }
 
