@@ -74,7 +74,7 @@ function TutorialItem(props) {
  * Handles displaying an accordion list of courses.
  */
 function TutorialList(props) {
-    const [tutorials, setTutorials] = useState([]);
+    const [tutorials, setTutorials] = useState(props.tutorials || []);
     const { courseId, getTutorials } = props;
     const headers = {};
 
@@ -87,15 +87,17 @@ function TutorialList(props) {
     }
 
     useEffect(async function() {
-        try {       
-            let response = await instance.get("/Tutorials/CourseTutorials/" + courseId, {
-                headers: {...headers},
-            });
-            if (response.statusText == "OK")
-            setTutorials(response.data);
-        } catch (error) {
-            //TODO: Error handling.
-            //console.log(error.response);
+        if (getTutorials) {
+            try {       
+                let response = await instance.get("/Tutorials/CourseTutorials/" + courseId, {
+                    headers: {...headers},
+                });
+                if (response.statusText == "OK")
+                setTutorials(response.data);
+            } catch (error) {
+                //TODO: Error handling.
+                //console.log(error.response);
+            }
         }
     }, [getTutorials]);
 
