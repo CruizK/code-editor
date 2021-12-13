@@ -7,6 +7,7 @@ import { loggedIn } from "@Modules/Auth/Auth";
 import { useEffect, useState } from "react";
 import { deleteTutorial } from "@Modules/Tutorials/Tutorials";
 import Router from "next/router";
+import { Button } from "@chakra-ui/react";
 
 function TutorialItem(props) {
     const { token } = props;
@@ -49,6 +50,7 @@ function TutorialItem(props) {
                 </HStack>
             </GridItem>
             <GridItem colStart={6}>
+                {props.editable && 
                 <HStack spacing={3}>            
                     <ViewIcon onClick={() => {
                         let redirect = '/tutorials/' + id; 
@@ -60,6 +62,14 @@ function TutorialItem(props) {
                     }} />
                     <DeleteIcon onClick={() => handleDeletion(id, token)} />
                 </HStack>
+                }
+                {!props.editable &&
+                <HStack spacing={3}>            
+                    <Button variant="white">
+                        Start
+                    </Button>
+                </HStack>
+                }
             </GridItem>
             <GridItem colSpan={6}>
                 <Center>

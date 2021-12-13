@@ -48,7 +48,7 @@ function CourseItem(props) {
                 </AccordionButton>
             </Heading>
             <AccordionPanel pb={4}>
-                <TutorialList courseId={id} getTutorials={isExpanded} />
+                <TutorialList courseId={id} getTutorials={isExpanded} editable={true} />
             </AccordionPanel>
             </>
             )}
