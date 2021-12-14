@@ -10,7 +10,7 @@ const CourseForm = dynamic(
 );
 import { Center, Flex, Grid } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
-import { updateCourse } from "@Modules/Courses/Courses";
+import { getCourseDetails, updateCourse } from "@Modules/Courses/Courses";
 import { useCookies } from "react-cookie";
 import { loggedIn } from "@Modules/Auth/Auth";
 import Router from 'next/router';
@@ -25,26 +25,12 @@ export async function getServerSideProps(context) {
 
     const cookies = context.req.cookies;
     const isLoggedIn = loggedIn(cookies.user);
-    const headers = {};
+    let token = cookies.user;
 
-    if (isLoggedIn) {
-        let token = cookies.user;
-        headers["Authorization"] = "Bearer " + token;
-    }
-
-    let courseResponse;
-
-    try {
-        courseResponse = await instance.get("/Courses/GetCourseDetails/" + id, {
-            headers: {...headers},
-        });
-        
-        if (courseResponse.statusText == "OK")
-        defaultValues = courseResponse.data;
-        console.log(courseResponse.data);
-    } catch (error) {
-        console.log(error);
-    }
+    let course = await getCourseDetails(id, token);
+    if (course) {
+        defaultValues = course;
+    } 
 
     return {
         props: {

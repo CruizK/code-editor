@@ -18,6 +18,33 @@ function courseRegEx() {
 ];
 
 /**
+ * A function that gets course data from the server using a course ID.
+ * @param {integer} id Course id
+ * @returns {Array<Object>|boolean} Course object if successful, 'false' if unsuccessful
+ */
+async function getCourseDetails(id, token) {
+    const headers = {};
+
+    if (token) {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    let courseResponse;
+
+    try {
+        courseResponse = await instance.get("/Courses/GetCourseDetails/" + id, {
+            headers: {...headers},
+        });
+        
+        if (courseResponse.statusText == "OK")
+        return courseResponse.data;
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+}
+
+/**
  * A function that sends form data to the server for course creation.
  * Validation is done through attributes on the form's html
  * @param {boolean} isPublished 
@@ -136,4 +163,4 @@ async function deleteCourse(id, token) {
     return false;
 }
 
-export { createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines }
+export { getCourseDetails, createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines }
