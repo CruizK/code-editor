@@ -2,6 +2,31 @@ import instance from "@Utils/instance";
 import { getID } from "@Utils/jwt";
 
 /**
+ * A function that gets an array of tutorials from the server using a course ID.
+ * @param {integer} id Course id
+ * @returns {Array<Object>|boolean} Array of tutorial objects if successful, 'false' if unsuccessful
+ */
+async function getTutorialsFromCourse(id, token) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    try {       
+        let response = await instance.get("/Tutorials/CourseTutorials/" + id, {
+            headers: {...headers},
+        });
+        if (response.statusText == "OK")
+        return response.data;
+    } catch (error) {
+        //TODO: Error handling.
+        //console.log(error.response);
+    }
+    return false;
+}
+
+/**
  * A function that sends form data to the server for tutorial creation.
  * Validation is done through attributes on the form's html, but is currently not defined.
  * @param {boolean} isPublished 
@@ -132,4 +157,4 @@ async function createTutorial(isPublished, token, prompt) {
     return false;
 }
 
-export { createTutorial, updateTutorial, deleteTutorial }
+export { getTutorialsFromCourse, createTutorial, updateTutorial, deleteTutorial }

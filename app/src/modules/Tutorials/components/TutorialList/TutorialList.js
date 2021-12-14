@@ -5,7 +5,7 @@ import instance from "@Utils/instance";
 import { useCookies } from "react-cookie";
 import { loggedIn } from "@Modules/Auth/Auth";
 import { useEffect, useState } from "react";
-import { deleteTutorial } from "@Modules/Tutorials/Tutorials";
+import { deleteTutorial, getTutorialsFromCourse } from "@Modules/Tutorials/Tutorials";
 import Router from "next/router";
 import { Button } from "@chakra-ui/react";
 
@@ -92,21 +92,11 @@ function TutorialList(props) {
     const isLoggedIn = loggedIn(cookies.user);
     const token = cookies.user;
 
-    if (isLoggedIn) {
-        headers["Authorization"] = "Bearer " + token;
-    }
-
     useEffect(async function() {
         if (getTutorials) {
-            try {       
-                let response = await instance.get("/Tutorials/CourseTutorials/" + courseId, {
-                    headers: {...headers},
-                });
-                if (response.statusText == "OK")
-                setTutorials(response.data);
-            } catch (error) {
-                //TODO: Error handling.
-                //console.log(error.response);
+            let success = await getTutorialsFromCourse(courseId, token);
+            if (success) {
+                setTutorials(success);
             }
         }
     }, [getTutorials]);
