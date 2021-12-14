@@ -2,19 +2,32 @@ import { Box, Button, Center, Flex, Heading, Image, Spacer } from "@chakra-ui/re
 import Main from "@Components/Main/Main";
 import { useRouter } from 'next/router';
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
+import { getCourseDetails } from "@Modules/Courses/Courses";
+import { loggedIn } from "@Modules/Auth/Auth";
 
 export async function getServerSideProps(context) {
     const { id } = context.query;
+    var courseDetails = {};
+
+    const cookies = context.req.cookies;
+    const isLoggedIn = loggedIn(cookies.user);
+    let token = cookies.user;
+
+    const course = await getCourseDetails(id, token);
+    if (course) {
+        courseDetails = course;
+    }
   
     return {
         props: {
-            id: id,
+            ...courseDetails
         }, // will be passed to the page component as props
     }
 }
 
 function Course(props) {
-    const { title, id } = props;
+    const { id, title, description } = props;
+    console.log(props);
 
     async function handleSubmit(event) {
         /**
@@ -30,14 +43,14 @@ function Course(props) {
         <Main width="100%" margin="0" maxWidth="100%">
             <Flex width="100%" height="8rem" backgroundColor="ce_mainmaroon" alignItems="center">
                 <Flex height="50%" w="100%" color="ce_white" fontWeight="bold" fontFamily="button" fontSize="md" alignItems="end">
-                    {'TODO: remove'.toUpperCase()}
+                    {title}
                 </Flex>
                 <Spacer />
                 <Image src="/defaults/card_icon.png" alt="SIU Logo" height="60%" mr={15} />
             </Flex>
             <Box maxWidth="container.lg" margin="auto">
                 <Heading size="sm" fontWeight="bold">Description</Heading>
-                Lorem ipsum etc etc
+                {description}
                 <Center>
                     <Button variant="maroon" onClick={() => handleSubmit(true, token)} w="xs" maxW="md" pt={15} pb={15} mb={15}>
                         Start from Beginning
