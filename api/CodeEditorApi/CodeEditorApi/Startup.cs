@@ -96,7 +96,7 @@ namespace CodeEditorApi
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             // Will DI any interfaces within the Features folder
-            var types = typeof(Program).Assembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Contains("Features") || t.Namespace.Contains("Services"));
+            var types = typeof(Program).Assembly.GetTypes().Where(t => t.Namespace != null && (t.Namespace.Contains("Features") || t.Namespace.Contains("Services")));
             foreach(var intfc in types.Where(t => t.IsInterface))
             {
                 var impl = types.FirstOrDefault(c => c.IsClass && intfc.IsAssignableFrom(c) && !c.IsAbstract);

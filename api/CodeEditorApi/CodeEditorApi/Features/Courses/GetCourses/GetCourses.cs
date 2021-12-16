@@ -18,6 +18,8 @@ namespace CodeEditorApi.Features.Courses.GetCourses
         public Task<List<Course>> GetAllPublishedCourses();
 
         public Task<List<Course>> GetAllPublishedCoursesSortByModifyDate();
+
+        public Task<List<int>> GetMostPopularCourses();
     }
     public class GetCourses : IGetCourses
     {
@@ -68,6 +70,21 @@ namespace CodeEditorApi.Features.Courses.GetCourses
                     Title = c.Title,
                     Author = c.Author
                 }).ToListAsync();
+        }
+
+        public async Task<List<int>> GetMostPopularCourses()
+        {
+            int top = 5;
+            var sortByMostRegisteredUsers = await _context.UserRegisteredCourses
+               .OrderByDescending(c => c.UserId)
+               .GroupBy(c => c.CourseId)
+               .Select(c => new { c.Key, Popularity = c.Count() })
+               .ToListAsync();
+
+            var mostPopularCourseIds = sortByMostRegisteredUsers.Select(su => su.Key).Take(top).ToList();
+
+            return mostPopularCourseIds;
+
         }
     }
 }
