@@ -87,7 +87,7 @@ function TutorialItem(props) {
  */
 function TutorialList(props) {
     const [tutorials, setTutorials] = useState(props.tutorials || []);
-    const { courseId, getTutorials } = props;
+    const { courseId, getTutorials, editable } = props;
     const headers = {};
 
     const [cookies, setCookie, removeCookie] = useCookies(["user"]);
@@ -106,7 +106,7 @@ function TutorialList(props) {
     return(
         <>
             {tutorials.map((tutorialData, index) => {
-                return <TutorialItem key={index} data={tutorialData} token={token} />
+                return <TutorialItem key={index} data={tutorialData} token={token} editable={editable} />
             })}            
         </>
     )
