@@ -69,7 +69,7 @@ async function createCourse(isPublished, token) {
 
     if (isValid) {
         try {
-            let response = await instance.post("/Courses", {
+            let response = await instance.post("/Courses/CreateCourse", {
                 title: form["course_title"].value,
                 description: form["description"].value,
                 isPublished: isPublished,
@@ -114,7 +114,7 @@ async function updateCourse(isPublished, token) {
 
     if (isValid) {
         try {
-            let response = await instance.put("/Courses/" + form["course_id"].value, {
+            let response = await instance.put("/Courses/UpdateCourse/" + form["course_id"].value, {
                 title: form["course_title"].value,
                 description: form["description"].value,
                 isPublished: isPublished,
@@ -149,7 +149,7 @@ async function deleteCourse(id, token) {
 
     if (isValid) {
         try { 
-            let response = await instance.delete("/Courses/" + id, {
+            let response = await instance.delete("/Courses/DeleteCourse/" + id, {
                 headers: {...headers},
             });
 

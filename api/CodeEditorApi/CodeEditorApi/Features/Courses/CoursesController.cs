@@ -8,8 +8,6 @@ using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Courses
@@ -55,7 +53,7 @@ namespace CodeEditorApi.Features.Courses
         /// Gets all courses for a single user
         /// </summary>
         /// <returns></returns>
-        [HttpGet("")]
+        [HttpGet("GetUserCourses")]
         [Authorize]
         public async Task<ActionResult<List<Course>>> GetUserCourses()
         {
@@ -116,7 +114,7 @@ namespace CodeEditorApi.Features.Courses
         /// The course details for creating the new course
         /// </param>
         /// <returns></returns>
-        [HttpPost("")]
+        [HttpPost("CreateCourse")]
         [Authorize]
         public async Task<ActionResult<Course>> CreateCourse([FromBody] CreateCourseBody createCourseBody)
         {
@@ -131,7 +129,7 @@ namespace CodeEditorApi.Features.Courses
         /// The course details for registering a user
         /// </param>
         /// <returns></returns>
-        [HttpPost("register")]
+        [HttpPost("RegisterUser")]
         [Authorize]
         public async Task<ActionResult<UserRegisteredCourse>> RegisterUser([FromBody] RegisterUserBody registerUserBody)
         {
@@ -146,7 +144,7 @@ namespace CodeEditorApi.Features.Courses
         /// The course details for unregistering a user
         /// </param>
         /// <returns></returns>
-        [HttpPost("unregister")]
+        [HttpPost("UnregisterUser")]
         [Authorize]
         public async Task<ActionResult<UserRegisteredCourse>> UnregisterUser([FromBody] UnregisterUserBody unregisterUserBody)
         {
@@ -160,7 +158,7 @@ namespace CodeEditorApi.Features.Courses
         /// <param name="updateCourseBody">updated Course details for the existing course</param>
         /// <param name="courseId"></param>
         /// <returns></returns>
-        [HttpPut("{courseId:int}")]
+        [HttpPut("UpdateCourse/{courseId:int}")]
         [Authorize]
         public async Task<ActionResult<Course>> UpdateCourse(int courseId, [FromBody] UpdateCourseBody updateCourseBody)
         {
@@ -175,7 +173,7 @@ namespace CodeEditorApi.Features.Courses
         /// Course for deletion
         /// </param>
         /// <returns></returns>
-        [HttpDelete("{courseId:int}")]
+        [HttpDelete("DeleteCourse/{courseId:int}")]
         [Authorize]
         public async Task<ActionResult<Course>> DeleteCourse(int courseId)
         {

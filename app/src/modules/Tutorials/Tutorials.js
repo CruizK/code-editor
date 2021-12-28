@@ -53,7 +53,7 @@ async function createTutorial(isPublished, token, prompt) {
 
     if (isValid) {
         try {
-            let response = await instance.post("/Tutorials", {
+            let response = await instance.post("/Tutorials/CreateTutorial", {
                 courseId: form["course_id"].value,
                 title: form["tutorial_title"].value,
                 author: author,
@@ -103,7 +103,7 @@ async function createTutorial(isPublished, token, prompt) {
 
     if (isValid) {
         try {
-            let response = await instance.put("/Tutorials/" + form["tutorial_id"].value, {
+            let response = await instance.put("/Tutorials/UpdateTutorial/" + form["tutorial_id"].value, {
                 courseId: form["course_id"].value,
                 title: form["tutorial_title"].value,
                 author: author,
@@ -143,7 +143,7 @@ async function createTutorial(isPublished, token, prompt) {
 
     if (isValid) {
         try { 
-            let response = await instance.delete("/Tutorials/" + id, {
+            let response = await instance.delete("/Tutorials/DeleteTutorial/" + id, {
                 headers: {...headers},
             });
 
