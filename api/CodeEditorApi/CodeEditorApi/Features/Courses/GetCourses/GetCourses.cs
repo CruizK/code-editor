@@ -1,5 +1,6 @@
 ﻿using CodeEditorApiDataAccess.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,7 +44,14 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 
         public async Task<Course> GetCourseDetails(int courseId)
         {
-            return await _context.Courses.FindAsync(courseId);
+            var course = await _context.Courses
+                .Where(c => c.Id.Equals(courseId))
+                .Include(c => c.Tutorials) // the 'include' loads all tutorials related to the course
+                    .ThenInclude(t => t.Difficulty) // the 'theninclude' then loads the difficulty of a given tutorial as well as all tutorials under that difficulty that have ALREADY been loaded
+                .Include(c => c.Tutorials)
+                    .ThenInclude(t => t.Language)
+                .FirstOrDefaultAsync();
+            return course;
         }
 
         public async Task<List<Course>> GetAllPublishedCourses()

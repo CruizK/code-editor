@@ -26,7 +26,7 @@ export async function getServerSideProps(context) {
 }
 
 function Course(props) {
-    const { id, title, description } = props;
+    const { id, title, description, tutorials } = props;
     console.log(props);
 
     async function handleSubmit(event) {
@@ -58,7 +58,7 @@ function Course(props) {
                 </Center>
                 <Box borderColor="ce_grey" borderWidth="2px" borderRadius="md" pl={15} pr={15}>
                     <Heading size="sm" fontWeight="bold">Tutorial</Heading>
-                    <TutorialList courseId={id} getTutorials={true} editable={false} />
+                    <TutorialList courseId={id} tutorials={tutorials} />
                 </Box>
             </Box>
         </Main>

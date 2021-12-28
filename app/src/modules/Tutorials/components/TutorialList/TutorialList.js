@@ -13,15 +13,17 @@ function TutorialItem(props) {
     const { token } = props;
     const { id, title } = props.data;
     const tags = [];
-    if (props.Difficulty) {
+    if (props.data.difficulty) {
+        var difficultyObject = props.data.difficulty;
         tags.push({
-            name: props.Difficulty,
+            name: difficultyObject.difficulty,
             type: 'difficulties',
         });
     }
-    if (props.Language) {
+    if (props.data.language) {
+        var languageObject = props.data.language;
         tags.push({
-            name: props.Language,
+            name: languageObject.language,
             type: 'languages',
         });
     }
