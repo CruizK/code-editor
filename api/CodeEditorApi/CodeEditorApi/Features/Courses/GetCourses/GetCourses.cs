@@ -74,14 +74,15 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 
         public async Task<List<int>> GetMostPopularCourses()
         {
-            int top = 3;
-            var sortByMostRegisteredUsers = await _context.UserRegisteredCourses
-               .OrderByDescending(c => c.UserId)
-               .GroupBy(c => c.CourseId)
-               .Select(c => new { c.Key, Popularity = c.Count() })
-               .ToListAsync();
+            int top = 3;            
 
-            var mostPopularCourseIds = sortByMostRegisteredUsers.Select(su => su.Key).Take(top).ToList();
+            var result = await _context.UserRegisteredCourses
+                .GroupBy(c => c.CourseId)
+                .OrderByDescending(c => c.Count())
+                .ThenBy(c => c.Key)
+                .Select(c => c.Key).ToListAsync();
+
+            var mostPopularCourseIds = result.Take(top).ToList();
 
             return mostPopularCourseIds;
 
