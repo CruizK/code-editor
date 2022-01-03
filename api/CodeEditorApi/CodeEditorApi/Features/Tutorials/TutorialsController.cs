@@ -4,12 +4,8 @@ using CodeEditorApi.Features.Tutorials.GetTutorials;
 using CodeEditorApi.Features.Tutorials.UpdateTutorials;
 using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Tutorials
@@ -94,7 +90,7 @@ namespace CodeEditorApi.Features.Tutorials
         /// </summary>
         /// <param name="createTutorialsBody"></param>
         /// <returns></returns>
-        [HttpPost("")]
+        [HttpPost("CreateTutorial")]
         [Authorize]
         public async Task<ActionResult<Tutorial>> CreateTutorial([FromBody] CreateTutorialsBody createTutorialsBody)
         {
@@ -106,7 +102,7 @@ namespace CodeEditorApi.Features.Tutorials
         /// </summary>
         /// <param name="tutorialId"></param>
         /// <returns></returns>
-        [HttpDelete("{tutorialId:int}")]
+        [HttpDelete("DeleteTutorial/{tutorialId:int}")]
         [Authorize]
         public async Task<ActionResult<Tutorial>> DeleteTutorials(int tutorialId)
         {
@@ -119,7 +115,7 @@ namespace CodeEditorApi.Features.Tutorials
         /// <param name="tutorialId"></param>
         /// <param name="createTutorialsBody"></param>
         /// <returns></returns>
-        [HttpPut("{tutorialId:int}")]
+        [HttpPut("UpdateTutorial/{tutorialId:int}")]
         [Authorize]
         public async Task<ActionResult<Tutorial>> UpdateTutorials(int tutorialId, [FromBody] CreateTutorialsBody createTutorialsBody)
         {

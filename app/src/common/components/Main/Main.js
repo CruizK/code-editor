@@ -7,6 +7,8 @@ import Header from "@Components/Header/Header"
  * Wrapper for main so that nextjs lets us render the header without complaining.
  */
 function Main(props) {
+    const { children, ...rest } = props;
+
     const size = useBreakpointValue({ base: "xs", lg: "lg"});
     const styles = useMultiStyleConfig("Main", {
         size: size,
@@ -15,7 +17,7 @@ function Main(props) {
         <main>
             <Box __css={styles.outer}>                
                 <Header />
-                <Box __css={styles.content}>
+                <Box __css={styles.content} {...rest}>
                     {props.children}
                 </Box>
             </Box>

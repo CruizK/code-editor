@@ -74,7 +74,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 
         public async Task<List<int>> GetMostPopularCourses()
         {
-            int top = 5;
+            int top = 3;
             var sortByMostRegisteredUsers = await _context.UserRegisteredCourses
                .OrderByDescending(c => c.UserId)
                .GroupBy(c => c.CourseId)

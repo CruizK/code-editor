@@ -18,7 +18,10 @@ import instance from "@Utils/instance";
 import { createTutorial, updateTutorial } from "@Modules/Tutorials/Tutorials";
 
 export async function getServerSideProps(context) {
-  var data = [];
+  const { id } = context.query;
+
+  var courses = [];
+  var defaultValues = {};
 
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
@@ -29,22 +32,42 @@ export async function getServerSideProps(context) {
     headers["Authorization"] = "Bearer " + token;
   }
   
-  let response = await instance.get("/Courses/Created", {
-    headers: {...headers},
-  });
-  
-  if (response.statusText == "OK")
-  data = response.data.map((courseData) => {
-    // we only need the titles for each course
-    return {
-      id: courseData.id,
-      title: courseData.title + ' (' + courseData.id + ')',
-    };
-  });
+  let courseResponse;
+
+  try {
+    courseResponse = await instance.get("/Courses/GetUserCreatedCourses", {
+      headers: {...headers},
+    });
+    
+    if (courseResponse.statusText == "OK")
+    courses = courseResponse.data.map((courseData) => {
+      // we only need the titles for each course
+      return {
+        id: courseData.id,
+        title: courseData.title + ' (' + courseData.id + ')',
+      };
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
+  let tutorialResponse;
+
+  try {
+    tutorialResponse = await instance.get("/Tutorials/UserTutorialDetails/" + id, {
+      headers: {...headers},
+    });
+    
+    if (tutorialResponse.statusText == "OK")
+    defaultValues = tutorialResponse.data;
+  } catch (error) {
+    console.log(error);
+  }
 
   return {
     props: {
-      courses: data,
+      courses: courses,
+      defaultValues: defaultValues,
     }, // will be passed to the page component as props
   }
 }
@@ -78,7 +101,7 @@ function EditTutorial(props) {
             Publish
           </Button>
           </SectionHeader>
-          <TutorialForm courses={props.courses} getDefaults={true} />
+          <TutorialForm courses={props.courses} defaultValues={props.defaultValues} getDefaults={true} />
         </Grid>
       </Main>
   );

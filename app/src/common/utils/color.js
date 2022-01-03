@@ -21,4 +21,33 @@ function paletteToRGB(paletteColor, opacity) {
     return `rgba(${r},${g},${b},${opacity})`;
 };
 
-export default paletteToRGB;
+/**
+ * 
+ * @param {Number} r Red
+ * @param {Number} g Green
+ * @param {Number} b Blue
+ * @returns {String} Hex representation
+ */
+function RGBToHex(r, g, b) {
+    const byteToHex = (byte) => {
+        var hexMap = "0123456789ABCDEF";
+        return String(hexMap.substr((byte >> 4) & 0x0F, 1)) + hexMap.substr(byte & 0x0F, 1);
+    };
+    return '#' + byteToHex(r) + byteToHex(b) + byteToHex(g);
+}
+
+/**
+ * 
+ * @param {Number} iteration Number less than 32
+ * @param {Number} frequency Sine frequency, default 0.3.
+ * @returns {String} Hex representation
+ */
+function getRainbowAtIteration(iteration, frequency=0.3) {
+    let r = Math.sin(frequency*iteration + 0) * 127 + 128;
+    let g = Math.sin(frequency*iteration + 2) * 127 + 128;
+    let b = Math.sin(frequency*iteration + 4) * 127 + 128;
+
+    return RGBToHex(r, g, b);
+}
+
+export { paletteToRGB as default, RGBToHex, getRainbowAtIteration };

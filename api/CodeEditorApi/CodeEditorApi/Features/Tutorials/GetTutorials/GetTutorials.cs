@@ -43,7 +43,10 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 
         public async Task<List<Tutorial>> GetCourseTutorials(int courseId)
         {
-            return await _context.Tutorials.Where(t => t.CourseId == courseId).Select(t => t).ToListAsync();
+            return await _context.Tutorials.Where(t => t.CourseId == courseId)
+                .Include(c => c.Difficulty)
+                .Include(c => c.Language)
+                .Select(t => t).ToListAsync();
         }
 
         public async Task<List<UserTutorial>> GetUserRegisteredTutorials(int userId)
