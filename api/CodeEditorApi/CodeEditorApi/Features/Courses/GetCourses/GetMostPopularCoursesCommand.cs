@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CodeEditorApi.Errors;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,10 @@ namespace CodeEditorApi.Features.Courses.GetCourses
         }
         public async Task<ActionResult<List<int>>> ExecuteAsync()
         {
+            if (_getCourses.GetAllPublishedCourses() == null)
+            {
+                return ApiError.BadRequest($"No courses have been published.");
+            }
             return await _getCourses.GetMostPopularCourses();
         }
     }
