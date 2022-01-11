@@ -8,10 +8,11 @@ import { useEffect, useState } from "react";
 import { deleteTutorial, getTutorialsFromCourse } from "@Modules/Tutorials/Tutorials";
 import Router from "next/router";
 import { Button } from "@chakra-ui/react";
+import { checkIfInCourse } from "@Modules/Courses/Courses";
 
 function TutorialItem(props) {
     const { token } = props;
-    const { id, title } = props.data;
+    const { id, title, courseId } = props.data;
     const tags = [];
     if (props.data.difficulty) {
         var difficultyObject = props.data.difficulty;
@@ -32,6 +33,24 @@ function TutorialItem(props) {
         let success = await deleteTutorial(id, token);
         if (success) {
             Router.reload();
+        }
+    }
+
+    /**
+     * 
+     * @param {integer} to Tutorial id
+     * @param {integer} from Course id
+     */
+     async function start(event, to, from) {
+        let isRegistered = await checkIfInCourse(from, token);
+
+        let success = true;
+        if (!isRegistered) {
+            success = await registerForCourse(from, token);
+        }
+        if (success) {
+            let redirect = '/tutorials/' + to; 
+            Router.push(redirect);
         }
     }
 
@@ -67,7 +86,7 @@ function TutorialItem(props) {
                 }
                 {!props.editable &&
                 <HStack spacing={3}>            
-                    <Button variant="white">
+                    <Button variant="white" onClick={(e) => start(e, id, courseId)}>
                         Start
                     </Button>
                 </HStack>

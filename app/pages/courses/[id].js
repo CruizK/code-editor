@@ -41,17 +41,6 @@ function Course(props) {
 
     const [isRegistered, setIR] = useState(checkIfInCourse(id, token));
 
-    async function register(event) {
-        /**
-         * Add handler code here.
-         */
-        let success = await registerForCourse(id, token);
-        if (success) {
-            // do something
-        }
-        return success;
-    }
-
     /**
      * 
      * @param {integer} to Tutorial id
