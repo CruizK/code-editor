@@ -1,10 +1,12 @@
 import { Box, Button, Center, Flex, Heading, Image, Spacer } from "@chakra-ui/react";
 import Main from "@Components/Main/Main";
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
-import { getCourseDetails, registerForCourse } from "@Modules/Courses/Courses";
+import { checkIfInCourse, getCourseDetails, registerForCourse } from "@Modules/Courses/Courses";
 import { loggedIn } from "@Modules/Auth/Auth";
 import { useCookies } from "react-cookie";
+import { useState } from "react";
+import { getTutorialsFromCourse } from "@Modules/Tutorials/Tutorials";
 
 export async function getServerSideProps(context) {
     const { id } = context.query;
@@ -18,10 +20,13 @@ export async function getServerSideProps(context) {
     if (course) {
         courseDetails = course;
     }
+
+    const tutorials = await getTutorialsFromCourse(id, token);
   
     return {
         props: {
-            ...courseDetails
+            ...courseDetails,
+            tutorials: tutorials,
         }, // will be passed to the page component as props
     }
 }
@@ -34,6 +39,8 @@ function Course(props) {
     const { id, title, description, tutorials } = props;
     console.log(props);
 
+    const [isRegistered, setIR] = useState(checkIfInCourse(id, token));
+
     async function register(event) {
         /**
          * Add handler code here.
@@ -41,6 +48,23 @@ function Course(props) {
         let success = await registerForCourse(id, token);
         if (success) {
             // do something
+        }
+        return success;
+    }
+
+    /**
+     * 
+     * @param {integer} to Tutorial id
+     * @param {integer} from Course id
+     */
+    async function start(event, to, from) {
+        let success = true;
+        if (!isRegistered) {
+            success = await registerForCourse(from, token);
+        }
+        if (success) {
+            let redirect = '/tutorials/' + to; 
+            Router.push(redirect);
         }
     }
 
@@ -57,7 +81,12 @@ function Course(props) {
                 <Heading size="sm" fontWeight="bold">Description</Heading>
                 {description}
                 <Center>
-                    <Button variant="maroon" onClick={register} w="xs" maxW="md" pt={15} pb={15} mb={15}>
+                    {isRegistered && 
+                    <Button variant="black" onClick={() => {/** TODO */}} w="xs" maxW="md" pt={15} pb={15} mb={15} mr={15} isDisabled="true">
+                        Continue From Last Tutorial
+                    </Button>
+                    }
+                    <Button variant="maroon" onClick={(event) => start(event, tutorials[0].id, id)} w="xs" maxW="md" pt={15} pb={15} mb={15}>
                         Start from Beginning
                     </Button>
                 </Center>
