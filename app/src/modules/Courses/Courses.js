@@ -193,7 +193,7 @@ async function deleteCourse(id, token) {
  * A function that registers for a course.
  * @param {integer} id 
  * @param {string} token JWT token.
- * @returns {boolean} Whether or not the deletion succeeded.
+ * @returns {boolean} Whether or not the registration succeeded
  */
 async function registerForCourse(id, token) {
     const headers = {};
