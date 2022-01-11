@@ -2,8 +2,9 @@ import { Box, Button, Center, Flex, Heading, Image, Spacer } from "@chakra-ui/re
 import Main from "@Components/Main/Main";
 import { useRouter } from 'next/router';
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
-import { getCourseDetails } from "@Modules/Courses/Courses";
+import { getCourseDetails, registerForCourse } from "@Modules/Courses/Courses";
 import { loggedIn } from "@Modules/Auth/Auth";
+import { useCookies } from "react-cookie";
 
 export async function getServerSideProps(context) {
     const { id } = context.query;
@@ -26,6 +27,10 @@ export async function getServerSideProps(context) {
 }
 
 function Course(props) {
+    const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+    const isLoggedIn = loggedIn(cookies.user);
+    const token = cookies.user;
+    
     const { id, title, description, tutorials } = props;
     console.log(props);
 
@@ -33,7 +38,7 @@ function Course(props) {
         /**
          * Add handler code here.
          */
-        let success = await someFunction(event);
+        let success = await registerForCourse(id, token);
         if (success) {
             // do something
         }
