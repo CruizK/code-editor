@@ -45,6 +45,32 @@ async function getCourseDetails(id, token) {
 }
 
 /**
+ * A function that gets all courses a user is registered for.
+ * @returns {Array<Object>|boolean} Course objects if successful, 'false' if unsuccessful
+ */
+ async function getUserCourses(token) {
+    const headers = {};
+
+    if (token) {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    let courseResponse;
+
+    try {
+        courseResponse = await instance.get("/Courses/GetUserCourses", {
+            headers: {...headers},
+        });
+        
+        if (courseResponse.statusText == "OK")
+        return courseResponse.data;
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+}
+
+/**
  * A function that sends form data to the server for course creation.
  * Validation is done through attributes on the form's html
  * @param {boolean} isPublished 
@@ -163,4 +189,71 @@ async function deleteCourse(id, token) {
     return false;
 }
 
-export { getCourseDetails, createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines }
+/**
+ * A function that registers for a course.
+ * @param {integer} id 
+ * @param {string} token JWT token.
+ * @returns {boolean} Whether or not the deletion succeeded.
+ */
+async function registerForCourse(id, token) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    try { 
+        let response = await instance.post("/Courses/RegisterUser", {
+            courseId: id,
+        }, {
+            headers: {...headers},
+        });
+
+        if (response.statusText == "OK")
+        return true;
+    } catch (error) {
+        
+    }
+
+    return false;
+}
+
+async function unregisterFromCourse(id, token) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    try { 
+        let response = await instance.delete("/Courses/UnregisterUser", {
+            headers: {...headers},
+        });
+
+        if (response.statusText == "OK")
+        return true;
+    } catch (error) {
+        
+    }
+
+    return false;
+}
+
+async function checkIfInCourse(id, token) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    var courses = await getUserCourses(token);
+    if (!courses) return false;
+
+    let inCourse = courses.some((course, index, ar) => {
+        return course.id == id
+    });
+    
+    return inCourse;
+}
+
+export { getCourseDetails, getUserCourses, createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines, registerForCourse, checkIfInCourse }
