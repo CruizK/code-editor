@@ -22,11 +22,14 @@ export async function getServerSideProps(context) {
     }
 
     const tutorials = await getTutorialsFromCourse(id, token);
+
+    const isRegistered = await checkIfInCourse(id, token);
   
     return {
         props: {
             ...courseDetails,
             tutorials: tutorials,
+            isRegistered: isRegistered,
         }, // will be passed to the page component as props
     }
 }
@@ -36,10 +39,8 @@ function Course(props) {
     const isLoggedIn = loggedIn(cookies.user);
     const token = cookies.user;
     
-    const { id, title, description, tutorials } = props;
+    const { id, title, description, tutorials, isRegistered } = props;
     console.log(props);
-
-    const [isRegistered, setIR] = useState(checkIfInCourse(id, token));
 
     /**
      * 

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { deleteTutorial, getTutorialsFromCourse } from "@Modules/Tutorials/Tutorials";
 import Router from "next/router";
 import { Button } from "@chakra-ui/react";
-import { checkIfInCourse } from "@Modules/Courses/Courses";
+import { checkIfInCourse, registerForCourse } from "@Modules/Courses/Courses";
 
 function TutorialItem(props) {
     const { token } = props;
