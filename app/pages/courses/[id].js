@@ -34,7 +34,7 @@ function Course(props) {
     const { id, title, description, tutorials } = props;
     console.log(props);
 
-    async function handleSubmit(event) {
+    async function register(event) {
         /**
          * Add handler code here.
          */
@@ -57,7 +57,7 @@ function Course(props) {
                 <Heading size="sm" fontWeight="bold">Description</Heading>
                 {description}
                 <Center>
-                    <Button variant="maroon" onClick={() => handleSubmit(true, token)} w="xs" maxW="md" pt={15} pb={15} mb={15}>
+                    <Button variant="maroon" onClick={register} w="xs" maxW="md" pt={15} pb={15} mb={15}>
                         Start from Beginning
                     </Button>
                 </Center>
