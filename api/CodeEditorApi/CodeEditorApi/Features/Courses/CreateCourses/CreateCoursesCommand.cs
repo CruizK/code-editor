@@ -1,4 +1,5 @@
-﻿using CodeEditorApiDataAccess.Data;
+﻿using CodeEditorApi.Errors;
+using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -19,6 +20,10 @@ namespace CodeEditorApi.Features.Courses.CreateCourses
         }
         public async Task<ActionResult<Course>> ExecuteAsync(int userId, CreateCourseBody createCourseBody)
         {
+            if(createCourseBody.Title.Length == 0)
+            {
+                return ApiError.BadRequest("Unable to create course with no Title.");
+            }
             var course = new Course()
             {
                 Title = createCourseBody.Title,

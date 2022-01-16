@@ -6,6 +6,8 @@ using AutoFixture;
 using Moq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using CodeEditorApi.Errors;
 
 namespace CodeEditorApiUnitTests.Features.Courses
 {
@@ -33,6 +35,26 @@ namespace CodeEditorApiUnitTests.Features.Courses
 
             actionResult.Result.Should().BeNull();
             actionResult.Value.Should().Be(course);
+        }
+
+        [Fact]
+        public async Task ShouldReturnBadRequestErrorIfTitleIsEmpty()
+        {
+            var user = fixture.Create<User>();
+
+            var body = fixture.Build<CreateCourseBody>()
+                .With(b => b.Title, "")
+                .Create();            
+
+            var expected = new BadRequestError("Unable to create course with no Title.");
+
+            Freeze<ICreateCourses>().Setup(cc => cc.ExecuteAsync(It.IsAny<Course>())).ReturnsAsync((Course)null);
+
+            var actionResult = await Target().ExecuteAsync(user.Id, body);
+
+            var result = actionResult.Result as BadRequestObjectResult;
+            result.Should().NotBeNull();
+            result.Value.Should().BeEquivalentTo(expected);
         }
     }
 }
