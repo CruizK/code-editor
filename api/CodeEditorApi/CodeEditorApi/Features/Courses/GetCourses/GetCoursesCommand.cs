@@ -24,8 +24,6 @@ namespace CodeEditorApi.Features.Courses.GetCourses
         {
             var courses = await _getCourses.GetUserCourses(userId);
 
-            // If we needed to manipulate the data, or do some data validation it would be here
-
             return courses;
         }
     }

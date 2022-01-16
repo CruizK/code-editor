@@ -56,22 +56,10 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 
         public async Task<Tutorial> GetUserLastInProgressTutorial(int userId, int courseId)
         {
-            /*var userIsRegisteredForCourse = await _context.UserRegisteredCourses.Where(urc => urc.UserId == userId)
-                   .Select(urc => urc).AnyAsync();
-            if (!userIsRegisteredForCourse) {
-                return ApiError.BadRequest($"User is not registered for course with id {courseId}");
-            }
-*/
             var courseTutorials = await _context.Tutorials.Where(t => t.CourseId == courseId).Select(t => t.Id).ToListAsync();
             var userTutorials = await _context.UserTutorials.Where(ut => courseTutorials.Contains(ut.TutorialId) && ut.UserId == userId).Select(o => o).ToListAsync();
 
             var inProgressTutorialId = userTutorials.Where(ut => ut.InProgress == true).Select(ut => ut.TutorialId).FirstOrDefault();
-
-
-            /*if (userTutorialInProgress.Count() == 0)
-            {
-                return ApiError.BadRequest($"User has not started any tutorial for course with id {courseId}");
-            }*/
 
             var tutorial = await _context.Tutorials.Where(t => t.Id == inProgressTutorialId).Select(t => t).FirstOrDefaultAsync();
 
