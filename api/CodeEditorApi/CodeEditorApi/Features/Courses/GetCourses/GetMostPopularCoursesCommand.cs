@@ -20,7 +20,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
         }
         public async Task<ActionResult<List<int>>> ExecuteAsync()
         {
-            if (_getCourses.GetAllPublishedCourses() == null)
+            if (await _getCourses.GetAllPublishedCourses() == null)
             {
                 return ApiError.BadRequest($"No courses have been published.");
             }
