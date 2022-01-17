@@ -71,6 +71,32 @@ async function getCourseDetails(id, token) {
 }
 
 /**
+ * A function that gets the most popular courses.
+ * @returns {Array<Object>|boolean} Course objects if successful, 'false' if unsuccessful
+ */
+ async function getMostPopularCourses(token) {
+    const headers = {};
+
+    if (token) {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    let courseResponse;
+
+    try {
+        courseResponse = await instance.get("/Courses/GetMostPopularCourses", {
+            headers: {...headers},
+        });
+        
+        if (courseResponse.statusText == "OK")
+        return courseResponse.data;
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+}
+
+/**
  * A function that sends form data to the server for course creation.
  * Validation is done through attributes on the form's html
  * @param {boolean} isPublished 
@@ -256,4 +282,4 @@ async function checkIfInCourse(id, token) {
     return inCourse;
 }
 
-export { getCourseDetails, getUserCourses, createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines, registerForCourse, checkIfInCourse }
+export { getCourseDetails, getUserCourses, getMostPopularCourses, createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines, registerForCourse, checkIfInCourse }
