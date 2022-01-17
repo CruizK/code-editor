@@ -4,17 +4,15 @@ import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 import { loggedIn } from "@Modules/Auth/Auth";
 import RegistrationForm from "@Modules/Auth/components/RegistrationForm/RegistrationForm";
-import { getRole } from "@Utils/jwt";
 import Router from "next/router";
 import { useCookies } from "react-cookie";
 
 function Register() {
     const [cookies, setCookie, removeCookie] = useCookies(["user"]);
     const isLoggedIn = loggedIn(cookies.user);
-    const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
   
     if (isLoggedIn) { 
-      let redirect = '/dashboard/' + ((userRole == "Student") ? '' : (userRole.toLowerCase())); 
+      let redirect = '/home'; 
       Router.push(redirect);
       return(
         <Main>
