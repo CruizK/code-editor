@@ -150,10 +150,10 @@ namespace CodeEditorApi.Features.Tutorials
         /// <returns></returns>
         [HttpDelete("UnregisterUser")]
         [Authorize]
-        public async Task<ActionResult<List<UserTutorial>>> UnregisterUserTutorials([FromBody] UnregisterUserBody unregisterUserBody)
+        public async Task<ActionResult<List<UserTutorial>>> UnregisterUserTutorials([FromBody] UnregisterUserTutorialBody unregisterUserTutorialBody)
         {
             var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
-            return await _unregisterUserCommand.ExecuteAsync(unregisterUserBody.courseId, userId);
+            return await _unregisterUserCommand.ExecuteAsync(unregisterUserTutorialBody.courseId, userId);
         }
     }
 }

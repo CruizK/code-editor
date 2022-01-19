@@ -1,6 +1,6 @@
 ﻿namespace CodeEditorApi.Features.Tutorials.UnregisterUser
 {
-    public class UnregisterUserBody
+    public class UnregisterUserTutorialBody
     {
         public int courseId { get; set; }
     }
