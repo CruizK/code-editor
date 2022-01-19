@@ -23,7 +23,7 @@ namespace CodeEditorApi.Features.Tutorials.UpdateTutorials
 
         public async Task<ActionResult<Tutorial>> ExecuteAsync(int tutorialId, CreateTutorialsBody createTutorialsBody)
         {
-            return await _updateTutorials.ExecuteAsync(tutorialId, createTutorialsBody);
+            return await _updateTutorials.UpdateTutorial(tutorialId, createTutorialsBody);
         }
     }
 }

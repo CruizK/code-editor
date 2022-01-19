@@ -1,6 +1,7 @@
 ﻿using CodeEditorApi.Features.Tutorials.CreateTutorials;
 using CodeEditorApi.Features.Tutorials.DeleteTutorials;
 using CodeEditorApi.Features.Tutorials.GetTutorials;
+using CodeEditorApi.Features.Tutorials.UnregisterUser;
 using CodeEditorApi.Features.Tutorials.UpdateTutorials;
 using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -21,10 +22,14 @@ namespace CodeEditorApi.Features.Tutorials
         private readonly IGetUserCreatedTutorialsCommand _getUserCreatedTutorialsCommand;
         private readonly IGetCourseTutorialsCommand _getCourseTutorialsCommand;
         private readonly IGetUserLastInProgressTutorialCommand _getUserLastInProgressTutorialCommand;
+        private readonly IUpdateUserTutorialsCommand _updateUserTutorialsCommand;
+        private readonly IUnregisterUserCommand _unregisterUserCommand;
+
         public TutorialsController(IGetTutorialsCommand getTutorialsCommand, ICreateTutorialsCommand createTutorialsCommand,
             IDeleteTutorialsCommand deleteTutorialsCommand, IUpdateTutorialsCommand updateTutorialsCommand,
             IGetUserCreatedTutorialsCommand getUserCreatedTutorialsCommand, IGetCourseTutorialsCommand getCourseTutorialsCommand,
-            IGetUserLastInProgressTutorialCommand getUserLastInProgressTutorialCommand)
+            IGetUserLastInProgressTutorialCommand getUserLastInProgressTutorialCommand, IUpdateUserTutorialsCommand updateUserTutorialsCommand,
+            IUnregisterUserCommand unregisterUserCommand)
         {
             _getTutorialsCommand = getTutorialsCommand;
             _createTutorialsCommand = createTutorialsCommand;
@@ -33,6 +38,8 @@ namespace CodeEditorApi.Features.Tutorials
             _getUserCreatedTutorialsCommand = getUserCreatedTutorialsCommand;
             _getCourseTutorialsCommand = getCourseTutorialsCommand;
             _getUserLastInProgressTutorialCommand = getUserLastInProgressTutorialCommand;
+            _updateUserTutorialsCommand = updateUserTutorialsCommand;
+            _unregisterUserCommand = unregisterUserCommand;
         }
 
         /// <summary>
@@ -120,6 +127,33 @@ namespace CodeEditorApi.Features.Tutorials
         public async Task<ActionResult<Tutorial>> UpdateTutorials(int tutorialId, [FromBody] CreateTutorialsBody createTutorialsBody)
         {
             return await _updateTutorialsCommand.ExecuteAsync(tutorialId, createTutorialsBody);
+        }
+
+        /// <summary>
+        /// Update the status of a Tutorial that a specific User is registered to
+        /// </summary>
+        /// <param name="tutorialId"></param>
+        /// <param name="updateUserTutorialBody"></param>
+        /// <returns></returns>
+        [HttpPut("UpdateUserTutorial/{tutorialId:int}")]
+        [Authorize]
+        public async Task<ActionResult<UserTutorial>> UpdateUserTutorials(int tutorialId, [FromBody] UpdateUserTutorialBody updateUserTutorialBody)
+        {
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
+            return await _updateUserTutorialsCommand.ExecuteAsync(tutorialId, userId, updateUserTutorialBody);
+        }
+
+        /// <summary>
+        /// Unregister a User from all Tutorials under a Course - use for when a User unregisters from a Course
+        /// </summary>
+        /// <param name="unregisterUserBody"></param>
+        /// <returns></returns>
+        [HttpDelete("UnregisterUser")]
+        [Authorize]
+        public async Task<ActionResult<List<UserTutorial>>> UnregisterUserTutorials([FromBody] UnregisterUserBody unregisterUserBody)
+        {
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
+            return await _unregisterUserCommand.ExecuteAsync(unregisterUserBody.courseId, userId);
         }
     }
 }
