@@ -146,7 +146,7 @@ namespace CodeEditorApi.Features.Tutorials
         /// <summary>
         /// Unregister a User from all Tutorials under a Course - use for when a User unregisters from a Course
         /// </summary>
-        /// <param name="unregisterUserBody"></param>
+        /// <param name="unregisterUserTutorialBody"></param>
         /// <returns></returns>
         [HttpDelete("UnregisterUser")]
         [Authorize]
