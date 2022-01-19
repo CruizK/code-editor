@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      mostPopular: [], //mostPopular, TODO: Change once API route is fixed.
+      mostPopular: mostPopular || [],
       recentlyUpdated: recentlyUpdated || [],
     }, // will be passed to the page component as props
   }
