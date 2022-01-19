@@ -1,12 +1,4 @@
-package main
-
-var LangToImage = map[string]string{
-	"C#": "something",
-}
-
-var LangToCommand = map[string]string{
-	"C#": "dotnet run x",
-}
+package server
 
 type Language struct {
 	Name           string

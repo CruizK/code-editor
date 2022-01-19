@@ -1,6 +1,7 @@
-package main
+package server
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,10 +22,15 @@ func CompileHandler(c *gin.Context) {
 		return
 	}
 
-	_, err = RunCodeIsolated(CSharp, body.Code)
+	out, err := RunCodeIsolated(CSharp, "nifty_khayyam", body.Code)
 
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 	}
 
+	fmt.Print(out)
+
+	c.JSON(200, gin.H{
+		"output": out,
+	})
 }

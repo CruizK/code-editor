@@ -1,4 +1,4 @@
-module github.com/Cruizk/code-editor
+module go-api
 
 go 1.17
 
