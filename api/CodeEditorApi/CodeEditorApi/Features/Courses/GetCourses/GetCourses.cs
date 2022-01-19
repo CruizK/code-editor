@@ -19,7 +19,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 
         public Task<List<Course>> GetAllPublishedCoursesSortByModifyDate();
 
-        public Task<List<int>> GetMostPopularCourses();
+        public Task<List<Course>> GetMostPopularCourses();
     }
     public class GetCourses : IGetCourses
     {
@@ -72,9 +72,9 @@ namespace CodeEditorApi.Features.Courses.GetCourses
                 }).ToListAsync();
         }
 
-        public async Task<List<int>> GetMostPopularCourses()
+        public async Task<List<Course>> GetMostPopularCourses()
         {
-            int top = 3;            
+            int top = 10;            
 
             var result = await _context.UserRegisteredCourses
                 .GroupBy(c => c.CourseId)
@@ -84,7 +84,9 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 
             var mostPopularCourseIds = result.Take(top).ToList();
 
-            return mostPopularCourseIds;
+            var courses = await _context.Courses.Where(c => mostPopularCourseIds.Contains(c.Id)).ToListAsync();
+
+            return courses;
 
         }
     }

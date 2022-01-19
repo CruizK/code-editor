@@ -1,4 +1,5 @@
 ﻿using CodeEditorApi.Errors;
+using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 {
     public interface IGetMostPopularCoursesCommand
     {
-        public Task<ActionResult<List<int>>> ExecuteAsync();
+        public Task<ActionResult<List<Course>>> ExecuteAsync();
     }
     public class GetMostPopularCoursesCommand : IGetMostPopularCoursesCommand
     {
@@ -18,7 +19,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
         {
             _getCourses = getCourses;
         }
-        public async Task<ActionResult<List<int>>> ExecuteAsync()
+        public async Task<ActionResult<List<Course>>> ExecuteAsync()
         {
             if (_getCourses.GetAllPublishedCourses() == null)
             {

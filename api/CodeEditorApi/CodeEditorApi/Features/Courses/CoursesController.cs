@@ -116,7 +116,7 @@ namespace CodeEditorApi.Features.Courses
         /// <returns></returns>
         [HttpGet("GetMostPopularCourses")]
         [Authorize]
-        public async Task<ActionResult<List<int>>> GetMostPopularCourses()
+        public async Task<ActionResult<List<Course>>> GetMostPopularCourses()
         {
             return await _getMostPopularCoursesCommand.ExecuteAsync();
         }

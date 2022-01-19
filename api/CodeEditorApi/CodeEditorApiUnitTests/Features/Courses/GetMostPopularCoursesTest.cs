@@ -15,18 +15,18 @@ namespace CodeEditorApiUnitTests.Features.Courses
         [Fact]
         public async Task ShouldReturnListOfMostPopularCourseIds()
         {
-            var urc = fixture.Build<UserRegisteredCourse>()
-                .CreateMany();
+            var courses = fixture.Build<Course>()
+                .CreateMany()
+                .ToList();
 
-            var courseIds = urc.Select(u => u.CourseId).ToList();
 
-            Freeze<IGetCourses>().Setup(gc => gc.GetMostPopularCourses()).ReturnsAsync(urc.Select(u => u.CourseId).ToList());
+            Freeze<IGetCourses>().Setup(gc => gc.GetMostPopularCourses()).ReturnsAsync(courses);
 
             var actionresult = await Target().ExecuteAsync();
 
             actionresult.Result.Should().BeNull();
-            actionresult.Value.Should().BeEquivalentTo(courseIds);
+            actionresult.Value.Should().BeEquivalentTo(courses);
         }
-        
+
     }
 }
