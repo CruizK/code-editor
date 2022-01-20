@@ -21,7 +21,7 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
                 .Create();
             var body = fixture.Build<CreateTutorialsBody>().With(b => b.Author, tutorial.Author).Create();
 
-            Freeze<IUpdateTutorials>().Setup(u => u.ExecuteAsync(tutorial.Id, body)).ReturnsAsync(tutorial);
+            Freeze<IUpdateTutorials>().Setup(u => u.UpdateTutorial(tutorial.Id, body)).ReturnsAsync(tutorial);
 
             var actionResult = await Target().ExecuteAsync(tutorial.Id, body);
 
