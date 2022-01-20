@@ -1,4 +1,5 @@
-﻿using CodeEditorApiDataAccess.Data;
+﻿using CodeEditorApi.Errors;
+using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -17,7 +18,12 @@ namespace CodeEditorApi.Features.Tutorials.UpdateTutorials
         }
 
         public async Task<ActionResult<UserTutorial>> ExecuteAsync(int tutorialId, int userId, UpdateUserTutorialBody updateUserTutorialBody)
-        {
+        {            
+            if(updateUserTutorialBody.IsCompleted && updateUserTutorialBody.InProgress)
+            {
+                return ApiError.BadRequest($"Cannot submit a UserTutorial that is both in progress and completed.");
+            }
+
             var result = await _updateTutorials.UpdateUserTutorial(tutorialId, userId, updateUserTutorialBody);
 
             return result;
