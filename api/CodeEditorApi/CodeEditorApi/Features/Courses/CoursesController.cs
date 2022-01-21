@@ -158,7 +158,7 @@ namespace CodeEditorApi.Features.Courses
         /// The course details for unregistering a user
         /// </param>
         /// <returns></returns>
-        [HttpPost("UnregisterUser")]
+        [HttpDelete("UnregisterUser")]
         [Authorize]
         public async Task<ActionResult<UserRegisteredCourse>> UnregisterUser([FromBody] UnregisterUserBody unregisterUserBody)
         {
