@@ -19,7 +19,7 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
             var tutorials = fixture.Build<Tutorial>()
                 .With(t => t.Author, user.Id).CreateMany().ToList();
 
-            Freeze<IGetTutorials>().Setup(g => g.GetUserCreatedTutorials(user.Id)).ReturnsAsync(tutorials);
+            Freeze<IGetTutorials>().Setup(g => g.GetUserCreatedTutorialsList(user.Id)).ReturnsAsync(tutorials);
 
             var actionResult = await Target().ExecuteAsync(user.Id);
 

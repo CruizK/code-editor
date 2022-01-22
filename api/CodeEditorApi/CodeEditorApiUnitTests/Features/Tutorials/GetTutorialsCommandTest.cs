@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
 using CodeEditorApi.Errors;
-using CodeEditorApi.Features.Tutorials.CreateTutorials;
 using CodeEditorApi.Features.Tutorials.GetTutorials;
 using CodeEditorApiDataAccess.Data;
 using CodeEditorApiUnitTests.Helpers;
@@ -21,7 +20,7 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
             var expected = new BadRequestError($"Cannot retrieve Tutorial with id {tutorialId}");
 
             Freeze<IGetTutorials>()
-                .Setup(g => g.GetUserTutorials(tutorialId))
+                .Setup(g => g.GetUserCreatedTutorial(tutorialId))
                 .ReturnsAsync((Tutorial)null);
 
             var actionResult = await Target().ExecuteAsync(tutorialId);
@@ -35,7 +34,7 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
         {
             var tutorial = fixture.Create<Tutorial>();
 
-           Freeze<IGetTutorials>().Setup(g => g.GetUserTutorials(tutorial.Id)).ReturnsAsync(tutorial);
+            Freeze<IGetTutorials>().Setup(g => g.GetUserCreatedTutorial(tutorial.Id)).ReturnsAsync(tutorial);
 
             var actionResult = await Target().ExecuteAsync(tutorial.Id);
 
