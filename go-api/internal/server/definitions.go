@@ -15,3 +15,7 @@ var CSharp = Language{
 	CompileCommand: "mcs program.cs",
 	RunCommand:     "mono program.exe",
 }
+
+var LanguageMap = map[string]Language{
+	"CSharp": CSharp,
+}

@@ -34,6 +34,14 @@ func CreateContainer(language Language) (string, error) {
 	return resp.ID, nil
 }
 
+func RemoveContainer(containerId string) error {
+	ctx := context.Background()
+
+	err := cli.ContainerRemove(ctx, containerId, types.ContainerRemoveOptions{})
+
+	return err
+}
+
 func RunCodeIsolated(language Language, containerId string, code string) (string, error) {
 	ctx := context.Background()
 
