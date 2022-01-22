@@ -12,6 +12,8 @@ namespace CodeEditorApiDataAccess.Data
         public bool InProgress { get; set; }
         public bool IsCompleted { get; set; }
 
+        public DateTime? ModifyDate { get; set; }
+
         public virtual Tutorial Tutorial { get; set; }
         public virtual User User { get; set; }
     }
