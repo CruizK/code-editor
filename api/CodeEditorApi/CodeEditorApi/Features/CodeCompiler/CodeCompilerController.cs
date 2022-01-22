@@ -27,6 +27,7 @@ namespace CodeEditorApi.Features.Courses
 
         /// <summary>
         /// Compiles code and returns output
+        /// Adding more to comment for workflow tests
         /// </summary>
         /// <returns></returns>
         [HttpGet("Compile")]
