@@ -1,5 +1,6 @@
 ﻿using CodeEditorApi.Features.Tutorials.CreateTutorials;
 using CodeEditorApiDataAccess.Data;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,9 +39,12 @@ namespace CodeEditorApi.Features.Tutorials.UpdateTutorials
 
             if (existingUserTutorial != null)
             {
-                _context.Entry(existingUserTutorial).CurrentValues.SetValues(updateUserTutorialBody);
-                await _context.SaveChangesAsync();
+                existingUserTutorial.InProgress = updateUserTutorialBody.InProgress;
+                existingUserTutorial.IsCompleted = updateUserTutorialBody.IsCompleted;
+                existingUserTutorial.ModifyDate = DateTime.Now;
+
             }
+            await _context.SaveChangesAsync();
 
             var updatedUserTutorial =  _context.UserTutorials.Where(ut => (ut.TutorialId == tutorialId)
                     && (ut.UserId == userId)).FirstOrDefault();

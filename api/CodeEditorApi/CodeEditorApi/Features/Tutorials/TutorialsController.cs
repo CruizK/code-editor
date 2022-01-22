@@ -24,12 +24,13 @@ namespace CodeEditorApi.Features.Tutorials
         private readonly IGetUserLastInProgressTutorialCommand _getUserLastInProgressTutorialCommand;
         private readonly IUpdateUserTutorialsCommand _updateUserTutorialsCommand;
         private readonly IUnregisterUserCommand _unregisterUserCommand;
+        private readonly IGetUserTutorialsPerCourseCommand _getUserTutorialsPerCourseCommand;
 
         public TutorialsController(IGetTutorialsCommand getTutorialsCommand, ICreateTutorialsCommand createTutorialsCommand,
             IDeleteTutorialsCommand deleteTutorialsCommand, IUpdateTutorialsCommand updateTutorialsCommand,
             IGetUserCreatedTutorialsCommand getUserCreatedTutorialsCommand, IGetCourseTutorialsCommand getCourseTutorialsCommand,
             IGetUserLastInProgressTutorialCommand getUserLastInProgressTutorialCommand, IUpdateUserTutorialsCommand updateUserTutorialsCommand,
-            IUnregisterUserCommand unregisterUserCommand)
+            IUnregisterUserCommand unregisterUserCommand, IGetUserTutorialsPerCourseCommand getUserTutorialsPerCourseCommand)
         {
             _getTutorialsCommand = getTutorialsCommand;
             _createTutorialsCommand = createTutorialsCommand;
@@ -40,6 +41,7 @@ namespace CodeEditorApi.Features.Tutorials
             _getUserLastInProgressTutorialCommand = getUserLastInProgressTutorialCommand;
             _updateUserTutorialsCommand = updateUserTutorialsCommand;
             _unregisterUserCommand = unregisterUserCommand;
+            _getUserTutorialsPerCourseCommand = getUserTutorialsPerCourseCommand;
         }
 
         /// <summary>
@@ -90,6 +92,13 @@ namespace CodeEditorApi.Features.Tutorials
             var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _getUserLastInProgressTutorialCommand.ExecuteAsync(userId, courseId);
             
+        }
+
+        [HttpGet("GetUserTutorialsOnCourse/{courseId:int}")]
+        public async Task<ActionResult<List<UserTutorial>>> GetUserTutorialsPerCourse(int courseId)
+        {
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
+            return await _getUserTutorialsPerCourseCommand.ExecuteAsync(courseId, userId);
         }
 
         /// <summary>

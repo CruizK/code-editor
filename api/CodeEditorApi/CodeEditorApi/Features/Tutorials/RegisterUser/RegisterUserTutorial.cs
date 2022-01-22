@@ -19,8 +19,8 @@ namespace CodeEditorApi.Features.Tutorials.RegisterUser
             _context = context;
         }
         public async Task<List<Tutorial>> ExecuteAsync(int userId, List<Tutorial> tutorials)
-        {
-            foreach(var tut in tutorials)
+        {            
+            foreach (var tut in tutorials)
             {
                 await _context.UserTutorials.AddAsync(new UserTutorial { UserId = userId, TutorialId = tut.Id, InProgress = false, IsCompleted = false });
             }
