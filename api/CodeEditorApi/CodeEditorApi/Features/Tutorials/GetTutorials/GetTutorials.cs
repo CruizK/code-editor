@@ -20,7 +20,10 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         public Task<Tutorial> GetUserLastInProgressTutorial(int userId, int courseId);
 
         public Task<List<UserTutorial>> GetUserRegisteredTutorials(int courseId, int userId);
+
         public Task<List<UserTutorial>> GetUserRegisteredTutorials(int userId);
+
+        public Task<List<UserTutorialDetailsBody>> GetUserRegisteredTutorialsWithCourseTutorialDetails(int courseId, int userId);
     }
     public class GetTutorials : IGetTutorials
     {
@@ -60,6 +63,24 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
                 .Select(ut => ut).ToListAsync();
 
             return inProgressTutorials;
+        }
+
+        public async Task<List<UserTutorialDetailsBody>> GetUserRegisteredTutorialsWithCourseTutorialDetails(int courseId, int userId)
+        {
+            var userTutorialsDetails = await _context.Tutorials.Where(t => t.CourseId == courseId).Join(
+                _context.UserTutorials.Where(ut => ut.UserId == userId), t => t.Id,
+                ut => ut.TutorialId,
+                (Tutorials, UserTutorials) => new UserTutorialDetailsBody(
+                    Tutorials.Id, 
+                    UserTutorials.UserId, 
+                    Tutorials.DifficultyId, 
+                    Tutorials.LanguageId, 
+                    UserTutorials.InProgress, 
+                    UserTutorials.IsCompleted)
+                
+                ).ToListAsync();
+
+            return userTutorialsDetails;
         }
 
         public async Task<List<UserTutorial>> GetUserRegisteredTutorials(int userId)
