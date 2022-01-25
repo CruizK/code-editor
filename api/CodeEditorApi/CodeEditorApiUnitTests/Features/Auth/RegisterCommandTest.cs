@@ -4,6 +4,7 @@ using CodeEditorApi.Features.Auth.GetUser;
 using CodeEditorApi.Features.Auth.Register;
 using CodeEditorApi.Services;
 using CodeEditorApiDataAccess.Data;
+using CodeEditorApiDataAccess.StaticData;
 using CodeEditorApiUnitTests.Helpers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace CodeEditorApiUnitTests.Features.Auth
                 .Setup(x => x.ExecuteAsync(body.Email))
                 .ReturnsAsync(user);
 
-            var actionResult = await Target().ExecuteAsync(body);
+            var actionResult = await Target().ExecuteAsync(body, It.IsAny<Roles>());
 
             var result = actionResult.Result as BadRequestObjectResult;
             result.Should().NotBeNull();
@@ -40,6 +41,7 @@ namespace CodeEditorApiUnitTests.Features.Auth
         public async Task ShouldReturnTokenIfUserDoesNotExist()
         {
             var body = fixture.Create<RegisterBody>();
+            var role = It.IsInRange<int>(1, 3, Range.Inclusive);
             var user = fixture.Create<User>();
             var token = fixture.Create<string>();
 
@@ -48,20 +50,20 @@ namespace CodeEditorApiUnitTests.Features.Auth
                 .ReturnsAsync((User)null);
 
             Freeze<IRegister>()
-                .Setup(x => x.ExecuteAsync(body))
+                .Setup(x => x.ExecuteAsync(body, role))
                 .ReturnsAsync(user);
 
             Freeze<IJwtService>()
                 .Setup(x => x.GenerateToken(Freeze<IConfiguration>().Object, user))
                 .Returns(token);
 
-            var actionResult = await Target().ExecuteAsync(body);
+            var actionResult = await Target().ExecuteAsync(body, It.IsAny<Roles>());
 
             actionResult.Result.Should().BeNull();
             actionResult.Value.Should().Be(token);
 
             Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email), Times.Once);
-            Freeze<IRegister>().Verify(x => x.ExecuteAsync(body), Times.Once);
+            Freeze<IRegister>().Verify(x => x.ExecuteAsync(body, role), Times.Once);
             Freeze<IJwtService>().Verify(x => x.GenerateToken(Freeze<IConfiguration>().Object, user), Times.Once);
         }
 

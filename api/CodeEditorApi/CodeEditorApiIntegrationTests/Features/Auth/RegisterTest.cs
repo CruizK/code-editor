@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using CodeEditorApi.Features.Auth.Register;
+using CodeEditorApiDataAccess.StaticData;
 using FluentAssertions;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,9 +18,10 @@ namespace CodeEditorApiIntegrationTests.Features.Auth
                 // Assemble
                 target = new Register(context);
                 var body = fixture.Create<RegisterBody>();
+                int role = (int)fixture.Create<Roles>();
 
                 // Execute
-                var user = await target.ExecuteAsync(body);
+                var user = await target.ExecuteAsync(body, role);
 
 
                 // Assert
