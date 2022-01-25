@@ -27,10 +27,32 @@ namespace CodeEditorApi.Features.Auth
         /// </summary>
         /// <param name="registerBody"></param>
         /// <returns></returns>
-        [HttpPost("Register")]
-        public async Task<ActionResult<string>> Register([FromBody] RegisterBody registerBody)
+        [HttpPost("Register/Student")]
+        public async Task<ActionResult<string>> RegisterUser([FromBody] RegisterBody registerBody)
         {
-            return await _registerCommand.ExecuteAsync(registerBody);
+            return await _registerCommand.ExecuteAsync(registerBody, CodeEditorApiDataAccess.StaticData.Roles.Student);
+        }
+
+        /// <summary>
+        /// Registers a user
+        /// </summary>
+        /// <param name="registerBody"></param>
+        /// <returns></returns>
+        [HttpPost("Register/Teacher")]
+        public async Task<ActionResult<string>> RegisterTeacher([FromBody] RegisterBody registerBody)
+        {
+            return await _registerCommand.ExecuteAsync(registerBody, CodeEditorApiDataAccess.StaticData.Roles.Teacher);
+        }
+
+        /// <summary>
+        /// Registers a user
+        /// </summary>
+        /// <param name="registerBody"></param>
+        /// <returns></returns>
+        [HttpPost("Register/Admin")]
+        public async Task<ActionResult<string>> RegisterAdmin([FromBody] RegisterBody registerBody)
+        {
+            return await _registerCommand.ExecuteAsync(registerBody, CodeEditorApiDataAccess.StaticData.Roles.Admin);
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace CodeEditorApi.Features.Auth.Register
 {
     public interface IRegisterCommand
     {
-        Task<ActionResult<string>> ExecuteAsync(RegisterBody registerModel);
+        Task<ActionResult<string>> ExecuteAsync(RegisterBody registerModel, CodeEditorApiDataAccess.StaticData.Roles role);
     }
 
     public class RegisterCommand : IRegisterCommand
@@ -33,7 +33,7 @@ namespace CodeEditorApi.Features.Auth.Register
             _jwtService = jwtService;
         }
 
-        public async Task<ActionResult<string>> ExecuteAsync(RegisterBody registerBody)
+        public async Task<ActionResult<string>> ExecuteAsync(RegisterBody registerBody, CodeEditorApiDataAccess.StaticData.Roles role)
         {
             var existingUser = await _getUser.ExecuteAsync(registerBody.Email);
 
@@ -41,7 +41,7 @@ namespace CodeEditorApi.Features.Auth.Register
 
             registerBody.Password = _hashService.HashPassword(registerBody.Password);
 
-            var newUser = await _register.ExecuteAsync(registerBody);
+            var newUser = await _register.ExecuteAsync(registerBody, (int)role);
 
             var token = _jwtService.GenerateToken(_configuration, newUser);
 
