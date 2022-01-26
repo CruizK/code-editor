@@ -1,105 +1,9 @@
-import { DeleteIcon, EditIcon, ViewIcon } from "@chakra-ui/icons";
-import { Box, Flex, Grid, GridItem, HStack, Divider, Center } from "@chakra-ui/layout";
-import { Tag, TagLabel } from "@chakra-ui/tag";
-import instance from "@Utils/instance";
 import { useCookies } from "react-cookie";
 import { loggedIn } from "@Modules/Auth/Auth";
 import { useEffect, useState } from "react";
-import { deleteTutorial, getTutorialsFromCourse } from "@Modules/Tutorials/Tutorials";
-import Router from "next/router";
-import { Button } from "@chakra-ui/react";
-import { checkIfInCourse, registerForCourse } from "@Modules/Courses/Courses";
-
-function TutorialItem(props) {
-    const { token } = props;
-    const { id, title, courseId } = props.data;
-    const tags = [];
-    if (props.data.difficulty) {
-        var difficultyObject = props.data.difficulty;
-        tags.push({
-            name: difficultyObject.difficulty,
-            type: 'difficulties',
-        });
-    }
-    if (props.data.language) {
-        var languageObject = props.data.language;
-        tags.push({
-            name: languageObject.language,
-            type: 'languages',
-        });
-    }
-
-    async function handleDeletion(id, token) {
-        let success = await deleteTutorial(id, token);
-        if (success) {
-            Router.reload();
-        }
-    }
-
-    /**
-     * 
-     * @param {integer} to Tutorial id
-     * @param {integer} from Course id
-     */
-     async function start(event, to, from) {
-        let isRegistered = await checkIfInCourse(from, token);
-
-        let success = true;
-        if (!isRegistered) {
-            success = await registerForCourse(from, token);
-        }
-        if (success) {
-            let redirect = '/tutorials/' + to; 
-            Router.push(redirect);
-        }
-    }
-
-    return(
-        <Grid templateColumns="repeat(5, 1fr)" gap={6} pl={5} mt={15} mb={15}>
-            <GridItem>
-                {title}
-            </GridItem>
-            <GridItem colStart={4}>
-                <HStack spacing={3}>
-                    {tags.map((tagData) => {
-                        let name = tagData.name;
-                        let lower = name.toLowerCase();
-                        return <Tag key={name} type={tagData.type} lower={lower}>
-                            <TagLabel>{name}</TagLabel>
-                        </Tag>;
-                    })}
-                </HStack>
-            </GridItem>
-            <GridItem colStart={6}>
-                {props.editable && 
-                <HStack spacing={3}>            
-                    <ViewIcon onClick={() => {
-                        let redirect = '/tutorials/' + id; 
-                        Router.push(redirect);
-                    }} />            
-                    <EditIcon color="ce_mainmaroon" onClick={() => {
-                        let redirect = '/tutorials/edit/' + id; 
-                        Router.push(redirect);
-                    }} />
-                    <DeleteIcon onClick={() => handleDeletion(id, token)} />
-                </HStack>
-                }
-                {!props.editable &&
-                <HStack spacing={3}>            
-                    <Button variant="white" onClick={(e) => start(e, id, courseId)}>
-                        Start
-                    </Button>
-                </HStack>
-                }
-            </GridItem>
-            <GridItem colSpan={6}>
-                <Center>
-                    <Divider w="100%" borderColor="ce_grey" />
-                </Center>
-            </GridItem>
-        </Grid>
-    )
-}
+import { getTutorialsFromCourse } from "@Modules/Tutorials/Tutorials";
+import EditableTutorialItem from "@Modules/Tutorials/TutorialItem/EditableTutorialItem";
+import TutorialItem from "@Modules/Tutorials/TutorialItem/Tutorialitem";
 
 /**
  * Handles displaying an accordion list of courses.
@@ -125,7 +29,8 @@ function TutorialList(props) {
     return(
         <>
             {tutorials.map((tutorialData, index) => {
-                return <TutorialItem key={index} data={tutorialData} token={token} editable={editable} />
+                if (editable) return <EditableTutorialItem key={index} data={tutorialData} token={token} />
+                return <TutorialItem key={index} data={tutorialData} token={token} />
             })}            
         </>
     )
