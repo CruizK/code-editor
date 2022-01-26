@@ -103,6 +103,7 @@ namespace CodeEditorApi.Features.Tutorials
         /// <param name="courseId"></param>
         /// <returns></returns>
         [HttpGet("GetUserTutorialsOnCourse/{courseId:int}")]
+        [Authorize]
         public async Task<ActionResult<List<UserTutorial>>> GetUserTutorialsPerCourse(int courseId)
         {
             var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
@@ -115,6 +116,7 @@ namespace CodeEditorApi.Features.Tutorials
         /// <param name="courseId"></param>
         /// <returns></returns>
         [HttpGet("GetUserTutorialsDetails/{courseId:int}")]
+        [Authorize]
         public async Task<ActionResult<List<UserTutorialDetailsBody>>> GetUserTutorialsDetails(int courseId)
         {
             var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
