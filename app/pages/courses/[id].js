@@ -6,7 +6,7 @@ import { checkIfInCourse, getCourseDetails, registerForCourse } from "@Modules/C
 import { loggedIn } from "@Modules/Auth/Auth";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
-import { getTutorialsFromCourse } from "@Modules/Tutorials/Tutorials";
+import { getTutorialsFromCourse, getUserTutorialsDetailsFromCourse } from "@Modules/Tutorials/Tutorials";
 
 export async function getServerSideProps(context) {
     const { id } = context.query;
@@ -21,9 +21,16 @@ export async function getServerSideProps(context) {
         courseDetails = course;
     }
 
-    const tutorials = await getTutorialsFromCourse(id, token);
-
     const isRegistered = await checkIfInCourse(id, token);
+
+    const tutorials = await getTutorialsFromCourse(id, token);
+    const tutorialDetails = (isRegistered) ? await getUserTutorialsDetailsFromCourse(id, token) : false;
+    tutorials.forEach(function(tute, index) {
+        tute['inProgress'] = (tutorialDetails) ? tutorialDetails[index].inProgress : false;
+        tute['isCompleted'] = (tutorialDetails) ? tutorialDetails[index].isCompleted : false;
+        return tute
+    });
+    console.log(tutorials);
   
     return {
         props: {

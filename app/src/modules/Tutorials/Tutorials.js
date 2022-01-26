@@ -27,6 +27,32 @@ async function getTutorialsFromCourse(id, token) {
 }
 
 /**
+ * A function that gets an array of tutorial details from the server using a course ID.
+ * Will probably run into a race condition eventually.
+ * @param {integer} id Course id
+ * @returns {Array<Object>|boolean} Array of tutorial detail objects if successful, 'false' if unsuccessful
+ */
+async function getUserTutorialsDetailsFromCourse(id, token) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    try {       
+        let response = await instance.get("/Tutorials/GetUserTutorialsDetails/" + id, {
+            headers: {...headers},
+        });
+        if (response.statusText == "OK")
+        return response.data;
+    } catch (error) {
+        //TODO: Error handling.
+        console.log(error.response);
+    }
+    return false;
+}
+
+/**
  * A function that sends form data to the server for tutorial creation.
  * Validation is done through attributes on the form's html, but is currently not defined.
  * @param {boolean} isPublished 
@@ -157,4 +183,4 @@ async function createTutorial(isPublished, token, prompt) {
     return false;
 }
 
-export { getTutorialsFromCourse, createTutorial, updateTutorial, deleteTutorial }
+export { getTutorialsFromCourse, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, deleteTutorial }
