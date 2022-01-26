@@ -6,7 +6,7 @@ import { checkIfInCourse, registerForCourse } from "@Modules/Courses/Courses";
 
 function TutorialItem(props) {
     const { token } = props;
-    const { id, title, courseId } = props.data;
+    const { id, title, courseId, inProgress, isCompleted } = props.data;
     const tags = [];
     if (props.data.difficulty) {
         var difficultyObject = props.data.difficulty;
@@ -41,6 +41,19 @@ function TutorialItem(props) {
         }
     }
 
+    /**
+     * 
+     * @param {integer} to Tutorial id
+     * @param {integer} from Course id
+     */
+    async function enter(event, to, from) {
+        let success = true;
+        if (success) {
+            let redirect = '/tutorials/' + to; 
+            Router.push(redirect);
+        }
+    } 
+
     return(
         <Grid templateColumns="repeat(5, 1fr)" gap={6} pl={5} mt={15} mb={15}>
             <GridItem>
@@ -58,10 +71,22 @@ function TutorialItem(props) {
                 </HStack>
             </GridItem>
             <GridItem colStart={6}>
-                <HStack spacing={3}>            
+                <HStack spacing={3}>
+                    {inProgress && !isCompleted &&
+                    <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
+                        Continue
+                    </Button>
+                    }
+                    {!inProgress && isCompleted &&
+                    <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
+                        Restart
+                    </Button>
+                    }
+                    {!(inProgress || isCompleted) &&
                     <Button variant="white" onClick={(e) => start(e, id, courseId)}>
                         Start
                     </Button>
+                    }
                 </HStack>
             </GridItem>
             <GridItem colSpan={6}>
