@@ -82,7 +82,7 @@ function TutorialItem(props) {
                         Restart
                     </Button>
                     }
-                    {!(inProgress || isCompleted) &&
+                    {inProgress == isCompleted &&
                     <Button variant="white" onClick={(e) => start(e, id, courseId)}>
                         Start
                     </Button>

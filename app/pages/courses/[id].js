@@ -25,8 +25,14 @@ export async function getServerSideProps(context) {
     const tutorials = await getTutorialsFromCourse(id, token);
     const tutorialDetails = (isRegistered) ? await getUserTutorialsDetailsFromCourse(id, token) : false;
     tutorials.forEach(function(tute, index) {
-        tute['inProgress'] = (tutorialDetails) ? tutorialDetails[index].inProgress : false;
-        tute['isCompleted'] = (tutorialDetails) ? tutorialDetails[index].isCompleted : false;
+        let inProgress = (tutorialDetails) ? tutorialDetails[index].inProgress : false;
+        tute['inProgress'] = inProgress;
+
+        let isCompleted = (tutorialDetails) ? tutorialDetails[index].isCompleted : false;
+        tute['isCompleted'] = isCompleted;
+
+        if (inProgress && isCompleted)
+        console.error(new Error(`Tutorial ${tute.id} is both complete and in progress.`));
         return tute
     });
   
