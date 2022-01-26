@@ -40,7 +40,6 @@ function Course(props) {
     const token = cookies.user;
     
     const { id, title, description, tutorials, isRegistered } = props;
-    console.log(props);
 
     /**
      * 
