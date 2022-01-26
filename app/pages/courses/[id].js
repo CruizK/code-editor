@@ -5,7 +5,6 @@ import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialLis
 import { checkIfInCourse, getCourseDetails, registerForCourse } from "@Modules/Courses/Courses";
 import { loggedIn } from "@Modules/Auth/Auth";
 import { useCookies } from "react-cookie";
-import { useState } from "react";
 import { getTutorialsFromCourse, getUserTutorialsDetailsFromCourse } from "@Modules/Tutorials/Tutorials";
 
 export async function getServerSideProps(context) {
@@ -30,7 +29,6 @@ export async function getServerSideProps(context) {
         tute['isCompleted'] = (tutorialDetails) ? tutorialDetails[index].isCompleted : false;
         return tute
     });
-    console.log(tutorials);
   
     return {
         props: {
