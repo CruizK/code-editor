@@ -1,7 +1,9 @@
-﻿using CodeEditorApi.Features.Auth.Login;
+﻿using CodeEditorApi.Features.Auth.GetAccess;
+using CodeEditorApi.Features.Auth.Login;
 using CodeEditorApi.Features.Auth.Register;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Auth
@@ -15,11 +17,13 @@ namespace CodeEditorApi.Features.Auth
 
         private readonly IRegisterCommand _registerCommand;
         private readonly ILoginCommand _loginCommand;
+        private readonly IGetAccessCommand _getAccessCommand;
 
-        public AuthController(IRegisterCommand registerCommand, ILoginCommand loginCommand)
+        public AuthController(IRegisterCommand registerCommand, ILoginCommand loginCommand, IGetAccessCommand getAccessCommand)
         {
             _registerCommand = registerCommand;
             _loginCommand = loginCommand;
+            _getAccessCommand = getAccessCommand;
         }
 
         /// <summary>
@@ -64,6 +68,14 @@ namespace CodeEditorApi.Features.Auth
         public async Task<ActionResult<string>> Login([FromBody] LoginBody loginBody)
         {
             return await _loginCommand.ExecuteAsync(loginBody);
+        }
+
+        [HttpGet("Access")]
+        [Authorize]
+        public async Task<ActionResult<Guid>> getAccessCode()
+        {
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
+            return await _getAccessCommand.ExecuteAsync(userId);
         }
     }
 }
