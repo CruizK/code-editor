@@ -22,7 +22,7 @@ import { useCookies } from "react-cookie";
         <Box height="50px" bgColor="ce_darkgrey" w="100%" color="ce_white">
             <Grid templateColumns="repeat(5, 1fr)" gap={6} pl={5} pr={5}>
                 <GridItem>
-                    <Image src="/siu_logo.png" alt="SIU Logo" maxHeight="50px" />
+                    <SNoLink href="/home"><Image src="/siu_logo.png" alt="SIU Logo" maxHeight="50px" /></SNoLink>
                 </GridItem>
                 <GridItem colSpan={2} colEnd={6}>
                     <Flex height="100%" justifyContent="right" alignItems="center">

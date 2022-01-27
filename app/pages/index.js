@@ -14,7 +14,7 @@ function Index() {
   const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
 
   if (isLoggedIn) { 
-    let redirect = '/dashboard/' + ((userRole == "Student") ? '' : (userRole.toLowerCase())); 
+    let redirect = '/home'; 
     Router.push(redirect);
     return(
       <Main>
