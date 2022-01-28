@@ -1,4 +1,5 @@
 ﻿using CodeEditorApi.Helpers;
+using CodeEditorApiDataAccess.StaticData;
 using System.ComponentModel.DataAnnotations;
 
 namespace CodeEditorApi.Features.Auth.Register
@@ -17,5 +18,11 @@ namespace CodeEditorApi.Features.Auth.Register
         [StringLength(20)]
         [RegularExpression(RegExp.PasswordExpression, ErrorMessage = "Password does not meet criteria")]
         public string Password { get; set; }
+
+        [Required]
+        public Roles Role { get; set; }
+
+        public string? AccessCode { get; set; }
+
     }
 }

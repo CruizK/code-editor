@@ -7,7 +7,7 @@ namespace CodeEditorApi.Features.Auth.Register
 
     public interface IRegister
     {
-        Task<User> ExecuteAsync(RegisterBody registerData, int role);
+        Task<User> ExecuteAsync(RegisterBody registerData, Roles role);
     }
 
     public class Register : IRegister
@@ -19,14 +19,14 @@ namespace CodeEditorApi.Features.Auth.Register
             _context = context;
         }
 
-        public async Task<User> ExecuteAsync(RegisterBody registerData, int role)
+        public async Task<User> ExecuteAsync(RegisterBody registerData, Roles role)
         {
             var user = new User
             {
                 Email = registerData.Email,
                 Name = registerData.Name,
                 Hash = registerData.Password,
-                RoleId = role
+                RoleId = (int)role
             };
 
             await _context.Users.AddAsync(user);
