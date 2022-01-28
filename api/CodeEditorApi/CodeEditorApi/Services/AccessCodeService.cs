@@ -1,8 +1,6 @@
-﻿using System;
+﻿using CodeEditorApiDataAccess.StaticData;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CodeEditorApiDataAccess.StaticData;
 
 namespace CodeEditorApi.Services
 {
@@ -35,6 +33,14 @@ namespace CodeEditorApi.Services
                     return role;
                 }
                 return null;
+            }
+        }
+
+        public static void ClearCodes()
+        {
+            lock(_accessCodes)
+            {
+                _accessCodes.Clear();
             }
         }
     }

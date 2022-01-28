@@ -4,6 +4,7 @@ using CodeEditorApi.Features.Auth.GetUser;
 using CodeEditorApi.Features.Auth.Register;
 using CodeEditorApi.Services;
 using CodeEditorApiDataAccess.Data;
+using CodeEditorApiDataAccess.StaticData;
 using CodeEditorApiUnitTests.Helpers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -36,11 +37,69 @@ namespace CodeEditorApiUnitTests.Features.Auth
             Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email), Times.Once);
         }
 
+        [Theory]
+        [InlineData(null, Roles.Admin)]
+        [InlineData("SomeCode", Roles.Admin)]
+        [InlineData(null, Roles.Teacher)]
+        [InlineData("SomeCode", Roles.Teacher)]
+        public async Task ShouldReturnBadRequestIfRoleTeacherAndInvalidAccessCode(string accessCode, Roles role)
+        {
+            var body = fixture.Build<RegisterBody>()
+                .With(x => x.AccessCode, accessCode)
+                .With(x => x.Role, role)
+                .Create();
+            var user = fixture.Create<User>();
+            var expected = new BadRequestError("Invalid Access Code");
+
+            Freeze<IGetUser>()
+                .Setup(x => x.ExecuteAsync(body.Email))
+                .ReturnsAsync((User)null);
+
+            var actionResult = await Target().ExecuteAsync(body);
+
+            var result = actionResult.Result as BadRequestObjectResult;
+            result.Should().NotBeNull();
+            result.Value.Should().BeEquivalentTo(expected);
+
+            Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email), Times.Once);
+        }
+
+        /* This test may fail due to race conditions on AccessCodeService, will be fixed when switched to redis */
+        [Fact]
+        public async Task ShouldReturnBadRequestIfAccessCodeIsForAnotherRole()
+        {
+            AccessCodeService.ClearCodes();
+            var accessCode = AccessCodeService.GenerateAccessCode(Roles.Admin);
+            
+
+            var body = fixture.Build<RegisterBody>()
+                .With(x => x.AccessCode, accessCode)
+                .With(x => x.Role, Roles.Teacher)
+                .Create();
+            var user = fixture.Create<User>();
+            var expected = new BadRequestError("Invalid Access Code");
+
+            Freeze<IGetUser>()
+                .Setup(x => x.ExecuteAsync(body.Email))
+                .ReturnsAsync((User)null);
+
+            var actionResult = await Target().ExecuteAsync(body);
+
+            var result = actionResult.Result as BadRequestObjectResult;
+            result.Should().NotBeNull();
+            result.Value.Should().BeEquivalentTo(expected);
+
+            Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email), Times.Once);
+
+            AccessCodeService.ClearCodes();
+        }
+
         [Fact]
         public async Task ShouldReturnTokenIfUserDoesNotExist()
         {
-            var body = fixture.Create<RegisterBody>();
-            var role = It.IsInRange<int>(1, 3, Range.Inclusive);
+            var body = fixture.Build<RegisterBody>()
+                .With(x => x.Role, Roles.Student)
+                .Create();
             var user = fixture.Create<User>();
             var token = fixture.Create<string>();
 

@@ -42,7 +42,7 @@ namespace CodeEditorApi.Features.Auth.Register
 
             if(registerBody.Role == Roles.Admin || registerBody.Role == Roles.Teacher)
             {
-                if (registerBody.AccessCode == "") return ApiError.BadRequest("Invalid Access Code");
+                if (registerBody.AccessCode == null) return ApiError.BadRequest("Invalid Access Code");
 
                 Roles? role = AccessCodeService.CheckAccessCode(registerBody.AccessCode);
 
