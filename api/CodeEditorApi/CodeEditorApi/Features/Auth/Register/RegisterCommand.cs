@@ -52,7 +52,7 @@ namespace CodeEditorApi.Features.Auth.Register
 
             registerBody.Password = _hashService.HashPassword(registerBody.Password);
 
-            var newUser = await _register.ExecuteAsync(registerBody, registerBody.Role);
+            var newUser = await _register.ExecuteAsync(registerBody);
 
             var token = _jwtService.GenerateToken(_configuration, newUser);
 

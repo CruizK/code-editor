@@ -1,19 +1,14 @@
-﻿using CodeEditorApi.Features.Auth.CreateAccessCode;
-using CodeEditorApi.Features.Auth.GetAccess;
-using CodeEditorApi.Features.Auth.Login;
+﻿using CodeEditorApi.Features.Auth.Login;
 using CodeEditorApi.Features.Auth.Register;
 using CodeEditorApi.Services;
-using CodeEditorApiDataAccess.StaticData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Auth
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    [AllowAnonymous]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -33,6 +28,7 @@ namespace CodeEditorApi.Features.Auth
         /// <param name="registerBody"></param>
         /// <returns></returns>
         [HttpPost("Register")]
+        [AllowAnonymous]
         public async Task<ActionResult<string>> RegisterTeacher([FromBody] RegisterBody registerBody)
         {
             return await _registerCommand.ExecuteAsync(registerBody);
@@ -44,6 +40,7 @@ namespace CodeEditorApi.Features.Auth
         /// <param name="loginBody"></param>
         /// <returns></returns>
         [HttpPost("Login")]
+        [AllowAnonymous]
         public async Task<ActionResult<string>> Login([FromBody] LoginBody loginBody)
         {
             return await _loginCommand.ExecuteAsync(loginBody);
@@ -51,9 +48,9 @@ namespace CodeEditorApi.Features.Auth
 
         [HttpPost("GenerateAccessCode")]
         [Authorize(Roles = "Admin")]
-        public Task<string> GenerateAccessCode([FromBody] int RoleID)
+        public Task<string> GenerateAccessCode([FromBody] RoleRequestBody body)
         {
-            return Task.FromResult(AccessCodeService.GenerateAccessCode((Roles)RoleID));
+            return Task.FromResult(AccessCodeService.GenerateAccessCode(body.Role));
         }
     }
 }

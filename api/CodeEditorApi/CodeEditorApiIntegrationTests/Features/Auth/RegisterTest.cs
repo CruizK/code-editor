@@ -21,7 +21,7 @@ namespace CodeEditorApiIntegrationTests.Features.Auth
                 int role = (int)fixture.Create<Roles>();
 
                 // Execute
-                var user = await target.ExecuteAsync(body, role);
+                var user = await target.ExecuteAsync(body);
 
 
                 // Assert
