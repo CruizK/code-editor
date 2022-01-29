@@ -13,7 +13,7 @@ function SectionHeader(props) {
                 {title}
             </Heading>
             <Spacer />
-            <HStack spacing={3}>
+            <HStack spacing={2} w="40%">
                 {children}
             </HStack>
         </Flex>

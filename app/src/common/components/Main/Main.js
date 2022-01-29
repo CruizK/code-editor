@@ -16,7 +16,6 @@ function Main(props) {
     return(
         <main>
             <Box __css={styles.outer}>                
-                <Header />
                 <Box __css={styles.content} {...rest}>
                     {props.children}
                 </Box>

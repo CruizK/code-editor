@@ -1,5 +1,4 @@
 import { Box, Center, Divider, Flex, Grid, Heading } from "@chakra-ui/layout";
-import Main from "@Components/Main/Main";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 import { loggedIn } from "@Modules/Auth/Auth";
@@ -17,18 +16,16 @@ function Index() {
     let redirect = '/home'; 
     Router.push(redirect);
     return(
-      <Main>
-        <Heading as="h2">Redirecting...</Heading>
-      </Main>
+      <Heading as="h2">Redirecting...</Heading>
     );
   }
 
   return(
-    <Main>
-      <Flex width="100%" minHeight="450px">
-        <Box flex="3" bgImage="/siu.png" flexShrink="3" bgBlendMode="multiply" backgroundColor={paletteToRGB("ce_mainmaroon", 0.75)} />
-        <Center flex="2" bgColor="ce_backgroundlighttan">
-          <Grid templateRows="5 1fr" gap={6} w="56">
+    <Box w="100%" h="calc(100vh - 50px)">
+      <Flex width="100%" height="100%">
+        <Box flex="3" bgImage="/siu.png" bgBlendMode="multiply" backgroundColor={paletteToRGB("ce_mainmaroon", 0.75)} />
+        <Box w="100%" maxW="700px" minW="400px" mx="auto" flex="2" bgColor="ce_backgroundlighttan">
+          <Grid templateRows="5 1fr" gap={6} w="50%" minW="300px" maxW="400px" mx="auto" my="10vh">
             <SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink>
             <SNoLinkButton size="md" href="/auth/register" variant="maroon">SIGN UP</SNoLinkButton>
             <Center>
@@ -36,9 +33,9 @@ function Index() {
             </Center>
             <SNoLinkButton href="/auth/login" variant="black">SIGN IN</SNoLinkButton>
           </Grid>
-        </Center>
+        </Box>
       </Flex>
-    </Main>
+    </Box>
   );
 }
 

@@ -64,6 +64,7 @@ function TutorialItem(props) {
                     {tags.map((tagData) => {
                         let name = tagData.name;
                         let lower = name.toLowerCase();
+                        console.log(tagData);
                         return <Tag key={name} type={tagData.type} lower={lower}>
                             <TagLabel>{name}</TagLabel>
                         </Tag>;

@@ -32,7 +32,7 @@ const colors = {
   ce_green: "#658d1b",
   ce_backgroundtan: "#dad6cb",
   ce_backgroundlighttan: "#f2f1ed",
-  ce_gold: "c69250",
+  ce_gold: "#c69250",
   ce_brightyellow: "#f1b434",
   ce_brightblue: "#298fc2",
   ce_brightgreen: "#6da800",
@@ -42,6 +42,7 @@ const colors = {
     js: "#246181",
     html: "#660000",
     css: "#000000",
+    csharp: "#7d2196"
   },
   difficulties: {
     easy: "#880000",
@@ -58,6 +59,7 @@ const config = {
 const fonts = {
   body: "Ubuntu Mono, monospace",
   button: "Open Sans",
+  input: "Arial",
   heading: "Open Sans",
   mono: "Ubuntu Mono, monospace",
 }

@@ -17,7 +17,7 @@ async function getTutorialsFromCourse(id, token) {
         let response = await instance.get("/Tutorials/CourseTutorials/" + id, {
             headers: {...headers},
         });
-        if (response.statusText == "OK")
+
         return response.data;
     } catch (error) {
         //TODO: Error handling.
@@ -43,7 +43,7 @@ async function getUserTutorialsDetailsFromCourse(id, token) {
         let response = await instance.get("/Tutorials/GetUserTutorialsDetails/" + id, {
             headers: {...headers},
         });
-        if (response.statusText == "OK")
+
         return response.data;
     } catch (error) {
         //TODO: Error handling.
@@ -92,7 +92,6 @@ async function createTutorial(isPublished, token, prompt) {
                 headers: {...headers},
             });
 
-            if (response.statusText == "OK")
             return true;
         } catch (error) {
             console.log(error);
@@ -142,7 +141,6 @@ async function createTutorial(isPublished, token, prompt) {
                 headers: {...headers},
             });
 
-            if (response.statusText == "OK")
             return true;
         } catch (error) {
             console.log(error);
@@ -173,7 +171,6 @@ async function createTutorial(isPublished, token, prompt) {
                 headers: {...headers},
             });
 
-            if (response.statusText == "OK")
             return true;
         } catch (error) {
             

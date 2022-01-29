@@ -155,7 +155,6 @@ async function createCourse(isPublished, token) {
                 headers: {...headers},
             });
 
-            if (response.statusText == "OK")
             return true;
         } catch (error) {
             
@@ -200,7 +199,6 @@ async function updateCourse(isPublished, token) {
                 headers: {...headers},
             });
 
-            if (response.statusText == "OK")
             return true;
         } catch (error) {
             

@@ -40,6 +40,7 @@ function EditableTutorialItem(props) {
                     {tags.map((tagData) => {
                         let name = tagData.name;
                         let lower = name.toLowerCase();
+                        if (lower == 'c#') lower = 'csharp';
                         return <Tag key={name} type={tagData.type} lower={lower}>
                             <TagLabel>{name}</TagLabel>
                         </Tag>;

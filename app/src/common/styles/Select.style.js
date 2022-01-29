@@ -1,17 +1,19 @@
 const SelectStyle = {
     baseStyle: {
         field: {
-            maxWidth: "172px",
+            fontFamily: "input"
         },
     },
     defaultProps: {
-        size: "xs",
+        size: "sm",
     },
     variants: {
         outline: {
             field: {
                 borderColor: "ce_black",
+                fontWeight: "bold",
                 borderRadius: "md",
+                padding: "5px"
             },
         },
     },

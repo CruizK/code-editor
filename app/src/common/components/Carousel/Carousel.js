@@ -71,7 +71,7 @@ function Carousel(props) {
                     <Tooltip label={title} aria-label={title} placement="right" borderRadius="md">
                         <VStack __css={styles} borderColor={color} bgColor={color} spacing={0} onClick={() => goToCourse(id)}>
                             <Flex height="50%" w="100%" justifyContent="right" pr={1}>
-                                <Image src="/defaults/card_icon.png" alt="SIU Logo" height="100%" />
+                                
                             </Flex>
                             <Flex height="50%" w="100%" color="ce_white" fontWeight="bold" fontFamily="button" fontSize="md" pl={1}>
                                 {smallTitle.toUpperCase()}

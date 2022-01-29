@@ -1,4 +1,4 @@
-import { Center, Divider, Flex, Grid, Heading } from "@chakra-ui/layout";
+import { Center, Divider, Flex, Grid, Heading, Container } from "@chakra-ui/layout";
 import Main from "@Components/Main/Main";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
@@ -22,7 +22,7 @@ function Register() {
     }
 
     return(
-        <Main>   
+        <Container w="450px">   
             <Center>
                 <Grid templateRows="5 1fr" gap={6} width="100%">
                     <SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink>
@@ -35,7 +35,7 @@ function Register() {
                     <SNoLinkButton href="/auth/register" variant="black">Sign up with GitHub</SNoLinkButton>
                 </Grid>
             </Center>
-        </Main>
+        </Container>
     );
   }
 

@@ -30,7 +30,6 @@ export async function getServerSideProps(context) {
         console.error(e)
     }
     
-    if (response && response.statusText == "OK")
     data = response ? response.data : []
 
     return {
@@ -56,7 +55,7 @@ function Teacher(props) {
                         New Course +
                     </SNoLinkButton>
                 </SectionHeader>
-                <CourseList courses={courses} />
+                { courses.length > 0 ? <CourseList courses={courses} /> : null }
             </Grid>
         </Main>
     );

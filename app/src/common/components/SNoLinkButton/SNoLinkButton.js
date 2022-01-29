@@ -1,15 +1,15 @@
 import { Button } from "@chakra-ui/button";
-import SNoLink from "@Components/SNoLink/SNoLink";
+import NextLink from 'next/link';
 
 function SNoLinkButton(props) {
     const { variant, children, size, href, ...rest } = props
 
     return(
-        <SNoLink href={href}>
+        <NextLink href={href} passHref>
             <Button variant={variant} size={size} {...rest}>
                 {children}
             </Button>
-        </SNoLink>
+        </NextLink>
     )
 }
 

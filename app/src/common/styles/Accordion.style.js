@@ -16,8 +16,6 @@ const AccordionBoxStyle = {
         borderColor: "ce_grey",
         borderWidth: "2px",
         borderRadius: "md",
-        paddingLeft: "15px",
-        paddingRight: "15px",
     }
 }
 

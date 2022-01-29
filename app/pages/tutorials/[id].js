@@ -1,11 +1,10 @@
-import { Grid } from "@chakra-ui/layout";
-import Main from "@Components/Main/Main";
+import { Flex, Container, Button, Spacer } from "@chakra-ui/react";
 import { loggedIn } from "@Modules/Auth/Auth";
 import instance from "@Utils/instance";
 import Editor from "@monaco-editor/react";
-import { GridItem } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from 'next/dynamic'; 
+import { ChevronLeftIcon, HamburgerIcon } from "@chakra-ui/icons";
 const MarkdownRenderer = dynamic(
   () => import("@Modules/Tutorials/components/MarkdownRenderer/MarkdownRenderer"),
   { ssr: false }
@@ -48,32 +47,90 @@ export async function getServerSideProps(context) {
 function Tutorial(props) {
   const { prompt } = props.values;
 
-  const [editorText, setText] = useState("<button onClick=\"document.getElementById('demo').innerHTML = \n\t'Change me!'\"\n>\n\tClick Me!\n</button>\n");
+  const [editorText, setText] = useState(`<button onClick="document.getElementById('demo').innerHTML = \n\t'Change me!'"\n>\n\tClick Me!\n</button>\n<div id="demo"></div>\n`);
+  const iframeRef = useRef();
+
+  // For explanation of iframe messaging: https://joyofcode.xyz/avoid-flashing-iframe
+  useEffect(() => {
+    if (iframeRef && iframeRef.current) {
+      const html = { type: 'html', value: editorText };
+      iframeRef.current.contentWindow.postMessage(html, '*')
+    }
+  }, [editorText])
 
   return(
-    <Main width="100%" margin="0" maxWidth="100%">
-      <Grid templateColumns="repeat(3, 33%)" width="100%" height="450px">
-        <GridItem>
-          <MarkdownRenderer>
-            {prompt}
-          </MarkdownRenderer>
-        </GridItem>
-        <GridItem>
-          <Editor
-            height="100%"
-            width="100%"
-            defaultLanguage="javascript"
-            defaultValue={editorText}
-            onChange={(value, event) => { setText(value) }}
-          />
-        </GridItem>
-        <GridItem width="100%">
-          <iframe srcDoc={
-            "<html><body>" + editorText + "<br /><div id=\"demo\">Hi!</div></body></html>"
-          } />
-        </GridItem>
-      </Grid>
-    </Main>
+    <Container maxW="100%" p="0">
+      <Flex direction={"column"} height="calc(100vh - 50px)">
+        <Flex width="100%" flex="1">
+          <Flex flex="1" direction = "column">
+            <Flex h="50px" px={3} bg="ce_mainmaroon" color="ce_white" align={"center"}>
+              <HamburgerIcon w={8} h={8}/>
+              <Spacer />
+              <ChevronLeftIcon w={8} h={8}/>
+            </Flex>
+            <Flex flex="1" p={3} bg="ce_backgroundlighttan" >
+              <MarkdownRenderer>
+                {prompt}
+              </MarkdownRenderer>
+            </Flex>
+            
+          </Flex>
+          <Flex flex="2" direction={"column"}>
+            <Flex flex="1">
+            <Editor
+              height="100%"
+              width="100%"
+              theme="vs-dark"
+              defaultLanguage="html"
+              options={{
+                padding: {
+                  top: "10px"
+                },
+                scrollBeyondLastLine: false,
+                wordWrap: "on",
+                minimap: {
+                  enabled: false
+                },
+                scrollbar: {
+                  vertical: "auto"
+                }
+              }}
+              defaultValue={editorText}
+              onChange={(value, event) => { setText(value); setIframeVisible(false) }}
+            />
+            </Flex>
+            <Flex h="50px" bg="ce_blue">
+
+            </Flex>
+          </Flex>
+          <Flex flex="1" width="100%">
+            <iframe 
+            ref={iframeRef}
+            srcDoc={
+              `
+              <html style="background-color: #FFF;">
+              <script type="module">
+                window.addEventListener('message', (event) => {
+                  const { type, value } = event.data;
+
+                  if (type === 'html') {
+                    document.body.innerHTML = value;
+                  }
+                })
+              </script>
+              <body>
+               
+              </body>
+              </html>
+              `
+            } />
+          </Flex>
+        </Flex>
+        <Flex h="50px" bg="ce_darkgrey" justify={"end"} align="center">
+            <Button w="10%" mr={2} variant="yellow">Exit</Button>
+        </Flex>
+      </Flex>
+    </Container>
   );
 } 
 

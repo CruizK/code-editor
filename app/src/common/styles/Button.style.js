@@ -5,19 +5,39 @@ const ButtonStyle = {
         fontFamily: "button",
         borderRadius: "md",
         width: "100%",
+        paddingTop: "20px",
+        paddingBottom: "20px",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        border: "1px solid",
+        borderColor: "transparent",
         _hover: {
             backgroundColor: "transparent",
-            border: "1px solid",
+            borderColor: "black",
             boxShadow: "1px 2px #888888",
+            textDecoration: "none",
         }
     },
     variants: {
+        yellow: {
+            color: "ce_yellow",
+            borderColor: "ce_yellow",
+            backgroundColor: "transparent",
+            _hover: {
+                color: "ce_white",
+                backgroundColor: "ce_yellow",
+                boxShadow: "none",
+                borderColor: "ce_yellow",
+            }
+        },
         white: {
             color: "ce_black",
             backgroundColor: "ce_white",
             _hover: {
-                color: "ce_black",
+                color: "ce_white",
+                backgroundColor: "ce_black",
                 borderColor: "ce_white",
+                boxShadow: "none"
             }
         },
         maroon: {

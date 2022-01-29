@@ -29,7 +29,7 @@ function CourseItem(props) {
             <>
             <Heading as="h2">
                 <AccordionButton>
-                    <Box flex="1" textAlign="left" fontSize="md">
+                    <Box flex="1" textAlign="left" fontSize="sm">
                         {title}
                     </Box>
                     <HStack spacing={3}>                        
@@ -66,7 +66,7 @@ function CourseList(props) {
 
     return(
         <Box __css={styles}>
-            <Accordion>
+            <Accordion allowMultiple>
                 {courses.map((courseData, index) => {
                     let courseDefaults = {
                         id: courseData.id,

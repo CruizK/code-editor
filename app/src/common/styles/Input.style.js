@@ -1,8 +1,9 @@
 const InputStyle = {
     baseStyle: {
         field: {
-            minWidth: "172px",
-            maxWidth: "200px",
+            fontFamily: "input",
+            fontSize: 20,
+            padding: 4,
         }
     },
     defaultProps: {

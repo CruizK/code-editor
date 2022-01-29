@@ -5,13 +5,16 @@ const TagStyle = {
         },
     },
     variants: {
-        solid: (props) => ({
+        solid: (props) => {
+            console.log(props);
+            return ({
             container: {
                 bg: props.type + "." + props.lower,
                 paddingLeft: "4",
                 paddingRight: "4",
             },
         })
+    }
     },
     sizes: {
         sm: {
