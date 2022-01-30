@@ -2,7 +2,6 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Flex, Grid } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
-import FormToolTip from "@Components/FormTooltip/FormToolTip";
 import { courseRegEx, courseTitleTooltipLines } from "@Modules/Courses/Courses";
 
 /**
