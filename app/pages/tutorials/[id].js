@@ -31,7 +31,6 @@ export async function getServerSideProps(context) {
       headers: {...headers},
     });
     
-    if (tutorialResponse.statusText == "OK")
     values = tutorialResponse.data;
   } catch (error) {
     console.log(error);
@@ -99,8 +98,8 @@ function Tutorial(props) {
               onChange={(value, event) => { setText(value); setIframeVisible(false) }}
             />
             </Flex>
-            <Flex h="50px" bg="ce_blue">
-
+            <Flex h="50px" bg="ce_blue" justify={"end"}>
+              <Button w="10%" h="100%" variant="blue">RUN</Button>
             </Flex>
           </Flex>
           <Flex flex="1" width="100%">
@@ -127,7 +126,7 @@ function Tutorial(props) {
           </Flex>
         </Flex>
         <Flex h="50px" bg="ce_darkgrey" justify={"end"} align="center">
-            <Button w="10%" mr={2} variant="yellow">Exit</Button>
+            <Button w="10%" maxW="150px" mr={2} variant="yellow">Exit</Button>
         </Flex>
       </Flex>
     </Container>
