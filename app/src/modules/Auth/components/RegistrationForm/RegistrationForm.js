@@ -1,9 +1,9 @@
 import { Button } from "@chakra-ui/button";
 import { Checkbox } from "@chakra-ui/checkbox";
-import { FormControl, FormHelperText } from "@chakra-ui/form-control";
+import { FormControl, FormErrorMessage } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Grid } from "@chakra-ui/layout";
-import { maxAgeInHours, passwordRegEx, register, validatePassword } from "@Modules/Auth/Auth";
+import { maxAgeInHours, register, validatePassword } from "@Modules/Auth/Auth";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 
@@ -48,9 +48,9 @@ function RegistrationForm() {
                 <FormControl id="password" isRequired isInvalid={passwordErrors != undefined}>
                     <Input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)}/>
                     { passwordErrors? (
-                        <FormHelperText>
+                        <FormErrorMessage>
                             {passwordErrors}
-                        </FormHelperText>
+                        </FormErrorMessage>
                     ): null}
                 </FormControl>
                 <Checkbox id="admin" size="sm">Request admin access</Checkbox>

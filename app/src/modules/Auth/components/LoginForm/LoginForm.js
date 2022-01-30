@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/button";
-import { FormControl, FormHelperText } from "@chakra-ui/form-control";
+import { FormControl, FormErrorMessage } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Grid } from "@chakra-ui/layout";
 import { login, maxAgeInHours, validatePassword } from "@Modules/Auth/Auth";
@@ -40,9 +40,9 @@ function LoginForm() {
                 <FormControl id="password" isRequired isInvalid={passwordErrors != undefined}>
                     <Input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)}/>
                     { passwordErrors? (
-                        <FormHelperText>
+                        <FormErrorMessage>
                             {passwordErrors}
-                        </FormHelperText>
+                        </FormErrorMessage>
                     ): null}
                 </FormControl>
                 <Button variant="white" type="submit">Sign In</Button>
