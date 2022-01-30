@@ -151,6 +151,79 @@ async function createTutorial(isPublished, token, prompt) {
 }
 
 /**
+ * A function that sends data to the server for updating a user's progress in a tutorial.
+ * Validation should be done server-side.
+ * @param {integer} id Course id
+ * @param {string} token JWT token.
+ * @param {boolean} inProgress Is the tutorial in progress?
+ * @param {boolean} isCompleted Is the tutorial completed?
+ * @returns {boolean} Whether or not the update succeeded.
+ */
+async function updateUserTutorial(id, token, inProgress, isCompleted) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    try {
+        let response = await instance.put("/Tutorials/UpdateUserTutorial/" + id, {
+            inProgress: inProgress,
+            isCompleted: isCompleted,
+        }, {
+            headers: {...headers},
+        });
+
+        return true;
+    } catch (error) {
+        console.log(error);
+    }
+
+    return false;
+}
+
+/**
+ * Sends code to run to the server, calling updateUserTutorial to set inProgress before trying to run the code.
+ * If the code then, afterwards, compiles and runs correctly, isComplete is set instead.
+ * Validation should be done server-side.
+ * @param {integer} id Tutorial id
+ * @param {string} token JWT token.
+ * @param {string} language Coding language.
+ * @param {string} code Code to compile.
+ * @returns {boolean} Whether or not the code compiled succeeded.
+ */
+async function compileAndRunCode(id, token, language, code) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    let updateSuccess = await updateUserTutorial(id, token, true, false); // in progress = true, is complete = false
+
+    if (!updateSuccess) {
+        return false;
+    }
+
+    try {
+        let response = await instance.post("/CodeCompiler/Compile/", {
+            language: language,
+            code: code,
+        }, {
+            headers: {...headers},
+        });
+
+        let updateToCompletedSuccess = await updateUserTutorial(id, token, false, true); // in progress = true, is complete = false
+
+        return updateToCompletedSuccess;
+    } catch (error) {
+        console.log(error);
+    }
+
+    return false;
+}
+
+/**
  * A function that deletes a tutorial.
  * @param {integer} id 
  * @param {string} token JWT token.
@@ -180,4 +253,4 @@ async function createTutorial(isPublished, token, prompt) {
     return false;
 }
 
-export { getTutorialsFromCourse, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, deleteTutorial }
+export { getTutorialsFromCourse, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial }
