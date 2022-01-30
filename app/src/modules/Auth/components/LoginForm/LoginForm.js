@@ -13,13 +13,6 @@ function LoginForm() {
     const [passwordErrors, setPaswordErrors] = useState(undefined);
 
     async function handleSubmit(event) {
-        const errors = validatePassword(password);
-        event.preventDefault();
-        if(errors) {
-            setPaswordErrors(errors);
-            console.log(errors);
-            return;
-        }
 
         let token = await login(event);
         if (token) {
@@ -37,13 +30,8 @@ function LoginForm() {
                 <FormControl id="email" isRequired>
                     <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                 </FormControl>
-                <FormControl id="password" isRequired isInvalid={passwordErrors != undefined}>
+                <FormControl id="password" isRequired>
                     <Input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)}/>
-                    { passwordErrors? (
-                        <FormErrorMessage>
-                            {passwordErrors}
-                        </FormErrorMessage>
-                    ): null}
                 </FormControl>
                 <Button variant="white" type="submit">Sign In</Button>
             </Grid>

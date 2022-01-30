@@ -63,12 +63,12 @@ async function login(event) {
             });
 
             token = response.data;
+            return token;
         } catch (error) {
             //TODO: Error handling.
             //console.log(error.response);
         }
     }
-    return token;
 }
 
 /**
