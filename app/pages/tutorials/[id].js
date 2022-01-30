@@ -3,12 +3,7 @@ import { loggedIn } from "@Modules/Auth/Auth";
 import instance from "@Utils/instance";
 import Editor from "@monaco-editor/react";
 import { useEffect, useRef, useState } from "react";
-import dynamic from 'next/dynamic'; 
-import { ChevronLeftIcon, HamburgerIcon } from "@chakra-ui/icons";
-const MarkdownRenderer = dynamic(
-  () => import("@Modules/Tutorials/components/MarkdownRenderer/MarkdownRenderer"),
-  { ssr: false }
-);
+import TutorialSideBar from "@Modules/Tutorials/components/TutorialSideBar/TutorialSideBar";
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
@@ -63,17 +58,7 @@ function Tutorial(props) {
       <Flex direction={"column"} height="calc(100vh - 50px)">
         <Flex width="100%" flex="1">
           <Flex flex="1" direction = "column">
-            <Flex h="50px" px={3} bg="ce_mainmaroon" color="ce_white" align={"center"}>
-              <HamburgerIcon w={8} h={8}/>
-              <Spacer />
-              <ChevronLeftIcon w={8} h={8}/>
-            </Flex>
-            <Flex flex="1" p={3} bg="ce_backgroundlighttan" >
-              <MarkdownRenderer>
-                {prompt}
-              </MarkdownRenderer>
-            </Flex>
-            
+            <TutorialSideBar prompt={prompt} />
           </Flex>
           <Flex flex="2" direction={"column"}>
             <Flex flex="1">
