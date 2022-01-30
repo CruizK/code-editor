@@ -52,7 +52,6 @@ function RegistrationForm() {
                             {passwordErrors}
                         </FormErrorMessage>
                     ): null}
-                </FormControl>
                 <Checkbox id="admin" size="sm">Request admin access</Checkbox>
                 <Button variant="white" type="submit">Sign Up</Button>
             </Grid>
