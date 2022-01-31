@@ -6,7 +6,7 @@ const TagStyle = {
     },
     variants: {
         solid: (props) => {
-            console.log(props);
+            //console.log(props);
             return ({
             container: {
                 bg: props.type + "." + props.lower,
