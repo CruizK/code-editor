@@ -32,6 +32,16 @@ const ButtonStyle = {
             }
         },
         yellow: {
+            color: "ce_white",
+            backgroundColor: "ce_yellow",
+            borderColor: "ce_yellow",
+            _hover: {
+                color: "ce_yellow",
+                borderColor: "ce_yellow",
+                boxShadow: "none",
+            }
+        },
+        yellowOutline: {
             color: "ce_yellow",
             borderColor: "ce_yellow",
             backgroundColor: "transparent",

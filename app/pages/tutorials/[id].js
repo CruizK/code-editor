@@ -3,7 +3,10 @@ import { loggedIn } from "@Modules/Auth/Auth";
 import instance from "@Utils/instance";
 import Editor from "@monaco-editor/react";
 import { useEffect, useRef, useState } from "react";
+import Router from "next/router";
 import TutorialSideBar from "@Modules/Tutorials/components/TutorialSideBar/TutorialSideBar";
+import { compileAndRunCode, updateUserTutorial } from "@Modules/Tutorials/Tutorials";
+import { useCookies } from "react-cookie";
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
@@ -39,7 +42,11 @@ export async function getServerSideProps(context) {
 }
 
 function Tutorial(props) {
-  const { prompt } = props.values;
+  const { id, courseId, prompt } = props.values;
+
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const isLoggedIn = loggedIn(cookies.user);
+  const token = cookies.user;
 
   const [showSidebar, setShow] = useState(true);
 
@@ -53,6 +60,28 @@ function Tutorial(props) {
       iframeRef.current.contentWindow.postMessage(html, '*')
     }
   }, [editorText])
+
+  /**
+   * Saves progress, using tutorial id from query context. 
+   */
+  async function saveInProgress(event) {
+    let success = await updateUserTutorial(id, token, true, false);
+    if (success) {
+      let redirect = `/courses/${courseId}`;
+      Router.push(redirect);
+    }
+  }
+
+  /**
+   * Sends code to compile to the server, setting inProgress and isComplete as necessary. 
+   */
+  async function runCode(event) {
+    let success = await compileAndRunCode(id, token, 'CSharp', editorText);
+    if (success) {
+      let redirect = `/courses/${courseId}`;
+      Router.push(redirect);
+    }
+  }
 
   return(
     <Container maxW="100%" p="0">
@@ -84,7 +113,7 @@ function Tutorial(props) {
             />
             </Flex>
             <Flex h="50px" bg="ce_blue" justify={"end"}>
-              <Button w="10%" h="100%" variant="blue">RUN</Button>
+              <Button w="10%" h="100%" variant="blue" onClick={runCode}>RUN</Button>
             </Flex>
           </Flex>
           <Flex flex="1" width="100%">
@@ -111,7 +140,8 @@ function Tutorial(props) {
           </Flex>
         </Flex>
         <Flex h="50px" bg="ce_darkgrey" justify={"end"} align="center">
-            <Button w="10%" maxW="150px" mr={2} variant="yellow">Exit</Button>
+            <Button w="10%" maxW="150px" mr={2} variant="yellowOutline">Exit</Button>
+            <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={saveInProgress}>SAVE PROGRESS</Button>
         </Flex>
       </Flex>
     </Container>
