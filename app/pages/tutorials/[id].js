@@ -1,4 +1,4 @@
-import { Flex, Container, Button, Spacer } from "@chakra-ui/react";
+import { Flex, Container, Button } from "@chakra-ui/react";
 import { loggedIn } from "@Modules/Auth/Auth";
 import instance from "@Utils/instance";
 import Editor from "@monaco-editor/react";
@@ -41,6 +41,8 @@ export async function getServerSideProps(context) {
 function Tutorial(props) {
   const { prompt } = props.values;
 
+  const [showSidebar, setShow] = useState(true);
+
   const [editorText, setText] = useState(`<button onClick="document.getElementById('demo').innerHTML = \n\t'Change me!'"\n>\n\tClick Me!\n</button>\n<div id="demo"></div>\n`);
   const iframeRef = useRef();
 
@@ -56,10 +58,8 @@ function Tutorial(props) {
     <Container maxW="100%" p="0">
       <Flex direction={"column"} height="calc(100vh - 50px)">
         <Flex width="100%" flex="1">
-          <Flex flex="1" direction = "column">
-            <TutorialSideBar prompt={prompt} />
-          </Flex>
-          <Flex flex="2" direction={"column"}>
+          <TutorialSideBar prompt={prompt} show={showSidebar} setShow={setShow} />
+          <Flex flex="2" maxW="50%" direction={"column"}>
             <Flex flex="1">
             <Editor
               height="100%"

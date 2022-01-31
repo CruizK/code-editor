@@ -1,5 +1,5 @@
-import { ChevronLeftIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { Flex, Spacer } from "@chakra-ui/react";
+import { ChevronLeftIcon, ChevronRightIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { Collapse, Flex, Spacer } from "@chakra-ui/react";
 import dynamic from 'next/dynamic'; 
 const MarkdownRenderer = dynamic(
   () => import("@Modules/Tutorials/components/MarkdownRenderer/MarkdownRenderer"),
@@ -7,21 +7,28 @@ const MarkdownRenderer = dynamic(
 );
 
 function TutorialSideBar(props) {
-    const { prompt } = props;
+    const { prompt, show } = props;
+  
+    const handleToggle = () => { props.setShow(!show); };
 
     return(
-        <>
-        <Flex h="50px" px={3} bg="ce_mainmaroon" color="ce_white" align={"center"}>
-            <HamburgerIcon w={8} h={8}/>
-            <Spacer />
-            <ChevronLeftIcon w={8} h={8}/>
-        </Flex>
-        <Flex flex="1" p={3} bg="ce_backgroundlighttan" >
+        <Flex flex={(show) ? "1" : "0"} direction="column">
+          <Flex h="50px" px={3} bg="ce_mainmaroon" color="ce_white" align={"center"}>
+            <HamburgerIcon w={8} h={8} onClick={handleToggle} cursor="pointer" />
+            {show && <>
+              <Spacer />
+              <ChevronLeftIcon w={8} h={8} onClick={handleToggle} cursor="pointer" />
+            </>}
+            {!show &&
+              <ChevronRightIcon w={8} h={8} onClick={handleToggle} cursor="pointer" />
+            }
+          </Flex>
+          <Collapse in={show}>
             <MarkdownRenderer>
-                {prompt}
+              {prompt}
             </MarkdownRenderer>
+          </Collapse>
         </Flex>
-        </>
     )
 }
 
