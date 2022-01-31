@@ -5,11 +5,13 @@ import Editor from "@monaco-editor/react";
 import { useEffect, useRef, useState } from "react";
 import Router from "next/router";
 import TutorialSideBar from "@Modules/Tutorials/components/TutorialSideBar/TutorialSideBar";
-import { compileAndRunCode, getUserTutorialDetailsFromId, updateUserTutorial } from "@Modules/Tutorials/Tutorials";
+import { compileAndRunCode, getTutorialsFromCourse, getUserTutorialDetailsFromId, getUserTutorialsDetailsFromCourse, updateUserTutorial } from "@Modules/Tutorials/Tutorials";
 import { useCookies } from "react-cookie";
+import { checkIfInCourse } from "@Modules/Courses/Courses";
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
+  let nextTutorialId = false; // assume there isn't a next tutorial
 
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
@@ -17,9 +19,29 @@ export async function getServerSideProps(context) {
 
   var values = await getUserTutorialDetailsFromId(id, token) || {};
 
+  const isRegistered = await checkIfInCourse(values.courseId, token);
+
+  if (isRegistered) {
+    const tutorialDetails = await getUserTutorialsDetailsFromCourse(values.courseId, token);
+    const thisCourseIndex = tutorialDetails.findIndex(tute => tute.id == values.id);
+    const detailsForThisTutorial = tutorialDetails[thisCourseIndex];
+
+    // We want to grab the next tutorial id while we're already grabbing UserTutorials
+    const detailsForNextTutorial = tutorialDetails[thisCourseIndex + 1];
+    if (detailsForNextTutorial)
+    nextTutorialId = detailsForNextTutorial.id;
+
+    let inProgress = (detailsForThisTutorial) ? detailsForThisTutorial.inProgress : false;
+    values['inProgress'] = inProgress;
+
+    let isCompleted = (detailsForThisTutorial) ? detailsForThisTutorial.isCompleted : false;
+    values['isCompleted'] = isCompleted;
+  }
+
   return {
     props: {
       values: values,
+      nextTutorialId: nextTutorialId,
     }, // will be passed to the page component as props
   }
 }
@@ -53,6 +75,15 @@ function Tutorial(props) {
       let redirect = `/courses/${courseId}`;
       Router.push(redirect);
     }
+  }
+
+  async function goToNext(event) {
+    let redirect = `/courses/${courseId}`; // if no next tutorial exists, just go back to course page
+
+    if (props.nextTutorialId) {
+      redirect = `/tutorials/${props.nextTutorialId}`;
+    }
+    Router.push(redirect);
   }
 
   /**
@@ -124,7 +155,10 @@ function Tutorial(props) {
         </Flex>
         <Flex h="50px" bg="ce_darkgrey" justify={"end"} align="center">
             <Button w="10%" maxW="150px" mr={2} variant="yellowOutline">Exit</Button>
-            <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={saveInProgress}>SAVE PROGRESS</Button>
+            {(props.isCompleted) 
+            ? <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={goToNext}>CONTINUE {'>'}</Button>
+            : <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={saveInProgress}>SAVE PROGRESS</Button>
+            }
         </Flex>
       </Flex>
     </Container>
