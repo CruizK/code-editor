@@ -88,19 +88,24 @@ async function login(event) {
         "name",
         "email",
         "password",
-        "admin",
+        "accesscode",
+        "role"
     ].forEach(key => {
         isValid = (form[key].validity.valid) ? isValid : false;
     });
 
     if (isValid) {      
         try {
-            let response = await instance.post("/Auth/Register", {
+            let data = {
                 name: form["name"].value,
                 email: form["email"].value,
                 password: form["password"].value,
-                role: "Student", // TODO: Should be form field US-100
-            })
+                role: form["role"].value, 
+            };
+
+            if(data.role != "Student") data.accesscode = form["accesscode"].value;
+
+            let response = await instance.post("/Auth/Register", data);
 
             token = response.data;
         } catch (error) {

@@ -22,7 +22,7 @@ function TutorialForm(props) {
     const languageOptions = programmingLanguages;
 
     const spacing = 5;
-    const selectWidth = '200px';
+    const selectWidth = '150px';
 
     return (
         <form id="tutorial_form" style={{ width: '100%' }}>

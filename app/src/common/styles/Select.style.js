@@ -1,7 +1,7 @@
 const SelectStyle = {
     baseStyle: {
         field: {
-            fontFamily: "input"
+            fontFamily: "input",
         },
     },
     defaultProps: {
@@ -13,7 +13,8 @@ const SelectStyle = {
                 borderColor: "ce_black",
                 fontWeight: "bold",
                 borderRadius: "md",
-                padding: "5px"
+                textAlign: "center",
+                paddingRight: "29px",
             },
         },
     },

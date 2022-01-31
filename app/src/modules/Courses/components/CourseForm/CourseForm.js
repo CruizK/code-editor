@@ -21,7 +21,6 @@ function CourseForm(props) {
                     <FormControl id="course_title" isRequired>
                         <FormLabel display="flex" alignItems="center">Title
                             <Input placeholder="..." ml={15} defaultValue={dvs["title"]} pattern={courseRegEx()}/>
-                            <FormToolTip lines={courseTitleTooltipLines}/>
                         </FormLabel>
                     </FormControl>
                     <FormControl id="description" isRequired>
