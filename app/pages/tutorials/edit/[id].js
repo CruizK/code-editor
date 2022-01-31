@@ -15,20 +15,20 @@ const TutorialForm = dynamic(
   { ssr: false }
 );
 import instance from "@Utils/instance";
-import { createTutorial, updateTutorial } from "@Modules/Tutorials/Tutorials";
+import { createTutorial, getUserTutorialDetailsFromId, updateTutorial } from "@Modules/Tutorials/Tutorials";
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
 
   var courses = [];
-  var defaultValues = {};
 
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
+  let token = cookies.user;
+
   const headers = {};
 
   if (isLoggedIn) {
-    let token = cookies.user;
     headers["Authorization"] = "Bearer " + token;
   }
   
@@ -51,18 +51,7 @@ export async function getServerSideProps(context) {
     console.log(error);
   }
 
-  let tutorialResponse;
-
-  try {
-    tutorialResponse = await instance.get("/Tutorials/UserTutorialDetails/" + id, {
-      headers: {...headers},
-    });
-    
-    if (tutorialResponse.statusText == "OK")
-    defaultValues = tutorialResponse.data;
-  } catch (error) {
-    console.log(error);
-  }
+  let defaultValues = await getUserTutorialDetailsFromId(id, token) || {};
 
   return {
     props: {

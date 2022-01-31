@@ -5,34 +5,17 @@ import Editor from "@monaco-editor/react";
 import { useEffect, useRef, useState } from "react";
 import Router from "next/router";
 import TutorialSideBar from "@Modules/Tutorials/components/TutorialSideBar/TutorialSideBar";
-import { compileAndRunCode, updateUserTutorial } from "@Modules/Tutorials/Tutorials";
+import { compileAndRunCode, getUserTutorialDetailsFromId, updateUserTutorial } from "@Modules/Tutorials/Tutorials";
 import { useCookies } from "react-cookie";
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
 
-  var values = {};
-
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
-  const headers = {};
+  let token = cookies.user;
 
-  if (isLoggedIn) {
-    let token = cookies.user;
-    headers["Authorization"] = "Bearer " + token;
-  }
-
-  let tutorialResponse;
-
-  try {
-    tutorialResponse = await instance.get("/Tutorials/UserTutorialDetails/" + id, {
-      headers: {...headers},
-    });
-    
-    values = tutorialResponse.data;
-  } catch (error) {
-    console.log(error);
-  }
+  var values = await getUserTutorialDetailsFromId(id, token) || {};
 
   return {
     props: {

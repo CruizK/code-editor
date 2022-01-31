@@ -2,6 +2,30 @@ import instance from "@Utils/instance";
 import { getID } from "@Utils/jwt";
 
 /**
+ * A function that gets tutorial details from the server using a tutorial ID.
+ * @param {integer} id Tutorial id
+ * @returns {Object|boolean} Tutorial objects if successful, 'false' if unsuccessful
+ */
+async function getUserTutorialDetailsFromId(id, token) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    try {
+        let response = await instance.get("/Tutorials/UserTutorialDetails/" + id, {
+            headers: {...headers},
+        });
+        
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+}
+
+/**
  * A function that gets an array of tutorials from the server using a course ID.
  * @param {integer} id Course id
  * @returns {Array<Object>|boolean} Array of tutorial objects if successful, 'false' if unsuccessful
@@ -253,4 +277,4 @@ async function compileAndRunCode(id, token, language, code) {
     return false;
 }
 
-export { getTutorialsFromCourse, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial }
+export { getUserTutorialDetailsFromId, getTutorialsFromCourse, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial }
