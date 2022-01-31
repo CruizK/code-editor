@@ -19,32 +19,21 @@ function loggedIn(userCookie) {
  * At least one uppercase letter.
  * At least one number.
  * At least one special character: !, @, #, $, %, ^, &, *
- * Cannot be same as email.
  */
-function passwordRegEx(email) {
-    let baseRegEx = "^(?!placeholder$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,20}$";
+function validatePassword(password) {
+    let length = password.length >= 8 && password.length <= 20;
+    let oneLowerCase = /[a-z]+/g
+    let oneUpperCase = /[A-Z]+/g
+    let oneNumber = /[0-9]+/g
+    let oneSpecial = /[!@#\$%\^&\*]+/g
 
-    function escapeRegExp(string) {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-    }
-    
-    let emailRegEx = (typeof email == "string" && email.length > 0) ? escapeRegExp(email) : "placeholder";
-    let fullRegEx = baseRegEx.replace("placeholder", emailRegEx);
-
-    return fullRegEx;
+    if (!length) return 'Password must be between 8-20 characters';
+    if (!oneLowerCase.test(password)) return 'Password must contain one lowercase letter';
+    if (!oneUpperCase.test(password)) return 'Password must contain one uppercase letter';
+    if (!oneNumber.test(password)) return 'Password must contain at least 1 number';
+    if (!oneSpecial.test(password)) return 'Password must contain at least 1 special character: !, @, #, $, %, ^, &, *';
+    return undefined;
 };
-
-/**
- * For use in FormTooltip
- */
-const passwordTooltipLines = [
-    'At least eight characters, but no more than twenty.',
-    'At least one lowercase letter.',
-    'At least one uppercase letter.',
-    'At least one number.',
-    'At least one special character: !, @, #, $, %, ^, &, *.',
-    'Cannot be same as email.',
-];
 
 /**
  * A function that sends form data to the server for login.
@@ -74,12 +63,12 @@ async function login(event) {
             });
 
             token = response.data;
+            return token;
         } catch (error) {
             //TODO: Error handling.
             //console.log(error.response);
         }
     }
-    return token;
 }
 
 /**
@@ -123,4 +112,4 @@ async function login(event) {
     return token;
 }
 
-export { maxAgeInHours, loggedIn, passwordRegEx, passwordTooltipLines, login, register };
+export { maxAgeInHours, loggedIn, validatePassword, login, register };

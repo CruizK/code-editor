@@ -19,6 +19,18 @@ const ButtonStyle = {
         }
     },
     variants: {
+        blue: {
+            color: "ce_white",
+            backgroundColor: "ce_brightblue",
+            borderColor: "ce_brightblue",
+            borderRadius: "0px",
+            _hover: {
+                color: "ce_white",
+                backgroundColor: "transparent",
+                borderColor: "transparent",
+                boxShadow: "none",
+            }
+        },
         yellow: {
             color: "ce_yellow",
             borderColor: "ce_yellow",
