@@ -15,11 +15,13 @@ namespace CodeEditorApi.Features.Auth
 
         private readonly IRegisterCommand _registerCommand;
         private readonly ILoginCommand _loginCommand;
+        private readonly IEmailService _emailService;
 
-        public AuthController(IRegisterCommand registerCommand, ILoginCommand loginCommand)
+        public AuthController(IRegisterCommand registerCommand, ILoginCommand loginCommand, IEmailService emailService)
         {
             _registerCommand = registerCommand;
             _loginCommand = loginCommand;
+            _emailService = emailService;
         }
 
         /// <summary>
@@ -46,6 +48,11 @@ namespace CodeEditorApi.Features.Auth
             return await _loginCommand.ExecuteAsync(loginBody);
         }
 
+        /// <summary>
+        /// Generates access code, only for admins
+        /// </summary>
+        /// <param name="roleRequestBody"></param>
+        /// <returns>string</returns>
         [HttpPost("GenerateAccessCode")]
         [Authorize(Roles = "Admin")]
         public Task<string> GenerateAccessCode([FromBody] RoleRequestBody body)
