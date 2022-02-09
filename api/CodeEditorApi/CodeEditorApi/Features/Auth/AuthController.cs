@@ -1,6 +1,8 @@
 ﻿using CodeEditorApi.Features.Auth.Login;
 using CodeEditorApi.Features.Auth.Register;
+using CodeEditorApi.Features.Auth.UpdateUser;
 using CodeEditorApi.Services;
+using CodeEditorApiDataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -16,12 +18,14 @@ namespace CodeEditorApi.Features.Auth
         private readonly IRegisterCommand _registerCommand;
         private readonly ILoginCommand _loginCommand;
         private readonly IEmailService _emailService;
+        private readonly IUpdateUserCommand _updateUserCommand;
 
-        public AuthController(IRegisterCommand registerCommand, ILoginCommand loginCommand, IEmailService emailService)
+        public AuthController(IRegisterCommand registerCommand, ILoginCommand loginCommand, IEmailService emailService, IUpdateUserCommand updateUserCommand)
         {
             _registerCommand = registerCommand;
             _loginCommand = loginCommand;
             _emailService = emailService;
+            _updateUserCommand = updateUserCommand;
         }
 
         /// <summary>
@@ -58,6 +62,15 @@ namespace CodeEditorApi.Features.Auth
         public Task<string> GenerateAccessCode([FromBody] RoleRequestBody body)
         {
             return Task.FromResult(AccessCodeService.GenerateAccessCode(body.Role));
+        }
+                
+        [HttpPut("UpdateUser")]
+        [Authorize]
+        public async Task<ActionResult<string>> UpdateUser([FromBody] UpdateUserBody updateUserBody)
+        {
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
+            updateUserBody.Id = userId;
+            return await _updateUserCommand.ExecuteAsync(updateUserBody);
         }
     }
 }
