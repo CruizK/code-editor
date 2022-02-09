@@ -44,12 +44,18 @@ namespace CodeEditorApi.Features.Auth.UpdateUser
             {
                 return ApiError.BadRequest($"Could not update User's email because another account already exists with email {updateUserBody.Email}");
             }
-
-            if(updateUserBody.OldPassword != null && !_hashService.ComparePassword(user.Hash, updateUserBody.OldPassword))
+            if(updateUserBody.OldPassword != null)
             {
-                return ApiError.BadRequest($"user input for current password does not match password saved in database");
+                if (!_hashService.ComparePassword(user.Hash, updateUserBody.OldPassword))
+                {
+                    return ApiError.BadRequest($"user input for current password does not match password saved in database");
+                }
+                if(updateUserBody.NewPassword.Length < 1)
+                {
+                    return ApiError.BadRequest($"a new password must be provided to update a password.");
+                }
             }
-
+            
             updateUserBody.NewPassword = _hashService.HashPassword(updateUserBody.NewPassword);
 
             var updatedUser = await _updateUser.ExecuteAsync(updateUserBody);

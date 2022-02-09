@@ -15,7 +15,6 @@ namespace CodeEditorApi.Features.Auth.UpdateUser
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
         [StringLength(20)]
         public string OldPassword { get; set; }
 
