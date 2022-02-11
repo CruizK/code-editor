@@ -96,7 +96,7 @@ function TutorialForm(props) {
                 </Flex>
                 <Flex w="100%" mt={spacing} direction="column">
                     <Box w="100%" fontWeight={"bold"} fontSize={"md"}>Tutorial Base Code</Box>
-                    <p>Choose whether you want to upload an existing code file or if you want to edit boilerplate code provided for us.</p>
+                    <p>Choose whether you want to upload an existing code file or if you want to edit boilerplate code provided by us.</p>
                     <Spacer />
                     <Box id="actions">
                         <FileUpload id="fileSelect" py={0} callback={setTemplate} />
