@@ -12,6 +12,7 @@ const MarkdownEditor = dynamic(
 );
 import Editor from "@monaco-editor/react";
 import FileUpload from "@Components/FileUpload/FileUpload";
+import TemplateLoader from "../TemplateLoadder/TemplateLoader";
 
 /**
  * Handles displaying form UI
@@ -29,6 +30,7 @@ function TutorialForm(props) {
 
     const [template, setTemplate] = useState(dvs["template"] || ``);
     const [prompt, setPrompt] = useState(dvs["prompt"] || '');
+    const [languageId, setLanguageId] = useState(dvs["languageId"] || '');
 
     return (
         <form id="tutorial_form" style={{ width: '100%' }}>
@@ -63,7 +65,7 @@ function TutorialForm(props) {
                 </Flex>
                 <Flex w="100%" mt={spacing}>
                     <Box w="20%" fontWeight={"bold"} fontSize={"md"}>Language</Box>
-                    <Select w="30%" maxW={selectWidth} id="language" defaultValue={dvs["languageId"]}>
+                    <Select w="30%" maxW={selectWidth} id="language" defaultValue={dvs["languageId"]} onChange={(event) => setLanguageId(event.target.value)}>
                         {languageOptions.map((option, index) => {
                             const { dbIndex, value } = option;
                             return <option id={index} value={dbIndex}>{value}</option>
@@ -85,8 +87,8 @@ function TutorialForm(props) {
                     <p>Choose whether you want to upload an existing code file or if you want to edit boilerplate code provided for us.</p>
                     <Spacer />
                     <Box id="actions">
-                        <FileUpload id="fileSelect" callback={setTemplate} />
-                        <Button w="20%" maxW="150px" mr={2} variant="maroon">Edit A Template</Button>
+                        <FileUpload id="fileSelect" py={0} callback={setTemplate} />
+                        <TemplateLoader languageId={languageId} callback={setTemplate} />
                     </Box>
                 </Flex>
             </Flex>
