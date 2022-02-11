@@ -17,6 +17,19 @@ class Example
 }
         `, // hello world
     }
+];
+
+const HTML = [
+    {
+        template: 'Hello World',
+        code: `
+<button 
+    onClick="document.getElementById('demo').innerHTML = 'Change me!'"
+>
+    Click Me!
+</button>
+        `, // hello world
+    }
 ]
 
 /**
@@ -24,6 +37,7 @@ class Example
  */
 const templates = {
     CSharp: CSharp,
+    HTML: HTML,
 }
 
 const getLanguageFromId = (id) => {
