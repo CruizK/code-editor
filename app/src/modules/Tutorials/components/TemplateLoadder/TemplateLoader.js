@@ -32,7 +32,7 @@ function TemplateLoader(props) {
     return(
         <Select onChange={handleChange}
             display="inline-block"
-            w="20%" maxW="150px" mr={2}
+            w="20%" maxW="170px" mr={2}
             variant="maroon"
             placeholder='Edit A Template'
         >
