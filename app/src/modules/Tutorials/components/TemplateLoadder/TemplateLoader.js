@@ -13,7 +13,7 @@ function TemplateLoader(props) {
         let language = getLanguageFromId(props.languageId);
 
         let success = await getCodeTemplates(language);
-        console.log('language changed', success);
+        // console.log('language changed' + language, success);
         if (success) {
             setTemplates(success);
         }
