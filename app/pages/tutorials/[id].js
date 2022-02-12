@@ -50,7 +50,7 @@ export async function getServerSideProps(context) {
 }
 
 function Tutorial(props) {
-  const { id, courseId, prompt } = props.values;
+  const { id, courseId, prompt, template } = props.values;
 
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const isLoggedIn = loggedIn(cookies.user);
@@ -59,7 +59,7 @@ function Tutorial(props) {
   const [showSidebar, setShow] = useState(true);
   const [compiling, setCompilationStatus] = useState(false);
 
-  const [editorText, setText] = useState(`<button onClick="document.getElementById('demo').innerHTML = \n\t'Change me!'"\n>\n\tClick Me!\n</button>\n<div id="demo"></div>\n`);
+  const [editorText, setText] = useState(template || ``);
   const iframeRef = useRef();
 
   // For explanation of iframe messaging: https://joyofcode.xyz/avoid-flashing-iframe
