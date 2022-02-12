@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 function TemplateLoader(props) {
     const { id, callback, ...rest } = props;
-    const [text, setText] = useState(null);
+    const [text, setText] = useState('');
     const [templates, setTemplates] = useState([]);
 
     const isInitialMount = useRef(true); // see https://reactjs.org/docs/hooks-faq.html#can-i-run-an-effect-only-on-updates
@@ -39,8 +39,9 @@ function TemplateLoader(props) {
             display="inline-block"
             w="20%" maxW="170px" mr={2}
             variant="maroon"
-            placeholder='Edit A Template'
+            value={text}
         >
+            <option key="placeholder" value=''>Edit a Template</option>
         {
             templates.map((tempData, tempIndex) => {
                 return <option key={tempIndex} value={tempData.code}>{tempData.template}</option>
