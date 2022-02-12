@@ -23,8 +23,11 @@ export async function getServerSideProps(context) {
 
   if (isRegistered) {
     const tutorialDetails = await getUserTutorialsDetailsFromCourse(values.courseId, token);
-    const thisCourseIndex = tutorialDetails.findIndex(tute => tute.id == values.id);
-    const detailsForThisTutorial = tutorialDetails[thisCourseIndex];
+    const thisCourseIndex = tutorialDetails.findIndex(tute => tute.id == values.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
+    if (isRegistered && thisCourseIndex == -1)
+    console.log(`User is registered for course ${values.courseId}, but not for tutorial ${id}: '${values.title}'.`);
+    
+    const detailsForThisTutorial = tutorialDetails[thisCourseIndex]; // undefined if thisCourseIndex isnt in tutorialDetails
 
     // We want to grab the next tutorial id while we're already grabbing UserTutorials
     const detailsForNextTutorial = tutorialDetails[thisCourseIndex + 1];
