@@ -7,6 +7,8 @@ function TemplateLoader(props) {
     const [text, setText] = useState(null);
     const [templates, setTemplates] = useState([]);
 
+    const isInitialMount = useRef(true); // see https://reactjs.org/docs/hooks-faq.html#can-i-run-an-effect-only-on-updates
+
     useEffect(async function() {
         let language = getLanguageFromId(props.languageId);
 
@@ -14,6 +16,13 @@ function TemplateLoader(props) {
         console.log('language changed', success);
         if (success) {
             setTemplates(success);
+        }
+
+        // only on update
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+        } else {
+            setText(''); if (callback) callback('');
         }
     }, [props.languageId]);
 
