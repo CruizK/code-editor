@@ -114,7 +114,7 @@ const getLanguageFromId = (id) => {
     
     let languageObj = programmingLanguages.find((lang) => {
         return lang.dbIndex == id;
-    });
+    }) || programmingLanguages[0];
     if (languageObj)
     languageName = languageObj.value;
 
