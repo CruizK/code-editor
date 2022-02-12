@@ -1,9 +1,9 @@
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Flex, Grid, Box } from "@chakra-ui/layout";
-import { Button, Select, Spacer } from "@chakra-ui/react";
+import { Select, Spacer } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
-import { difficultylevels, programmingLanguages } from "@Utils/static";
+import { difficultylevels } from "@Utils/static";
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from "react";
 const MarkdownEditor = dynamic(
@@ -14,6 +14,7 @@ import Editor from "@monaco-editor/react";
 import FileUpload from "@Components/FileUpload/FileUpload";
 import TemplateLoader from "../TemplateLoadder/TemplateLoader";
 import { getLanguageFromId } from "@Utils/templates";
+import LanguageSelector from "../LanguageSelector/LanguageSelector";
 
 /**
  * Handles displaying form UI
@@ -24,13 +25,13 @@ function TutorialForm(props) {
     const courseOptions = props.courses || [];
 
     const difficultyOptions = difficultylevels;
-    const languageOptions = programmingLanguages;
 
     const spacing = 5;
     const selectWidth = '150px';
 
     const [template, setTemplate] = useState(dvs["template"] || ``);
     const [prompt, setPrompt] = useState(dvs["prompt"] || '');
+
     const [languageId, setLanguageId] = useState(dvs["languageId"] || '');
     const [monacoLanguage, setMonacoLanguage] = useState('html');
 
@@ -77,13 +78,7 @@ function TutorialForm(props) {
                 </Flex>
                 <Flex w="100%" mt={spacing}>
                     <Box w="20%" fontWeight={"bold"} fontSize={"md"}>Language</Box>
-                    <Select w="30%" maxW={selectWidth} id="language" defaultValue={dvs["languageId"]} onChange={(event) => setLanguageId(event.target.value)}>
-                        {languageOptions.map((option, index) => {
-                            const { dbIndex, value } = option;
-                            return <option id={index} value={dbIndex}>{value}</option>
-                        })}
-                    </Select>
-
+                    <LanguageSelector languageId={languageId} callback={(newValue) => { setLanguageId(newValue) }} template={template} />
                 </Flex>
                 <Flex w="100%" mt={spacing}>
                     <Box w="20%" fontWeight={"bold"} fontSize={"md"}>Difficulty</Box>
