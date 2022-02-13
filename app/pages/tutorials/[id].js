@@ -1,4 +1,4 @@
-import { Flex, Container, Button } from "@chakra-ui/react";
+import { Flex, Container, Button, Spinner } from "@chakra-ui/react";
 import { loggedIn } from "@Modules/Auth/Auth";
 import instance from "@Utils/instance";
 import Editor from "@monaco-editor/react";
@@ -23,8 +23,11 @@ export async function getServerSideProps(context) {
 
   if (isRegistered) {
     const tutorialDetails = await getUserTutorialsDetailsFromCourse(values.courseId, token);
-    const thisCourseIndex = tutorialDetails.findIndex(tute => tute.id == values.id);
-    const detailsForThisTutorial = tutorialDetails[thisCourseIndex];
+    const thisCourseIndex = tutorialDetails.findIndex(tute => tute.id == values.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
+    if (isRegistered && thisCourseIndex == -1)
+    console.log(`User is registered for course ${values.courseId}, but not for tutorial ${id}: '${values.title}'.`);
+    
+    const detailsForThisTutorial = tutorialDetails[thisCourseIndex]; // undefined if thisCourseIndex isnt in tutorialDetails
 
     // We want to grab the next tutorial id while we're already grabbing UserTutorials
     const detailsForNextTutorial = tutorialDetails[thisCourseIndex + 1];
@@ -47,15 +50,16 @@ export async function getServerSideProps(context) {
 }
 
 function Tutorial(props) {
-  const { id, courseId, prompt } = props.values;
+  const { id, courseId, prompt, template } = props.values;
 
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const isLoggedIn = loggedIn(cookies.user);
   const token = cookies.user;
 
   const [showSidebar, setShow] = useState(true);
+  const [compiling, setCompilationStatus] = useState(false);
 
-  const [editorText, setText] = useState(`<button onClick="document.getElementById('demo').innerHTML = \n\t'Change me!'"\n>\n\tClick Me!\n</button>\n<div id="demo"></div>\n`);
+  const [editorText, setText] = useState(template || ``);
   const iframeRef = useRef();
 
   // For explanation of iframe messaging: https://joyofcode.xyz/avoid-flashing-iframe
@@ -90,7 +94,9 @@ function Tutorial(props) {
    * Sends code to compile to the server, setting inProgress and isComplete as necessary. 
    */
   async function runCode(event) {
+    setCompilationStatus(true);
     let success = await compileAndRunCode(id, token, 'CSharp', editorText);
+    setCompilationStatus(false);
     if (success) {
       let redirect = `/courses/${courseId}`;
       Router.push(redirect);
@@ -127,7 +133,7 @@ function Tutorial(props) {
             />
             </Flex>
             <Flex h="50px" bg="ce_blue" justify={"end"}>
-              <Button w="10%" h="100%" variant="blue" onClick={runCode}>RUN</Button>
+              <Button disabled={compiling} w="10%" h="100%" variant="blue" onClick={runCode}>{(!compiling) ? "Run": <Spinner />}</Button>
             </Flex>
           </Flex>
           <Flex flex="1" width="100%">

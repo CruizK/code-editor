@@ -1,6 +1,6 @@
-import { Button } from "@chakra-ui/button";
 import { Box } from "@chakra-ui/layout";
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Select } from "@chakra-ui/react";
+import { useRef } from "react";
 
 const { useDisclosure } = require("@chakra-ui/hooks")
 
@@ -15,28 +15,40 @@ const { useDisclosure } = require("@chakra-ui/hooks")
  */
 function Barrier(props) {
     const { buttonText, title, text, callback } = props;
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const cancelRef = useRef(); // accessibility helper
+
     return (
         <>
             <Box onClick={onOpen}>{buttonText}</Box>
-    
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>{title}</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                    { text || 'Are you sure?'}
-                    </ModalBody>
         
-                    <ModalFooter>
-                    <Button variant="maroon" mr={3} onClick={callback}>Yes</Button>
-                    <Button variant="ghost" onClick={onClose}>
-                        Close
-                    </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+            <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            {title}
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                            {text || 'Are you sure?'}
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button variant="maroon" onClick={callback} ml={3}>
+                            Confirm
+                            </Button>
+                            <Button variant="ghost" ref={cancelRef} onClick={onClose}>
+                            Cancel
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
         </>
     )
 }

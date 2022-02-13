@@ -2,6 +2,9 @@ const SelectStyle = {
     baseStyle: {
         field: {
             fontFamily: "input",
+            textAlign: "center",
+            borderColor: "ce_black",
+            fontWeight: "bold",
         },
     },
     defaultProps: {
@@ -10,13 +13,23 @@ const SelectStyle = {
     variants: {
         outline: {
             field: {
-                borderColor: "ce_black",
-                fontWeight: "bold",
                 borderRadius: "md",
-                textAlign: "center",
-                paddingRight: "29px",
             },
         },
+        maroon: {
+            icon: {
+                color: "ce_white",
+            },
+            field: {
+                "> option, > optgroup": {
+                    bg: "ce_mainmaroon",
+                },
+                color: "ce_white",
+                backgroundColor: "ce_mainmaroon",
+                borderRadius: "md",
+            },
+
+        }
     },
 }
 

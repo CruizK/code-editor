@@ -112,6 +112,7 @@ async function createTutorial(isPublished, token, prompt) {
                 languageId: form["language"].value,
                 difficultyId: form["difficulty"].value,
                 prompt: form["md"].value,
+                template: form["template"].value,
             }, {
                 headers: {...headers},
             });
@@ -161,6 +162,7 @@ async function createTutorial(isPublished, token, prompt) {
                 languageId: form["language"].value,
                 difficultyId: form["difficulty"].value,
                 prompt: form["md"].value,
+                template: form["template"].value,
             }, {
                 headers: {...headers},
             });

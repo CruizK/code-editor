@@ -110,6 +110,8 @@ namespace CodeEditorApiDataAccess.Data
 
                 entity.Property(e => e.Prompt).HasColumnType("text");
 
+                entity.Property(e => e.Template).HasColumnType("text");
+
                 entity.Property(e => e.Title)
                     .IsRequired()
                     .HasMaxLength(100)

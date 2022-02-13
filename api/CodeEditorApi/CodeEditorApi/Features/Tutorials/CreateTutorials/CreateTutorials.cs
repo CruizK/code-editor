@@ -33,7 +33,8 @@ namespace CodeEditorApi.Features.Tutorials.CreateTutorials
                 ModifyDate = DateTime.Now,
                 LanguageId = createTutorialsBody.LanguageId,
                 DifficultyId = createTutorialsBody.DifficultyId,
-                Prompt = createTutorialsBody.Prompt
+                Prompt = createTutorialsBody.Prompt,
+                Template = createTutorialsBody.Template
             };
 
             await _context.Tutorials.AddAsync(insertTutorial);

@@ -21,6 +21,8 @@ namespace CodeEditorApi.Features.Tutorials.CreateTutorials
 
         public string Prompt { get; set; }
 
+        public string Template{ get; set; }
+
         public int? LanguageId { get; set; }  //should eventually be required and NOT NULLable
 
         public int? DifficultyId { get; set; } //should eventually be required and NOT NULLable

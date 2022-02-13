@@ -12,6 +12,7 @@
     [LanguageId] INT NULL, 
     [DifficultyId] INT NULL, 
     [Description] NVARCHAR(255) NULL, 
+    [Template] TEXT NULL, 
     CONSTRAINT [FK_Tutorial_UserId] FOREIGN KEY ([Author]) REFERENCES [User]([Id]), 
     CONSTRAINT [FK_Tutorial_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Course]([Id]) ON DELETE CASCADE, 
     CONSTRAINT [FK_Tutorial_cfgDifficultyLevel] FOREIGN KEY ([DifficultyId]) REFERENCES [cfgDifficultyLevel]([Id]), 

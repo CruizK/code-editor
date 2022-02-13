@@ -24,11 +24,15 @@ export async function getServerSideProps(context) {
 
     const tutorials = await getTutorialsFromCourse(id, token);
     const tutorialDetails = (isRegistered) ? await getUserTutorialsDetailsFromCourse(id, token) : false;
-    tutorials.forEach(function(tute, index) {
-        let inProgress = (tutorialDetails) ? tutorialDetails[index].inProgress : false;
+    tutorials.forEach(function(tute) {
+        const thisCourseIndex = tutorialDetails.findIndex(tuteDetails => tute.id == tuteDetails.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
+        if (isRegistered && thisCourseIndex == -1)
+        console.log(`User is registered for course ${id}, but not for every tutorial under it`);
+
+        let inProgress = (tutorialDetails && tutorialDetails[thisCourseIndex]) ? tutorialDetails[thisCourseIndex].inProgress : false;
         tute['inProgress'] = inProgress;
 
-        let isCompleted = (tutorialDetails) ? tutorialDetails[index].isCompleted : false;
+        let isCompleted = (tutorialDetails && tutorialDetails[thisCourseIndex]) ? tutorialDetails[thisCourseIndex].isCompleted : false;
         tute['isCompleted'] = isCompleted;
 
         if (inProgress && isCompleted)

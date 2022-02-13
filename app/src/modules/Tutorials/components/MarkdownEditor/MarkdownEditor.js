@@ -26,6 +26,7 @@ function MarkdownEditor(props) {
         let currentContent = convertToRaw(state.getCurrentContent());
         let newMarkdown = toMarkdown(currentContent);
         setMarkdown(newMarkdown);
+        if (props.callback) props.callback(newMarkdown);
     };
 
     const maxWidth = useBreakpointValue({ base: "350px", lg: "550px"});
