@@ -23,7 +23,7 @@ export async function getServerSideProps(context) {
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
   const headers = {};
-
+s
   if (isLoggedIn) {
     let token = cookies.user;
     headers["Authorization"] = "Bearer " + token;
@@ -33,7 +33,6 @@ export async function getServerSideProps(context) {
     headers: {...headers},
   });
   
-  if (response.statusText == "OK")
   data = response.data.map((courseData) => {
     // we only need the titles for each course
     return {
