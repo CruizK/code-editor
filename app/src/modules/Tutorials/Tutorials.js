@@ -241,7 +241,7 @@ async function compileAndRunCode(id, token, language, code) {
 
         let updateToCompletedSuccess = await updateUserTutorial(id, token, false, true); // in progress = true, is complete = false
 
-        return updateToCompletedSuccess;
+        return response;
     } catch (error) {
         console.log(error);
     }

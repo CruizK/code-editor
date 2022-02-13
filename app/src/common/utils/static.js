@@ -45,4 +45,17 @@ const programmingLanguages = [
     },
 ];
 
-export { difficultylevels, programmingLanguages };
+const dbLanguageToMonacoLanguage = {
+    CSharp: 'csharp',
+    HTML: 'HTML',
+    Java: 'Java',
+    Python: 'Python',
+    Javascript: 'JavaScript',
+    CSS: 'CSS',
+}
+
+function ShouldLanguageCompile(language) {
+    return !(language == 'CSS' || language == 'HTML' || language == 'Javascript')
+}
+
+export { difficultylevels, programmingLanguages, dbLanguageToMonacoLanguage, ShouldLanguageCompile };

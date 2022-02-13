@@ -23,7 +23,7 @@ export async function getServerSideProps(context) {
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
   const headers = {};
-s
+
   if (isLoggedIn) {
     let token = cookies.user;
     headers["Authorization"] = "Bearer " + token;

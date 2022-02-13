@@ -42,7 +42,6 @@ function MarkdownEditor(props) {
                     inline: {
                         inDropdown: false,
                         options: ['bold', 'italic', 'underline', 'strikethrough', 'monospace', 'superscript', 'subscript'],
-
                     }
                 }
             }

@@ -24,7 +24,7 @@ func CreateContainer(language Language) (string, error) {
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
 		Image: language.Image,
 		Cmd:   []string{"sh", "-c", language.CompileCommand + " && " + language.RunCommand},
-		Tty:   false,
+		Tty:   true,
 	}, nil, nil, nil, "")
 
 	if err != nil {
@@ -81,6 +81,7 @@ func RunCodeIsolated(language Language, containerId string, code string) (string
 
 	reader, err := cli.ContainerLogs(ctx, containerId, types.ContainerLogsOptions{
 		ShowStdout: true,
+		ShowStderr: true,
 		Since:      after.Sub(now).String(),
 	})
 	if err != nil {
@@ -88,10 +89,6 @@ func RunCodeIsolated(language Language, containerId string, code string) (string
 	}
 
 	defer reader.Close()
-
-	// Skip past 8 byte docker log header
-	p := make([]byte, 8)
-	reader.Read(p)
 
 	// Read Rest
 	content, err := ioutil.ReadAll(reader)

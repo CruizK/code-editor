@@ -22,12 +22,15 @@ namespace CodeEditorApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment appEnv )
         {
             Configuration = configuration;
+            CurrentEnviornment = appEnv;
         }
 
         public IConfiguration Configuration { get; }
+
+        public IWebHostEnvironment CurrentEnviornment { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -56,9 +59,19 @@ namespace CodeEditorApi
                 );
             });
 
+
+
             services.AddHttpClient("GoApi", httpClient =>
             {
-                httpClient.BaseAddress = new Uri("http://goapi:8081");
+                if(CurrentEnviornment.IsDevelopment())
+                {
+                    httpClient.BaseAddress = new Uri("http://localhost:8081");
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri("http://goapi:8081");
+                }
+                
             });
 
             services.AddControllers().ConfigureApiBehaviorOptions(opt =>
@@ -146,6 +159,7 @@ namespace CodeEditorApi
         {
             //app.UseMiddleware<RequestLoggingMiddleware>();
             // Enable middleware to serve generated Swagger as a JSON endpoint.
+
             if(env.IsDevelopment())
             {
                 app.UseSwagger();
@@ -176,7 +190,6 @@ namespace CodeEditorApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseHttpsRedirection();
             }
 
             app.UseAuthentication();
