@@ -19,7 +19,7 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
             var tutorial = fixture.Build<Tutorial>()
                 .With(t => t.Author, user.Id)
                 .Create();
-            var body = fixture.Build<CreateTutorialsBody>().With(b => b.Author, tutorial.Author).Create();
+            var body = fixture.Create<CreateTutorialsBody>();
 
             Freeze<IUpdateTutorials>().Setup(u => u.UpdateTutorial(tutorial.Id, body)).ReturnsAsync(tutorial);
 
