@@ -132,7 +132,8 @@ namespace CodeEditorApi.Features.Tutorials
         [Authorize]
         public async Task<ActionResult<Tutorial>> CreateTutorial([FromBody] CreateTutorialsBody createTutorialsBody)
         {
-            return await _createTutorialsCommand.ExecuteAsync(createTutorialsBody);
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
+            return await _createTutorialsCommand.ExecuteAsync(userId, createTutorialsBody);
         }
 
         /// <summary>
