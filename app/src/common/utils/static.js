@@ -47,11 +47,11 @@ const programmingLanguages = [
 
 const dbLanguageToMonacoLanguage = {
     CSharp: 'csharp',
-    HTML: 'HTML',
-    Java: 'Java',
-    Python: 'Python',
-    Javascript: 'JavaScript',
-    CSS: 'CSS',
+    HTML: 'html',
+    Java: 'java',
+    Python: 'python',
+    Javascript: 'javascript',
+    CSS: 'css',
 }
 
 function ShouldLanguageCompile(language) {

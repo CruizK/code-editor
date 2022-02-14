@@ -7,5 +7,13 @@ func RunServer() {
 
 	r.POST("/compile", CompileHandler)
 
+	for _, v := range LanguageMap {
+		err := PullLanguage(v)
+
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	r.Run("0.0.0.0:8081")
 }

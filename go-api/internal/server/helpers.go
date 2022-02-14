@@ -4,7 +4,9 @@ import (
 	"archive/tar"
 	"bytes"
 	"context"
+	"io"
 	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/docker/docker/api/types"
@@ -21,17 +23,50 @@ func init() {
 func CreateContainer(language Language) (string, error) {
 	ctx := context.Background()
 
-	resp, err := cli.ContainerCreate(ctx, &container.Config{
-		Image: language.Image,
-		Cmd:   []string{"sh", "-c", language.CompileCommand + " && " + language.RunCommand},
-		Tty:   true,
-	}, nil, nil, nil, "")
+	var respId string
 
-	if err != nil {
-		return "", err
+	if language.IsCompiled {
+		resp, err := cli.ContainerCreate(ctx, &container.Config{
+			Image: language.Image,
+			Cmd:   []string{"sh", "-c", language.CompileCommand + " && " + language.RunCommand},
+			Tty:   true,
+		}, nil, nil, nil, "")
+
+		if err != nil {
+			return "", err
+		}
+
+		respId = resp.ID
+	} else {
+		resp, err := cli.ContainerCreate(ctx, &container.Config{
+			Image: language.Image,
+			Cmd:   []string{"sh", "-c", language.RunCommand},
+			Tty:   true,
+		}, nil, nil, nil, "")
+
+		if err != nil {
+			return "", err
+		}
+
+		respId = resp.ID
 	}
 
-	return resp.ID, nil
+	return respId, nil
+}
+
+func PullLanguage(language Language) error {
+	ctx := context.Background()
+	reader, err := cli.ImagePull(ctx, language.Image, types.ImagePullOptions{})
+
+	if err != nil {
+		return err
+	}
+
+	defer reader.Close()
+
+	io.Copy(os.Stdout, reader)
+
+	return nil
 }
 
 func RemoveContainer(containerId string) error {

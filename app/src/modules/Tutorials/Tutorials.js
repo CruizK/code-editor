@@ -232,6 +232,7 @@ async function compileAndRunCode(id, token, language, code) {
     }
 
     try {
+        console.log(language);
         let response = await instance.post("/CodeCompiler/Compile/", {
             language: language,
             code: code,

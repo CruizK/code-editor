@@ -1,6 +1,8 @@
 package server
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,30 +22,38 @@ func CompileHandler(c *gin.Context) {
 
 	err := c.BindJSON(&body)
 
+	fmt.Println(body.Language)
+
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
-	containerId, err := CreateContainer(CSharp)
+	if val, ok := LanguageMap[body.Language]; ok {
 
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		containerId, err := CreateContainer(val)
+
+		if err != nil {
+			c.AbortWithError(http.StatusBadRequest, err)
+		}
+
+		out, err := RunCodeIsolated(val, containerId, body.Code)
+
+		if err != nil {
+			c.AbortWithError(http.StatusBadRequest, err)
+		}
+
+		err = RemoveContainer(containerId)
+
+		if err != nil {
+			c.AbortWithError(http.StatusBadRequest, err)
+		}
+
+		c.JSON(200, gin.H{
+			"output": out,
+		})
+	} else {
+		c.AbortWithError(http.StatusBadRequest, errors.New("Invalid Language"))
 	}
 
-	out, err := RunCodeIsolated(CSharp, containerId, body.Code)
-
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
-	}
-
-	err = RemoveContainer(containerId)
-
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
-	}
-
-	c.JSON(200, gin.H{
-		"output": out,
-	})
 }
