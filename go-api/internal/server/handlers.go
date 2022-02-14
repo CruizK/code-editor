@@ -55,5 +55,4 @@ func CompileHandler(c *gin.Context) {
 	} else {
 		c.AbortWithError(http.StatusBadRequest, errors.New("Invalid Language"))
 	}
-
 }
