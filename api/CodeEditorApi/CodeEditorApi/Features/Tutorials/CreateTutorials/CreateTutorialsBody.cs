@@ -5,10 +5,7 @@ namespace CodeEditorApi.Features.Tutorials.CreateTutorials
     public class CreateTutorialsBody
     {
         [Required]
-        public int CourseId { get; set; }
-
-        [Required]
-        public int Author { get; set; }
+        public int CourseId { get; set; }        
 
         [Required]
         [StringLength(100)]
