@@ -62,7 +62,7 @@ namespace CodeEditorApi.Features.Auth
         /// <summary>
         /// Generates access code, only for admins
         /// </summary>
-        /// <param name="roleRequestBody"></param>
+        /// <param name="body"></param>
         /// <returns>string</returns>
         [HttpPost("GenerateAccessCode")]
         [Authorize(Roles = "Admin")]

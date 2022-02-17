@@ -26,6 +26,7 @@ namespace CodeEditorApi.Features.Auth.UpdateUser
 
             if(user != null)
             {
+                user.Name = updateUserBody.Name;
                 user.Email = updateUserBody.Email;
                 if(updateUserBody.NewPassword != null)
                 {

@@ -10,6 +10,8 @@ namespace CodeEditorApi.Features.Auth.GetUser
         Task<User> ExecuteAsync(string email);
 
         Task<User> GetUserInfo(int userId);
+
+        Task<User> GetUserByName(string name);
     }
 
     public class GetUser : IGetUser
@@ -35,6 +37,15 @@ namespace CodeEditorApi.Features.Auth.GetUser
         {
             var user = await _context.Users
                 .Where(u => u.Id == userId)
+                .FirstOrDefaultAsync();
+
+            return user;
+        }
+
+        public async Task<User> GetUserByName(string name)
+        {
+            var user = await _context.Users
+                .Where(u => u.Name == name)
                 .FirstOrDefaultAsync();
 
             return user;

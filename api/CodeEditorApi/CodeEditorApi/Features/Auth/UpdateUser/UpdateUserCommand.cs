@@ -39,8 +39,11 @@ namespace CodeEditorApi.Features.Auth.UpdateUser
             {
                 return ApiError.BadRequest($"Could not find a User with ID {updateUserBody.Id}");
             }
-
-            if(!updateUserBody.Email.Equals(user.Email) && (_getUser.ExecuteAsync(updateUserBody.Email) != null))
+            if (!updateUserBody.Name.Equals(user.Name) && (_getUser.GetUserByName(updateUserBody.Name) != null))
+            {
+                return ApiError.BadRequest($"Could not update User's username because another account already exists with username {updateUserBody.Name}");
+            }
+            if (!updateUserBody.Email.Equals(user.Email) && (_getUser.ExecuteAsync(updateUserBody.Email) != null))
             {
                 return ApiError.BadRequest($"Could not update User's email because another account already exists with email {updateUserBody.Email}");
             }

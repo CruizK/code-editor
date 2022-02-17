@@ -16,10 +16,37 @@ namespace CodeEditorApiUnitTests.Features.Auth
 {
     public class UpdateUserCommandTest : UnitTest<UpdateUserCommand>
     {
+        [Fact]
+        public async Task ShouldReturnBadRequestIfInvalidNewUsername()
+        {
+            var name = "otherusernam";
+            var oldName = "originalusername";
+
+            var otherUser = fixture.Build<User>()
+                .With(u => u.Name, name)
+                .Create();
+            var testUser = fixture.Build<User>()
+                .With(u => u.Name, oldName)
+                .Create();
+
+            var uub = fixture.Build<UpdateUserBody>()
+                .With(ub => ub.Name, name)
+                .Create();
+
+            var expected = new BadRequestError($"Could not update User's username because another account already exists with username {uub.Name}");
+
+            Freeze<IGetUser>().Setup(gu => gu.GetUserByName(uub.Name)).ReturnsAsync(otherUser);
+
+            var actionResult = await Target().ExecuteAsync(uub);
+
+            var result = actionResult.Result as BadRequestObjectResult;
+            result.Should().NotBeNull();
+            result.Value.Should().BeEquivalentTo(expected);
+        }
 
         [Fact]
         public async Task ShouldReturnBadRequestIfInvalidNewEmail()
-        {
+        {           
             var email = "other@email.com";
             var oldEmail = "unittest@email.com";
 
@@ -31,11 +58,15 @@ namespace CodeEditorApiUnitTests.Features.Auth
                 .Create();
 
             var uub = fixture.Build<UpdateUserBody>()
+                .With(ub => ub.Id, testUser.Id)
+                .With(ub => ub.Name, testUser.Name)
                 .With(ub => ub.Email, email)
                 .Create();
 
             var expected = new BadRequestError($"Could not update User's email because another account already exists with email {email}");
 
+            Freeze<IGetUser>().Setup(gu => gu.GetUserInfo(uub.Id)).ReturnsAsync(testUser);
+            Freeze<IGetUser>().Setup(gu => gu.GetUserByName(uub.Name)).ReturnsAsync((User)null);
             Freeze<IGetUser>().Setup(gu => gu.ExecuteAsync(email)).ReturnsAsync(otherUser);
 
             var actionResult = await Target().ExecuteAsync(uub);
@@ -71,14 +102,15 @@ namespace CodeEditorApiUnitTests.Features.Auth
             var user = fixture.Create<User>();
 
             var uub = fixture.Build<UpdateUserBody>()
+                .With(ub => ub.Name, user.Name)
                 .With(ub => ub.Id, user.Id)
                 .With(ub => ub.Email, user.Email)
                 .Create();
 
             var expected = new BadRequestError($"user input for current password does not match password saved in database");
 
-            Freeze<IGetUser>().Setup(gu => gu.GetUserInfo(user.Id)).ReturnsAsync(user);
-
+            Freeze<IGetUser>().Setup(gu => gu.GetUserByName(uub.Name)).ReturnsAsync((User)null);
+            Freeze<IGetUser>().Setup(gu => gu.GetUserInfo(uub.Id)).ReturnsAsync(user);
             Freeze<IHashService>().Setup(hs => hs.ComparePassword(user.Hash, uub.OldPassword)).Returns(false);
 
             var actionResult = await Target().ExecuteAsync(uub);
@@ -95,6 +127,7 @@ namespace CodeEditorApiUnitTests.Features.Auth
 
             var uub = fixture.Build<UpdateUserBody>()
                 .With(ub => ub.Id, user.Id)
+                .With(ub => ub.Name, user.Name)
                 .With(ub => ub.Email, user.Email)
                 .With(ub => ub.NewPassword, "")
                 .Create();
@@ -118,6 +151,7 @@ namespace CodeEditorApiUnitTests.Features.Auth
             var user = fixture.Create<User>();
 
             var uub = fixture.Build<UpdateUserBody>()
+                .With(ub => ub.Name, user.Name)
                 .With(ub => ub.Id, user.Id)
                 .With(ub => ub.Email, user.Email)
                 .With(ub => ub.NewPassword, "goodPass1234!")
@@ -125,10 +159,13 @@ namespace CodeEditorApiUnitTests.Features.Auth
 
             var updateUser = fixture.Build<User>()
                 .With(u => u.Id, user.Id)
+                .With(u => u.Name, user.Name)
                 .With(u => u.Email, user.Email)
                 .Create();
 
             var token = fixture.Create<string>();
+
+            Freeze<IGetUser>().Setup(gu => gu.GetUserByName(uub.Name)).ReturnsAsync(user);
 
             Freeze<IGetUser>().Setup(gu => gu.GetUserInfo(user.Id)).ReturnsAsync(user);
 
