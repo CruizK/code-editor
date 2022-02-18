@@ -23,7 +23,7 @@ export async function getServerSideProps(context) {
     const isRegistered = await checkIfInCourse(id, token);
 
     const tutorials = await getTutorialsFromCourse(id, token);
-    const tutorialDetails = (isRegistered) ? await getUserTutorialsDetailsFromCourse(id, token) : false;
+    const tutorialDetails = await getUserTutorialsDetailsFromCourse(id, token);
     tutorials.forEach(function(tute) {
         const thisCourseIndex = tutorialDetails.findIndex(tuteDetails => tute.id == tuteDetails.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
         if (isRegistered && thisCourseIndex == -1)
