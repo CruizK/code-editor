@@ -10,7 +10,7 @@ namespace CodeEditorApi.Features.Tutorials.CreateTutorials
 {
     public interface ICreateTutorials
     {
-        public Task<ActionResult<Tutorial>> ExecuteAsync(int userId, CreateTutorialsBody getTutorialsBody);
+        public Task<Tutorial> ExecuteAsync(int userId, CreateTutorialsBody getTutorialsBody);
     }
     public class CreateTutorials : ICreateTutorials
     {
@@ -20,7 +20,7 @@ namespace CodeEditorApi.Features.Tutorials.CreateTutorials
         {
             _context = context;
         }
-        public async Task<ActionResult<Tutorial>> ExecuteAsync(int userId, CreateTutorialsBody createTutorialsBody)
+        public async Task<Tutorial> ExecuteAsync(int userId, CreateTutorialsBody createTutorialsBody)
         {
             var insertTutorial = new Tutorial
             {

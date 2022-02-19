@@ -1,5 +1,6 @@
 ﻿using CodeEditorApiDataAccess.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +13,8 @@ namespace CodeEditorApi.Features.Auth.GetUser
         Task<User> GetUserInfo(int userId);
 
         Task<User> GetUserByName(string name);
+
+        Task<List<int>> GetAllUsersRegisteredToCourse(int courseId);
     }
 
     public class GetUser : IGetUser
@@ -49,6 +52,12 @@ namespace CodeEditorApi.Features.Auth.GetUser
                 .FirstOrDefaultAsync();
 
             return user;
+        }
+
+        public async Task<List<int>> GetAllUsersRegisteredToCourse(int courseId)
+        {
+            var users = await _context.UserRegisteredCourses.Where(urc => urc.CourseId == courseId).Select(urc => urc.UserId).ToListAsync();
+            return users;
         }
     }
 }

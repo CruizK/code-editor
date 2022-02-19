@@ -1,5 +1,6 @@
 ﻿using CodeEditorApi.Errors;
 using CodeEditorApi.Features.Auth.GetUser;
+using CodeEditorApi.Features.Tutorials.CreateUserTutorials;
 using CodeEditorApi.Features.Tutorials.GetTutorials;
 using CodeEditorApiDataAccess.Data;
 using CodeEditorApiDataAccess.StaticData;
@@ -17,12 +18,14 @@ namespace CodeEditorApi.Features.Tutorials.CreateTutorials
         private readonly ICreateTutorials _createTutorials;
         private readonly IGetTutorials _getTutorials;
         private readonly IGetUser _getUser;
+        private readonly ICreateUserTutorials _createUserTutorials;
 
-        public CreateTutorialsCommand(ICreateTutorials createTutorials, IGetTutorials getTutorials, IGetUser getUser)
+        public CreateTutorialsCommand(ICreateTutorials createTutorials, IGetTutorials getTutorials, IGetUser getUser, ICreateUserTutorials createUserTutorials)
         {
             _createTutorials = createTutorials;
             _getTutorials = getTutorials;
             _getUser = getUser;
+            _createUserTutorials = createUserTutorials;
         }
 
         public async Task<ActionResult<Tutorial>> ExecuteAsync(int userId, CreateTutorialsBody createTutorialsBody)
@@ -37,7 +40,23 @@ namespace CodeEditorApi.Features.Tutorials.CreateTutorials
             {
                 return ApiError.BadRequest($"A tutorial already exists under course {createTutorialsBody.CourseId} with the same title '{createTutorialsBody.Title}'");
             }
-            return await _createTutorials.ExecuteAsync(userId, createTutorialsBody);
+            var tutorial = await _createTutorials.ExecuteAsync(userId, createTutorialsBody);
+
+            if(tutorial != null)
+            {
+                var users = await _getUser.GetAllUsersRegisteredToCourse(createTutorialsBody.CourseId);
+                if (users != null)
+                {
+                    var addCount = await _createUserTutorials.ExecuteAsync(tutorial.Id, users);
+                    if (addCount != users.Count)
+                    {
+                        return ApiError.BadRequest($"Failed to register Students under Course {createTutorialsBody.CourseId} to new Tutorial");
+                    }
+                }
+                    
+            }
+
+            return tutorial;           
         }
     }
 }
