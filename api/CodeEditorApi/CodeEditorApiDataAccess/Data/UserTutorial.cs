@@ -16,5 +16,6 @@ namespace CodeEditorApiDataAccess.Data
 
         public virtual Tutorial Tutorial { get; set; }
         public virtual User User { get; set; }
+        public string UserCode { get; set; }
     }
 }

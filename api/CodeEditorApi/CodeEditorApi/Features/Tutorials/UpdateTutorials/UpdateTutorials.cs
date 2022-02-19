@@ -41,6 +41,7 @@ namespace CodeEditorApi.Features.Tutorials.UpdateTutorials
             {
                 existingUserTutorial.InProgress = updateUserTutorialBody.InProgress;
                 existingUserTutorial.IsCompleted = updateUserTutorialBody.IsCompleted;
+                existingUserTutorial.UserCode = updateUserTutorialBody.UserCode;
                 existingUserTutorial.ModifyDate = DateTime.Now;
 
             }
