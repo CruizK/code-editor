@@ -10,5 +10,8 @@ namespace CodeEditorApi.Features.Tutorials.UpdateTutorials
 
         [Required]
         public bool IsCompleted { get; set; }
+
+        [Required]
+        public string UserCode { get; set; }
     }
 }
