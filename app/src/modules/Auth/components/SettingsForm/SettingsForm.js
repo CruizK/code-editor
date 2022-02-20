@@ -1,7 +1,8 @@
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Grid } from "@chakra-ui/layout";
+import { Grid, Flex } from "@chakra-ui/layout";
+import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 import { maxAgeInHours, updateUser } from "@Modules/Auth/Auth";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
@@ -64,7 +65,10 @@ function SettingsForm() {
                     Old Password<Input id="oldPassword" placeholder="Password" type="password" onChange={e => setOldPassword(e.target.value)} mb={2}/>
                     New Password<Input id="newPassword" placeholder="Password" type="password" onChange={e => setPassword(e.target.value)}/>
                 </FormControl>
-                <Button variant="maroon" type="submit">Save</Button>
+                <Flex h="50px" justify={"end"} align="center">
+                    <SNoLinkButton href="/" variant="white" w="xs" maxW="80px" mr={2}>Cancel</SNoLinkButton>
+                    <Button variant="maroon" type="submit" w="xs" maxW="120px">SAVE</Button>
+                </Flex>
             </Grid>
         </form>
     );
