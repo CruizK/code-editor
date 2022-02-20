@@ -83,9 +83,10 @@ namespace CodeEditorApi.Features.Courses
         /// <returns></returns>
         [HttpGet("GetCourseDetails/{courseId:int}")]
         [Authorize]
-        public async Task<ActionResult<Course>> GetCourseDetails(int courseId)
+        public async Task<ActionResult<GetCourseDetailsResponseBody>> GetCourseDetails(int courseId)
         {
-            return await _getCourseDetailsCommand.ExecuteAsync(courseId);
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
+            return await _getCourseDetailsCommand.ExecuteAsync(userId, courseId);
         }
 
         /// <summary>

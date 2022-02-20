@@ -34,6 +34,11 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             _context = context;
         }
 
+        /// <summary>
+        /// gets single tutorial - used for editing Tutorial
+        /// </summary>
+        /// <param name="tutorialId"></param>
+        /// <returns></returns>
         public async Task<ActionResult<Tutorial>> GetUserCreatedTutorial(int tutorialId)
         {
             var tutorial = await _context.Tutorials.Where(t => t.Id == tutorialId).Select(t => t).FirstOrDefaultAsync();
@@ -41,11 +46,21 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             return tutorial;
         }
 
+        /// <summary>
+        /// gets all tutorials created by a User - not sure what this is used for
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<ActionResult<List<Tutorial>>> GetUserCreatedTutorialsList(int userId)
         {
             return await _context.Tutorials.Where(t => t.Author == userId).Select(t => t).ToListAsync();
         }
 
+        /// <summary>
+        /// gets all tutorials under a specific course - needed forvalidation
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
         public async Task<List<Tutorial>> GetCourseTutorials(int courseId)
         {
             return await _context.Tutorials.Where(t => t.CourseId == courseId)
@@ -54,6 +69,15 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
                 .Select(t => t).ToListAsync();
         }
         
+        /// <summary>
+        /// gets all tutorials under a course 
+        /// and then looks for user's progress 
+        /// based on those tutorial ids 
+        /// - used for a Course page
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<List<UserTutorial>> GetUserRegisteredTutorials(int courseId, int userId)
         {
             var courseTutorials = await _context.Tutorials.Where(t => t.CourseId == courseId).Select(t => t.Id).ToListAsync();
@@ -65,6 +89,14 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             return inProgressTutorials;
         }
 
+        /// <summary>
+        /// does the exact same thing as GetUserRegisteredTutorials
+        /// BUT without returning ModifyDate...
+        /// - not sure where this is used, but it's not needed
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<List<UserTutorialDetailsBody>> GetUserRegisteredTutorialsWithCourseTutorialDetails(int courseId, int userId)
         {
             var userTutorialsDetails = await _context.Tutorials.Where(t => t.CourseId == courseId).Join(
@@ -83,11 +115,25 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             return userTutorialsDetails;
         }
 
+        /// <summary>
+        /// gets all the tutorials a User is registered to - not sure where this is used or if needed
+        /// - not sure where this is used or what for
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<List<UserTutorial>> GetUserRegisteredTutorials(int userId)
         {
             return await _context.UserTutorials.Where(t => t.UserId == userId).Select(t => t).ToListAsync();
         }
 
+
+        /// <summary>
+        /// gets the tutorials that a user is currently working on based on a course id
+        /// then returns the tutorial that was modified most recently
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
         public async Task<Tutorial> GetUserLastInProgressTutorial(int userId, int courseId)
         {
             var courseTutorials = await _context.Tutorials.Where(t => t.CourseId == courseId).Select(t => t.Id).ToListAsync();
