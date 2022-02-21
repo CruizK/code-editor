@@ -55,12 +55,10 @@ function SettingsForm() {
                     <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                 </FormControl>
                 <br />
-                <FormControl isRequired>
+                <FormControl isRequired isInvalid={passwordError}>
                     <FormLabel display="flex" alignItems="center">Password</FormLabel>
                     To change your password, enter your old password then enter your new password.
-                    {passwordError &&
-                        <FormErrorMessage>{passwordError}</FormErrorMessage>
-                    }
+                    <FormErrorMessage>{passwordError}</FormErrorMessage>
                     <br /><br />
                     Old Password<Input id="oldPassword" placeholder="Password" type="password" onChange={e => setOldPassword(e.target.value)} mb={2}/>
                     New Password<Input id="newPassword" placeholder="Password" type="password" onChange={e => setPassword(e.target.value)}/>
