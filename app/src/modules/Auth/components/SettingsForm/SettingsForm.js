@@ -18,7 +18,6 @@ function SettingsForm() {
     const oldToken = cookies.user;
 
     async function handleSubmit(event) {
-        event.preventDefault();
         try {
             setPasswordError(undefined);
             let res = await updateUser(event, oldToken);

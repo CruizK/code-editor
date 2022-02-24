@@ -85,6 +85,8 @@ function register(event, needsAccessCode) {
  * @returns The response from the server.
  */
 function updateUser(event, token) {
+    event.preventDefault();
+
     let form = event.target;
 
     const headers = {};
