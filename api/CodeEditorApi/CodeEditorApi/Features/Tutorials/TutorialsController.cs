@@ -24,15 +24,12 @@ namespace CodeEditorApi.Features.Tutorials
         private readonly IGetUserLastInProgressTutorialCommand _getUserLastInProgressTutorialCommand;
         private readonly IUpdateUserTutorialsCommand _updateUserTutorialsCommand;
         private readonly IUnregisterUserCommand _unregisterUserCommand;
-        private readonly IGetUserTutorialsPerCourseCommand _getUserTutorialsPerCourseCommand;
-        private readonly IGetUserTutorialsDetailsCommand _getUserTutorialsDetailsCommand;
 
         public TutorialsController(IGetTutorialsCommand getTutorialsCommand, ICreateTutorialsCommand createTutorialsCommand,
             IDeleteTutorialsCommand deleteTutorialsCommand, IUpdateTutorialsCommand updateTutorialsCommand,
             IGetUserCreatedTutorialsCommand getUserCreatedTutorialsCommand, IGetCourseTutorialsCommand getCourseTutorialsCommand,
             IGetUserLastInProgressTutorialCommand getUserLastInProgressTutorialCommand, IUpdateUserTutorialsCommand updateUserTutorialsCommand,
-            IUnregisterUserCommand unregisterUserCommand, IGetUserTutorialsPerCourseCommand getUserTutorialsPerCourseCommand,
-            IGetUserTutorialsDetailsCommand getUserTutorialsDetailsCommand)
+            IUnregisterUserCommand unregisterUserCommand)
         {
             _getTutorialsCommand = getTutorialsCommand;
             _createTutorialsCommand = createTutorialsCommand;
@@ -43,8 +40,6 @@ namespace CodeEditorApi.Features.Tutorials
             _getUserLastInProgressTutorialCommand = getUserLastInProgressTutorialCommand;
             _updateUserTutorialsCommand = updateUserTutorialsCommand;
             _unregisterUserCommand = unregisterUserCommand;
-            _getUserTutorialsPerCourseCommand = getUserTutorialsPerCourseCommand;
-            _getUserTutorialsDetailsCommand = getUserTutorialsDetailsCommand;
         }
 
         /// <summary>
@@ -98,32 +93,6 @@ namespace CodeEditorApi.Features.Tutorials
         }
 
         /// <summary>
-        /// Get A User's Tutorial statuses for a specific Course
-        /// </summary>
-        /// <param name="courseId"></param>
-        /// <returns></returns>
-        [HttpGet("GetUserTutorialsOnCourse/{courseId:int}")]
-        [Authorize]
-        public async Task<ActionResult<List<UserTutorial>>> GetUserTutorialsPerCourse(int courseId)
-        {
-            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
-            return await _getUserTutorialsPerCourseCommand.ExecuteAsync(courseId, userId);
-        }
-
-        /// <summary>
-        /// Get User's progress on each Tutorial for a specific Course AND the details of that Tutorial
-        /// </summary>
-        /// <param name="courseId"></param>
-        /// <returns></returns>
-        [HttpGet("GetUserTutorialsDetails/{courseId:int}")]
-        [Authorize]
-        public async Task<ActionResult<List<UserTutorialDetailsBody>>> GetUserTutorialsDetails(int courseId)
-        {
-            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
-            return await _getUserTutorialsDetailsCommand.ExecuteAsync(courseId, userId);
-        }
-
-        /// <summary>
         /// Create a Tutorial
         /// </summary>
         /// <param name="createTutorialsBody"></param>
@@ -134,18 +103,6 @@ namespace CodeEditorApi.Features.Tutorials
         {
             var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _createTutorialsCommand.ExecuteAsync(userId, createTutorialsBody);
-        }
-
-        /// <summary>
-        /// Delete A Tutorial based on its ID
-        /// </summary>
-        /// <param name="tutorialId"></param>
-        /// <returns></returns>
-        [HttpDelete("DeleteTutorial/{tutorialId:int}")]
-        [Authorize]
-        public async Task<ActionResult<Tutorial>> DeleteTutorials(int tutorialId)
-        {
-            return await _deleteTutorialsCommand.ExecuteAsync(tutorialId);
         }
 
         /// <summary>
@@ -173,6 +130,18 @@ namespace CodeEditorApi.Features.Tutorials
         {
             var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _updateUserTutorialsCommand.ExecuteAsync(tutorialId, userId, updateUserTutorialBody);
+        }
+
+        /// <summary>
+        /// Delete A Tutorial based on its ID
+        /// </summary>
+        /// <param name="tutorialId"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteTutorial/{tutorialId:int}")]
+        [Authorize]
+        public async Task<ActionResult<Tutorial>> DeleteTutorials(int tutorialId)
+        {
+            return await _deleteTutorialsCommand.ExecuteAsync(tutorialId);
         }
 
         /// <summary>

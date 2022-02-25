@@ -77,7 +77,8 @@ namespace CodeEditorApi.Features.Courses
         }
 
         /// <summary>
-        /// Gets all the details for a single course
+        /// Gets Course information including its associated Tutorials 
+        /// and the current user's progress on each tutorial (if any)
         /// </summary>
         /// <param name="courseId"></param>
         /// <returns></returns>
@@ -138,7 +139,7 @@ namespace CodeEditorApi.Features.Courses
         }
 
         /// <summary>
-        /// Creates a course for a user (admin/teacher role)
+        /// Registers User for Course
         /// </summary>
         /// <param name="registerUserBody">
         /// The course details for registering a user
@@ -153,21 +154,6 @@ namespace CodeEditorApi.Features.Courses
         }
 
         /// <summary>
-        /// Creates a course for a user (admin/teacher role)
-        /// </summary>
-        /// <param name="unregisterUserBody">
-        /// The course details for unregistering a user
-        /// </param>
-        /// <returns></returns>
-        [HttpDelete("UnregisterUser")]
-        [Authorize]
-        public async Task<ActionResult<UserRegisteredCourse>> UnregisterUser([FromBody] UnregisterUserBody unregisterUserBody)
-        {
-            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
-            return await _unregisterUserCommand.ExecuteAsync(userId, unregisterUserBody);
-        }
-
-        /// <summary>
         /// Updates a course for a user (admin/teacher role)
         /// </summary>
         /// <param name="updateCourseBody">updated Course details for the existing course</param>
@@ -179,6 +165,21 @@ namespace CodeEditorApi.Features.Courses
         {
             var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _updateCoursesCommand.ExecuteAsync(courseId, userId, updateCourseBody);
+        }
+
+        /// <summary>
+        /// Unregisters User from Course
+        /// </summary>
+        /// <param name="unregisterUserBody">
+        /// The course details for unregistering a user
+        /// </param>
+        /// <returns></returns>
+        [HttpDelete("UnregisterUser")]
+        [Authorize]
+        public async Task<ActionResult<UserRegisteredCourse>> UnregisterUser([FromBody] UnregisterUserBody unregisterUserBody)
+        {
+            var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
+            return await _unregisterUserCommand.ExecuteAsync(userId, unregisterUserBody);
         }
 
         /// <summary>

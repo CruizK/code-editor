@@ -22,8 +22,6 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         public Task<List<UserTutorial>> GetUserRegisteredTutorials(int courseId, int userId);
 
         public Task<List<UserTutorial>> GetUserRegisteredTutorials(int userId);
-
-        public Task<List<UserTutorialDetailsBody>> GetUserRegisteredTutorialsWithCourseTutorialDetails(int courseId, int userId);
     }
     public class GetTutorials : IGetTutorials
     {
@@ -87,37 +85,11 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
                 .Select(ut => ut).ToListAsync();
 
             return inProgressTutorials;
-        }
+        }       
 
         /// <summary>
-        /// does the exact same thing as GetUserRegisteredTutorials
-        /// BUT without returning ModifyDate...
-        /// - not sure where this is used, but it's not needed
-        /// </summary>
-        /// <param name="courseId"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public async Task<List<UserTutorialDetailsBody>> GetUserRegisteredTutorialsWithCourseTutorialDetails(int courseId, int userId)
-        {
-            var userTutorialsDetails = await _context.Tutorials.Where(t => t.CourseId == courseId).Join(
-                _context.UserTutorials.Where(ut => ut.UserId == userId), t => t.Id,
-                ut => ut.TutorialId,
-                (Tutorials, UserTutorials) => new UserTutorialDetailsBody(
-                    Tutorials.Id, 
-                    UserTutorials.UserId, 
-                    Tutorials.DifficultyId, 
-                    Tutorials.LanguageId, 
-                    UserTutorials.InProgress, 
-                    UserTutorials.IsCompleted)
-                
-                ).ToListAsync();
-
-            return userTutorialsDetails;
-        }
-
-        /// <summary>
-        /// gets all the tutorials a User is registered to - not sure where this is used or if needed
-        /// - not sure where this is used or what for
+        /// gets all the tutorials a User is registered to
+        /// used for validation on GetUserLastInProgressTutorialCommand
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
