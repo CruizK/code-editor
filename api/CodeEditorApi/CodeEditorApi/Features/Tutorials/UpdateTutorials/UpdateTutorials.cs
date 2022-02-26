@@ -39,8 +39,7 @@ namespace CodeEditorApi.Features.Tutorials.UpdateTutorials
 
             if (existingUserTutorial != null)
             {
-                existingUserTutorial.InProgress = updateUserTutorialBody.InProgress;
-                existingUserTutorial.IsCompleted = updateUserTutorialBody.IsCompleted;
+                existingUserTutorial.Status = updateUserTutorialBody.TutorialStatus;
                 existingUserTutorial.UserCode = updateUserTutorialBody.UserCode;
                 existingUserTutorial.ModifyDate = DateTime.Now;
 

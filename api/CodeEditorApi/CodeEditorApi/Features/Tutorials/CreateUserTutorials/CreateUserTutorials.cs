@@ -25,8 +25,8 @@ namespace CodeEditorApi.Features.Tutorials.CreateUserTutorials
                 {
                     TutorialId = TutorialId,
                     UserId = id,
-                    InProgress = false,
-                    IsCompleted = false
+                    Status = 1
+                   
                 };
                 _context.UserTutorials.Add(userTutorial);
             }

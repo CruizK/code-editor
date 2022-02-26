@@ -1,6 +1,7 @@
 ﻿using CodeEditorApi.Errors;
 using CodeEditorApi.Features.Courses.GetCourses;
 using CodeEditorApiDataAccess.Data;
+using CodeEditorApiDataAccess.StaticData;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             //this needs to grab tutorials based on both userId and courseId (tutorials under course)
             var userRegisteredTutorials = await _getTutorials.GetUserRegisteredTutorials(userId);
 
-            if (!userRegisteredTutorials.Where(t => t.InProgress == true).Any())
+            if (!userRegisteredTutorials.Where(t => t.Status == (int)TutorialStatus.InProgress).Any())
             {
                 return ApiError.BadRequest($"User has not started any tutorial for course with id {courseId}");
             }

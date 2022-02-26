@@ -1,4 +1,5 @@
 ﻿using CodeEditorApiDataAccess.Data;
+using CodeEditorApiDataAccess.StaticData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace CodeEditorApi.Features.Tutorials.RegisterUser
         {            
             foreach (var tut in tutorials)
             {
-                await _context.UserTutorials.AddAsync(new UserTutorial { UserId = userId, TutorialId = tut.Id, InProgress = false, IsCompleted = false });
+                await _context.UserTutorials.AddAsync(new UserTutorial { UserId = userId, TutorialId = tut.Id, Status = (int)TutorialStatus.NotStarted });
             }
 
             await _context.SaveChangesAsync();

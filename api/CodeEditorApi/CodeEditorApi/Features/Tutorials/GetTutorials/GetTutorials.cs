@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CodeEditorApi.Errors;
+using CodeEditorApiDataAccess.StaticData;
 
 namespace CodeEditorApi.Features.Tutorials.GetTutorials
 {
@@ -111,7 +112,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             var courseTutorials = await _context.Tutorials.Where(t => t.CourseId == courseId).Select(t => t.Id).ToListAsync();
             var userTutorials = await _context.UserTutorials.Where(ut => courseTutorials.Contains(ut.TutorialId) && ut.UserId == userId).Select(o => o).ToListAsync();
 
-            var inProgressTutorialId = userTutorials.Where(ut => ut.InProgress == true).OrderByDescending(t => t.ModifyDate).Select(ut => ut.TutorialId).FirstOrDefault();
+            var inProgressTutorialId = userTutorials.Where(ut => ut.Status == (int)TutorialStatus.InProgress).OrderByDescending(t => t.ModifyDate).Select(ut => ut.TutorialId).FirstOrDefault();
 
             var tutorial = await _context.Tutorials.Where(t => t.Id == inProgressTutorialId).Select(t => t).FirstOrDefaultAsync();
 
