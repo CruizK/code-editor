@@ -41,7 +41,7 @@ import { useCookies } from "react-cookie";
                                     <ChevronDownIcon />
                                 </MenuButton>
                                 <MenuList color="ce_black">
-                                    <MenuItem>My Account</MenuItem>
+                                    <MenuItem><SNoLink href="/auth/settings">My Account</SNoLink></MenuItem>
                                     <MenuItem><SNoLink href="/auth/logout">Sign Out</SNoLink></MenuItem>
                                 </MenuList>
                             </Menu>
