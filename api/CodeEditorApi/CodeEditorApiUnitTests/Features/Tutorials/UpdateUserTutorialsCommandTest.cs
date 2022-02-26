@@ -8,6 +8,7 @@ using Moq;
 using AutoFixture;
 using CodeEditorApi.Errors;
 using Microsoft.AspNetCore.Mvc;
+using CodeEditorApiDataAccess.StaticData;
 
 namespace CodeEditorApiUnitTests.Features.Tutorials
 {
@@ -19,20 +20,17 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
             var user = fixture.Create<User>();
             var userTutorial = fixture.Build<UserTutorial>()
                 .With(ut => ut.UserId, user.Id)
-                .With(ut => ut.InProgress, false)
-                .With(ut => ut.IsCompleted, false)
+                .With(ut => ut.Status, (int)TutorialStatus.NotStarted)
                 .Create();
 
             var body = fixture.Build<UpdateUserTutorialBody>()
-                .With(b => b.InProgress, true)
-                .With(b => b.IsCompleted, false)
+                .With(b => b.TutorialStatus, (int)TutorialStatus.InProgress)
                 .Create();
 
             var updateUserTutorial = fixture.Build<UserTutorial>()
                 .With(uut => uut.TutorialId, userTutorial.TutorialId)
                 .With(uut => uut.UserId, user.Id)
-                .With(uut => uut.InProgress, true)
-                .With(uut => uut.IsCompleted, false)
+                .With(uut => uut.Status, (int)TutorialStatus.InProgress)
                 .Create();
 
             Freeze<IUpdateTutorials>().Setup(iut => iut.UpdateUserTutorial(userTutorial.TutorialId, user.Id, body)).ReturnsAsync(updateUserTutorial);
@@ -48,20 +46,17 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
             var user = fixture.Create<User>();
             var userTutorial = fixture.Build<UserTutorial>()
                 .With(ut => ut.UserId, user.Id)
-                .With(ut => ut.InProgress, false)
-                .With(ut => ut.IsCompleted, false)
+                .With(ut => ut.Status, (int)TutorialStatus.NotStarted)
                 .Create();
 
             var body = fixture.Build<UpdateUserTutorialBody>()
-                .With(b => b.InProgress, false)
-                .With(b => b.IsCompleted, true)
+                .With(b => b.TutorialStatus, (int)TutorialStatus.Completed)
                 .Create();
 
             var updateUserTutorial = fixture.Build<UserTutorial>()
                 .With(uut => uut.TutorialId, userTutorial.TutorialId)
                 .With(uut => uut.UserId, user.Id)
-                .With(uut => uut.InProgress, false)
-                .With(uut => uut.IsCompleted, true)
+                .With(uut => uut.Status, (int)TutorialStatus.Completed)
                 .Create();
 
             Freeze<IUpdateTutorials>().Setup(iut => iut.UpdateUserTutorial(userTutorial.TutorialId, user.Id, body)).ReturnsAsync(updateUserTutorial);
@@ -69,32 +64,6 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
             var actionResult = await Target().ExecuteAsync(userTutorial.TutorialId, user.Id, body);
 
             actionResult.Value.Should().BeEquivalentTo(updateUserTutorial);
-        }
-
-        [Fact]
-        public async Task ShouldReturnBadRequestIfInProgressAndCompletedIsTrue()
-        {
-            var user = fixture.Create<User>();
-            var userTutorial = fixture.Build<UserTutorial>()
-                .With(ut => ut.UserId, user.Id)
-                .With(ut => ut.InProgress, false)
-                .With(ut => ut.IsCompleted, false)
-                .Create();
-
-            var body = fixture.Build<UpdateUserTutorialBody>()
-                .With(b => b.InProgress, true)
-                .With(b => b.IsCompleted, true)
-                .Create();
-
-            var expected = new BadRequestError($"Cannot submit a UserTutorial that is both in progress and completed.");
-
-            Freeze<IUpdateTutorials>().Setup(iut => iut.UpdateUserTutorial(userTutorial.TutorialId, user.Id, body)).ReturnsAsync((UserTutorial)null);
-
-            var actionResult = await Target().ExecuteAsync(userTutorial.TutorialId, user.Id, body);
-
-            var result = actionResult.Result as BadRequestObjectResult;
-            result.Should().NotBeNull();
-            result.Value.Should().BeEquivalentTo(expected);
-        }
+        }        
     }
 }

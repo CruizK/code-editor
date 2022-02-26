@@ -30,15 +30,14 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         public async Task<ActionResult<Tutorial>> ExecuteAsync(int userId, int courseId)
         {
             var userRegisteredForCourse = await _getCourses.GetUserCourses(userId);
-            if (userRegisteredForCourse.Count() == 0)
+            if (userRegisteredForCourse.Count() == 0 || userRegisteredForCourse.Where(c => c.Id == courseId).FirstOrDefault() == null)
             {
                 return ApiError.BadRequest($"User is not registered for course with id {courseId}");
             }
 
-            //this needs to grab tutorials based on both userId and courseId (tutorials under course)
             var userRegisteredTutorials = await _getTutorials.GetUserRegisteredTutorials(userId);
 
-            if (!userRegisteredTutorials.Where(t => t.Status == (int)TutorialStatus.InProgress).Any())
+            if (userRegisteredTutorials == null || !userRegisteredTutorials.Where(t => t.Status == (int)TutorialStatus.InProgress).Any())
             {
                 return ApiError.BadRequest($"User has not started any tutorial for course with id {courseId}");
             }

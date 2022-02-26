@@ -3,6 +3,7 @@ using CodeEditorApi.Errors;
 using CodeEditorApi.Features.Courses.GetCourses;
 using CodeEditorApi.Features.Tutorials.GetTutorials;
 using CodeEditorApiDataAccess.Data;
+using CodeEditorApiDataAccess.StaticData;
 using CodeEditorApiUnitTests.Helpers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -81,23 +82,28 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
 
             user.UserRegisteredCourses.Add(userRegisteredCourse);
 
-            //add correlated tutorials of course to UserTutorials, where the user is "registered" to each tutorial
-            foreach (var tut in tutorials)
+            //add userTutorials to User
+            foreach (var t in tutorials)
             {
-                var userTutorial = fixture.Build<UserTutorial>()
-                .With(ut => ut.TutorialId, tutorials.First().Id)
-                .With(ut => ut.UserId, user.Id)
-                .With(ut => ut.InProgress, false)
-                .Create();
+                var ut = new UserTutorial
+                {
+                    UserId = user.Id,
+                    TutorialId = t.Id,
+                    Status = (int)TutorialStatus.NotStarted
+                };
 
-                user.UserTutorials.Add(userTutorial);
+                user.UserTutorials.Add(ut);
             }
 
-            var expected = ApiError.BadRequest($"User has not started any tutorial for course with id {It.IsAny<int>()}");
+            var userCourseList = new List<Course>();
+            userCourseList.Add(course);
 
-            Freeze<IGetTutorials>().Setup(gt => gt.GetUserRegisteredTutorials(user.Id)).ReturnsAsync(user.UserTutorials.ToList());
+            var expected = ApiError.BadRequest($"User has not started any tutorial for course with id {course.Id}");
 
-            var actionResult = await Target().ExecuteAsync(user.Id, It.IsAny<int>());
+            Freeze<IGetCourses>().Setup(gc => gc.GetUserCourses(user.Id)).ReturnsAsync(userCourseList);
+            Freeze<IGetTutorials>().Setup(gt => gt.GetUserRegisteredTutorials(user.Id)).ReturnsAsync((List<UserTutorial>)null);
+
+            var actionResult = await Target().ExecuteAsync(user.Id, course.Id);
 
             var result = actionResult.Result as BadRequestObjectResult;
             result.Should().NotBeNull();
@@ -145,11 +151,31 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
                 .With(urc => urc.CourseId, course.Id)
                 .With(urc => urc.UserId, user.Id)
                 .Create();
+                  
+            user.UserRegisteredCourses.Add(userRegisteredCourse);
 
-            user.UserRegisteredCourses.Add(userRegisteredCourse);            
+            //add userTutorials to User
+            foreach (var t in tutorials)
+            {
+                var ut = new UserTutorial
+                {
+                    UserId = user.Id,
+                    TutorialId = t.Id,
+                    Status = (int)TutorialStatus.NotStarted
+                };
+
+                user.UserTutorials.Add(ut);
+            }
+
+            user.UserTutorials.First().Status = (int)TutorialStatus.InProgress;
+
+            var userCourseList = new List<Course>();
+            userCourseList.Add(course);
 
             var expected = ApiError.BadRequest($"In Progress Tutorial could not be found.");
 
+            Freeze<IGetCourses>().Setup(gc => gc.GetUserCourses(user.Id)).ReturnsAsync(userCourseList);
+            Freeze<IGetTutorials>().Setup(gt => gt.GetUserRegisteredTutorials(user.Id)).ReturnsAsync(user.UserTutorials.ToList());
             Freeze<IGetTutorials>().Setup(gt => gt.GetUserLastInProgressTutorial(user.Id, course.Id)).ReturnsAsync((Tutorial)null);
 
             var actionResult = await Target().ExecuteAsync(user.Id, course.Id);
@@ -201,25 +227,26 @@ namespace CodeEditorApiUnitTests.Features.Tutorials
 
             user.UserRegisteredCourses.Add(userRegisteredCourse);
 
-            bool first = true;
-            //add correlated tutorials of course to UserTutorials, where the user is "registered" to each tutorial
-            foreach (var tut in tutorials)
+            //add userTutorials to User
+            foreach (var t in tutorials)
             {
-                var userTutorial = fixture.Build<UserTutorial>()
-                .With(ut => ut.TutorialId, tut.Id)
-                .With(ut => ut.UserId, user.Id)
-                .Create();
+                var ut = new UserTutorial
+                {
+                    UserId = user.Id,
+                    TutorialId = t.Id,
+                    Status = (int)TutorialStatus.NotStarted
+                };
 
-                if (first) {
-                    userTutorial.InProgress = true;
-                    first = false;
-                }
+                user.UserTutorials.Add(ut);
+            }
 
-                userTutorial.InProgress = false;
+            user.UserTutorials.First().Status = (int)TutorialStatus.InProgress;
 
-                user.UserTutorials.Add(userTutorial);
-            }           
+            var userCourseList = new List<Course>();
+            userCourseList.Add(course);
 
+            Freeze<IGetCourses>().Setup(gc => gc.GetUserCourses(user.Id)).ReturnsAsync(userCourseList);
+            Freeze<IGetTutorials>().Setup(gt => gt.GetUserRegisteredTutorials(user.Id)).ReturnsAsync(user.UserTutorials.ToList());
             Freeze<IGetTutorials>().Setup(gt => gt.GetUserLastInProgressTutorial(user.Id, course.Id)).ReturnsAsync(tutorials.First());
 
             var actionResult = await Target().ExecuteAsync(user.Id, course.Id);
