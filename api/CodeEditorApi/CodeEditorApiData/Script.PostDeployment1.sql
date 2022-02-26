@@ -17,6 +17,7 @@ BEGIN
         INSERT INTO cfgRoles (Id, Role) VALUES (1, 'Admin'), (2, 'Teacher'), (3, 'Student');
         INSERT INTO cfgDifficultyLevel (Id, Difficulty) VALUES (1, 'Easy'), (2, 'Medium'), (3, 'Hard');
         INSERT INTO cfgProgrammingLanguage(Id, Language) VALUES (1, 'CSS'), (2, 'C#'), (3, 'HTML'), (4, 'Java'), (5, 'JavaScript'), (6, 'Python');
+        INSERT INTO cfgTutorialStatus(Id, Status) VALUES (1, 'Not Started'), (2, 'In Progress'), (3, 'Completed'), (4, 'Restarted');
     END TRY
     BEGIN CATCH
     END CATCH

@@ -79,6 +79,7 @@
     <Build Include="Stored Procedures\spDeleteUserRegisteredCourse.sql" />
     <Build Include="Stored Procedures\spUserRegisteredCourse.sql" />
     <Build Include="Stored Procedures\spCourseRegisteredUsersCount.sql" />
+    <Build Include="Tables\cfgTutorialStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="CodeEditorApiData.refactorlog" />

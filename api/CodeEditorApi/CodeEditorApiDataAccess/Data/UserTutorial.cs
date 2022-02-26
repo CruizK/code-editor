@@ -9,8 +9,7 @@ namespace CodeEditorApiDataAccess.Data
     {
         public int TutorialId { get; set; }
         public int UserId { get; set; }
-        public bool InProgress { get; set; }
-        public bool IsCompleted { get; set; }
+        public int Status { get; set; }
 
         public DateTime? ModifyDate { get; set; }
 
