@@ -28,6 +28,7 @@ const colors = {
   ce_hovermaroon: "#560000",
   ce_linkmaroon: "#720030",
   ce_yellow: "#ffa800",
+  ce_yellow_dark: "rgba(255, 168, 0, 0.4)", // just RGB-ified ce_yellow with 0.4 opacity
   ce_blue: "#246181",
   ce_green: "#658d1b",
   ce_backgroundtan: "#dad6cb",
