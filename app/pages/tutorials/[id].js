@@ -40,6 +40,9 @@ export async function getServerSideProps(context) {
 
     let status = (detailsForThisTutorial) ? detailsForThisTutorial.status : tutorialStatus.NotStarted;
     values['status'] = status;
+
+    let userCode = (detailsForThisTutorial) ? detailsForThisTutorial.userCode : null;
+    values['userCode'] = userCode;
   }
 
   console.log(values);
@@ -55,7 +58,7 @@ export async function getServerSideProps(context) {
 }
 
 function Tutorial(props) {
-  const { id, courseId, prompt, template } = props.values;
+  const { id, courseId, userCode, prompt, template } = props.values;
   const { language } = props;
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const isLoggedIn = loggedIn(cookies.user);
@@ -65,7 +68,7 @@ function Tutorial(props) {
   const [compiling, setCompilationStatus] = useState(false);
   const [compiledText, setCompiledText] = useState('');
 
-  const [editorText, setText] = useState(template || ``);
+  const [editorText, setText] = useState(userCode || template || ``);
 
   /**
    * Saves progress, using tutorial id from query context. 
