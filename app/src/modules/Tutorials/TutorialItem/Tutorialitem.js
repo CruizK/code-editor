@@ -3,10 +3,11 @@ import { Tag, TagLabel } from "@chakra-ui/tag";
 import Router from "next/router";
 import { Button } from "@chakra-ui/react";
 import { checkIfInCourse, registerForCourse } from "@Modules/Courses/Courses";
+import { tutorialStatus } from "@Utils/static";
 
 function TutorialItem(props) {
     const { token } = props;
-    const { id, title, courseId, inProgress, isCompleted } = props.data;
+    const { id, title, courseId, status } = props.data;
     const tags = [];
     if (props.data.difficulty) {
         var difficultyObject = props.data.difficulty;
@@ -73,17 +74,17 @@ function TutorialItem(props) {
             </GridItem>
             <GridItem colStart={6}>
                 <HStack spacing={3}>
-                    {inProgress && !isCompleted &&
+                    {[tutorialStatus.InProgress, tutorialStatus.Restarted].includes(status) &&
                     <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
                         Continue
                     </Button>
                     }
-                    {!inProgress && isCompleted &&
+                    {[tutorialStatus.Completed].includes(status) &&
                     <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
                         Restart
                     </Button>
                     }
-                    {inProgress == isCompleted &&
+                    {[tutorialStatus.NotStarted].includes(status) &&
                     <Button variant="white" onClick={(e) => start(e, id, courseId)}>
                         Start
                     </Button>

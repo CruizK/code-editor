@@ -7,9 +7,9 @@ import Router from "next/router";
 import TutorialSideBar from "@Modules/Tutorials/components/TutorialSideBar/TutorialSideBar";
 import { compileAndRunCode, getTutorialsFromCourse, getUserTutorialDetailsFromId, getUserTutorialsDetailsFromCourse, updateUserTutorial } from "@Modules/Tutorials/Tutorials";
 import { useCookies } from "react-cookie";
-import { checkIfInCourse } from "@Modules/Courses/Courses";
+import { checkIfInCourse, getCourseDetails } from "@Modules/Courses/Courses";
 import TutorialCodeOutput from "@Modules/Tutorials/TutorialCodeOutput/TutorialCodeOutput";
-import { dbLanguageToMonacoLanguage, programmingLanguages, ShouldLanguageCompile } from "@Utils/static";
+import { dbLanguageToMonacoLanguage, programmingLanguages, ShouldLanguageCompile, tutorialStatus } from "@Utils/static";
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
@@ -24,8 +24,10 @@ export async function getServerSideProps(context) {
   const isRegistered = await checkIfInCourse(values.courseId, token);
 
   if (isRegistered) {
-    const tutorialDetails = await getUserTutorialsDetailsFromCourse(values.courseId, token);
-    const thisCourseIndex = tutorialDetails.findIndex(tute => tute.id == values.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
+    const courseDetails = await getCourseDetails(values.courseId, token);
+    const tutorialDetails = courseDetails.userTutorialList;
+
+    const thisCourseIndex = tutorialDetails.findIndex(tute => tute.tutorialId == values.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
     if (isRegistered && thisCourseIndex == -1)
       console.log(`User is registered for course ${values.courseId}, but not for tutorial ${id}: '${values.title}'.`);
 
@@ -34,13 +36,10 @@ export async function getServerSideProps(context) {
     // We want to grab the next tutorial id while we're already grabbing UserTutorials
     const detailsForNextTutorial = tutorialDetails[thisCourseIndex + 1];
     if (detailsForNextTutorial)
-      nextTutorialId = detailsForNextTutorial.id;
+      nextTutorialId = detailsForNextTutorial.tutorialId;
 
-    let inProgress = (detailsForThisTutorial) ? detailsForThisTutorial.inProgress : false;
-    values['inProgress'] = inProgress;
-
-    let isCompleted = (detailsForThisTutorial) ? detailsForThisTutorial.isCompleted : false;
-    values['isCompleted'] = isCompleted;
+    let status = (detailsForThisTutorial) ? detailsForThisTutorial.status : tutorialStatus.NotStarted;
+    values['status'] = status;
   }
 
   console.log(values);
@@ -72,7 +71,7 @@ function Tutorial(props) {
    * Saves progress, using tutorial id from query context. 
    */
   async function saveInProgress(event) {
-    let success = await updateUserTutorial(id, token, true, false);
+    let success = await updateUserTutorial(id, token, tutorialStatus.InProgress, editorText);
     if (success) {
       let redirect = `/courses/${courseId}`;
       Router.push(redirect);

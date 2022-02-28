@@ -24,6 +24,16 @@ export async function getServerSideProps(context) {
 
     const tutorials = course.courseTutorials;
 
+    const userTutorialList = course.userTutorialList;
+    tutorials.forEach(tutorial => {
+        const userTutorial = userTutorialList.find((userTute) => userTute.tutorialId == tutorial.id);
+        if (userTutorial) {
+            tutorial['status'] = userTutorial.status;
+        } else {
+            tutorial['status'] = 1; // not started
+        }
+    });
+
     return {
         props: {
             ...courseDetails,
