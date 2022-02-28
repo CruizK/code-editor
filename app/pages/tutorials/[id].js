@@ -58,13 +58,15 @@ export async function getServerSideProps(context) {
 }
 
 function Tutorial(props) {
-  const { id, courseId, userCode, prompt, template } = props.values;
+  const { id, courseId, status, userCode, prompt, template } = props.values;
   const { language } = props;
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const isLoggedIn = loggedIn(cookies.user);
   const token = cookies.user;
 
   const [showSidebar, setShow] = useState(true);
+
+  const [thisStatus, setThisStatus] = useState(status); // we don't want to overwrite tutorialStatus from static.js
   const [compiling, setCompilationStatus] = useState(false);
   const [compiledText, setCompiledText] = useState('');
 
@@ -88,6 +90,22 @@ function Tutorial(props) {
       redirect = `/tutorials/${props.nextTutorialId}`;
     }
     Router.push(redirect);
+  }
+
+  async function submitCode(event) {    
+    setCompilationStatus(true);
+    const res = await compileAndRunCode(id, token, language, editorText);
+    setCompilationStatus(false);
+
+    // did the code run?
+    // TODO: see if the checks passed. if they did, set status to completed
+    if (res) {
+      setCompiledText(res.data)
+      let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
+      if (updateResult) {
+        setThisStatus(tutorialStatus.Completed);
+      }
+    }
   }
 
   /**
@@ -144,9 +162,12 @@ function Tutorial(props) {
         </Flex>
         <Flex h="50px" bg="ce_darkgrey" justify={"end"} align="center">
           <Button w="10%" maxW="150px" mr={2} variant="yellowOutline">Exit</Button>
-          {(props.isCompleted)
-            ? <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={goToNext}>CONTINUE {'>'}</Button>
-            : <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={saveInProgress}>SAVE PROGRESS</Button>
+          <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={saveInProgress}>SAVE PROGRESS</Button>
+          {[tutorialStatus.Completed].includes(thisStatus) &&
+            <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={goToNext}>CONTINUE {'>'}</Button>
+          }
+          {[tutorialStatus.InProgress, tutorialStatus.NotStarted, tutorialStatus.Restarted].includes(thisStatus) &&
+            <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={submitCode}>SUBMIT</Button>
           }
         </Flex>
       </Flex>
