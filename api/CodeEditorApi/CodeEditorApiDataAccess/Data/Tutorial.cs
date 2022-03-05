@@ -25,6 +25,7 @@ namespace CodeEditorApiDataAccess.Data
         public int? DifficultyId { get; set; }
         public string Description { get; set; }
         public string Template { get; set; }
+        public string Solution { get; set; }
 
         public virtual User AuthorNavigation { get; set; }
         public virtual Course Course { get; set; }

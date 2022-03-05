@@ -20,6 +20,7 @@ namespace CodeEditorApiDataAccess.Data
         public virtual DbSet<CfgDifficultyLevel> CfgDifficultyLevels { get; set; }
         public virtual DbSet<CfgProgrammingLanguage> CfgProgrammingLanguages { get; set; }
         public virtual DbSet<CfgRole> CfgRoles { get; set; }
+        public virtual DbSet<CfgTutorialStatus> CfgTutorialStatuses { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Tutorial> Tutorials { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -74,6 +75,18 @@ namespace CodeEditorApiDataAccess.Data
                     .IsFixedLength(true);
             });
 
+            modelBuilder.Entity<CfgTutorialStatus>(entity =>
+            {
+                entity.ToTable("cfgTutorialStatus");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsFixedLength(true);
+            });
+
             modelBuilder.Entity<Course>(entity =>
             {
                 entity.ToTable("Course");
@@ -110,6 +123,8 @@ namespace CodeEditorApiDataAccess.Data
 
                 entity.Property(e => e.Prompt).HasColumnType("text");
 
+                entity.Property(e => e.Solution).HasColumnType("text");
+
                 entity.Property(e => e.Template).HasColumnType("text");
 
                 entity.Property(e => e.Title)
@@ -126,7 +141,6 @@ namespace CodeEditorApiDataAccess.Data
                 entity.HasOne(d => d.Course)
                     .WithMany(p => p.Tutorials)
                     .HasForeignKey(d => d.CourseId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Tutorial_CourseId");
 
                 entity.HasOne(d => d.Difficulty)
@@ -181,22 +195,32 @@ namespace CodeEditorApiDataAccess.Data
                 entity.HasOne(d => d.Course)
                     .WithMany(p => p.UserRegisteredCourses)
                     .HasForeignKey(d => d.CourseId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserRegisteredCourse_Course");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserRegisteredCourses)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserRegisteredCourse_User");
             });
 
             modelBuilder.Entity<UserTutorial>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.TutorialId })
-                    .HasName("PK__UserTuto__22630A28E0EDDDD5");
+                    .HasName("PK__tmp_ms_x__22630A286B28CAB9");
 
                 entity.ToTable("UserTutorial");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.UserCode).HasColumnType("text");
+
+                entity.HasOne(d => d.StatusNavigation)
+                    .WithMany(p => p.UserTutorials)
+                    .HasForeignKey(d => d.Status)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserTutorial_cfgTutorialStatus");
 
                 entity.HasOne(d => d.Tutorial)
                     .WithMany(p => p.UserTutorials)

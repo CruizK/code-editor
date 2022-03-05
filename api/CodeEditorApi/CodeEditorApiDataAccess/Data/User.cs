@@ -21,6 +21,7 @@ namespace CodeEditorApiDataAccess.Data
         public string Hash { get; set; }
         public string AccessToken { get; set; }
         public int RoleId { get; set; }
+        public bool IsConfirmed { get; set; }
 
         public virtual CfgRole Role { get; set; }
         public virtual ICollection<Course> Courses { get; set; }

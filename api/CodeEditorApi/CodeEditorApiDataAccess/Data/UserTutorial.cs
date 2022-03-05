@@ -10,11 +10,11 @@ namespace CodeEditorApiDataAccess.Data
         public int TutorialId { get; set; }
         public int UserId { get; set; }
         public int Status { get; set; }
-
         public DateTime? ModifyDate { get; set; }
+        public string UserCode { get; set; }
 
+        public virtual CfgTutorialStatus StatusNavigation { get; set; }
         public virtual Tutorial Tutorial { get; set; }
         public virtual User User { get; set; }
-        public string UserCode { get; set; }
     }
 }
