@@ -1,5 +1,6 @@
 import instance from "@Utils/instance";
 import { getID } from "@Utils/jwt";
+import { tutorialStatus } from "@Utils/static";
 
 /**
  * A function that gets tutorial details from the server using a tutorial ID.
@@ -181,11 +182,11 @@ async function createTutorial(isPublished, token, prompt) {
  * Validation should be done server-side.
  * @param {integer} id Course id
  * @param {string} token JWT token.
- * @param {boolean} inProgress Is the tutorial in progress?
- * @param {boolean} isCompleted Is the tutorial completed?
+ * @param {boolean} tutorialStatus Progress through the tutorial
+ * @param {boolean} userCode The current code in the editor
  * @returns {boolean} Whether or not the update succeeded.
  */
-async function updateUserTutorial(id, token, inProgress, isCompleted) {
+async function updateUserTutorial(id, token, tutorialStatus, userCode) {
     const headers = {};
 
     if (typeof token != 'undefined') {
@@ -194,8 +195,8 @@ async function updateUserTutorial(id, token, inProgress, isCompleted) {
 
     try {
         let response = await instance.put("/Tutorials/UpdateUserTutorial/" + id, {
-            inProgress: inProgress,
-            isCompleted: isCompleted,
+            tutorialStatus,
+            userCode
         }, {
             headers: {...headers},
         });
@@ -225,22 +226,20 @@ async function compileAndRunCode(id, token, language, code) {
         headers["Authorization"] = "Bearer " + token;
     }
 
-    let updateSuccess = await updateUserTutorial(id, token, true, false); // in progress = true, is complete = false
+    let updateSuccess = await updateUserTutorial(id, token, tutorialStatus.InProgress, code);
 
     if (!updateSuccess) {
         return false;
     }
 
     try {
-        console.log(language);
+        
         let response = await instance.post("/CodeCompiler/Compile/", {
             language: language,
             code: code,
         }, {
             headers: {...headers},
         });
-
-        let updateToCompletedSuccess = await updateUserTutorial(id, token, false, true); // in progress = true, is complete = false
 
         return response;
     } catch (error) {

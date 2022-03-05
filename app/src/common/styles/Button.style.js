@@ -36,8 +36,9 @@ const ButtonStyle = {
             backgroundColor: "ce_yellow",
             borderColor: "ce_yellow",
             _hover: {
-                color: "ce_yellow",
-                borderColor: "ce_yellow",
+                color: "ce_darkgrey",
+                backgroundColor: "ce_lightgrey",
+                borderColor: "ce_lightgrey",
                 boxShadow: "none",
             }
         },
@@ -47,9 +48,9 @@ const ButtonStyle = {
             backgroundColor: "transparent",
             _hover: {
                 color: "ce_white",
-                backgroundColor: "ce_yellow",
+                backgroundColor: "ce_yellow_dark",
                 boxShadow: "none",
-                borderColor: "ce_yellow",
+                borderColor: "ce_yellow_dark",
             }
         },
         white: {

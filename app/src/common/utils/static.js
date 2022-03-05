@@ -18,6 +18,13 @@ const difficultylevels = [
     },
 ];
 
+const tutorialStatus = {
+    NotStarted: 1,
+    InProgress: 2,
+    Completed: 3,
+    Restarted: 4
+}
+
 const programmingLanguages = [
     {
         value: 'CSS',
@@ -58,4 +65,4 @@ function ShouldLanguageCompile(language) {
     return !(language == 'CSS' || language == 'HTML' || language == 'Javascript')
 }
 
-export { difficultylevels, programmingLanguages, dbLanguageToMonacoLanguage, ShouldLanguageCompile };
+export { difficultylevels, programmingLanguages, tutorialStatus, dbLanguageToMonacoLanguage, ShouldLanguageCompile };

@@ -17,29 +17,23 @@ export async function getServerSideProps(context) {
 
     const course = await getCourseDetails(id, token);
     if (course) {
-        courseDetails = course;
+        courseDetails = course.courseDetails;
     }
 
     const isRegistered = await checkIfInCourse(id, token);
 
-    const tutorials = await getTutorialsFromCourse(id, token);
-    const tutorialDetails = await getUserTutorialsDetailsFromCourse(id, token);
-    tutorials.forEach(function(tute) {
-        const thisCourseIndex = tutorialDetails.findIndex(tuteDetails => tute.id == tuteDetails.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
-        if (isRegistered && thisCourseIndex == -1)
-        console.log(`User is registered for course ${id}, but not for every tutorial under it`);
+    const tutorials = course.courseTutorials;
 
-        let inProgress = (tutorialDetails && tutorialDetails[thisCourseIndex]) ? tutorialDetails[thisCourseIndex].inProgress : false;
-        tute['inProgress'] = inProgress;
-
-        let isCompleted = (tutorialDetails && tutorialDetails[thisCourseIndex]) ? tutorialDetails[thisCourseIndex].isCompleted : false;
-        tute['isCompleted'] = isCompleted;
-
-        if (inProgress && isCompleted)
-        console.error(new Error(`Tutorial ${tute.id} is both complete and in progress.`));
-        return tute
+    const userTutorialList = course.userTutorialList;
+    tutorials.forEach(tutorial => {
+        const userTutorial = userTutorialList.find((userTute) => userTute.tutorialId == tutorial.id);
+        if (userTutorial) {
+            tutorial['status'] = userTutorial.status;
+        } else {
+            tutorial['status'] = 1; // not started
+        }
     });
-  
+
     return {
         props: {
             ...courseDetails,
@@ -78,8 +72,6 @@ function Course(props) {
                 <Flex height="50%" w="100%" color="ce_white" fontWeight="bold" fontFamily="button" fontSize="md" alignItems="end">
                     {title}
                 </Flex>
-                <Spacer />
-                <Image src="/defaults/card_icon.png" alt="SIU Logo" height="60%" mr={15} />
             </Flex>
             <Box maxWidth="container.lg" margin="auto">
                 <Heading size="sm" fontWeight="bold">Description</Heading>

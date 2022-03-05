@@ -7,9 +7,9 @@ import Router from "next/router";
 import TutorialSideBar from "@Modules/Tutorials/components/TutorialSideBar/TutorialSideBar";
 import { compileAndRunCode, getTutorialsFromCourse, getUserTutorialDetailsFromId, getUserTutorialsDetailsFromCourse, updateUserTutorial } from "@Modules/Tutorials/Tutorials";
 import { useCookies } from "react-cookie";
-import { checkIfInCourse } from "@Modules/Courses/Courses";
+import { checkIfInCourse, getCourseDetails } from "@Modules/Courses/Courses";
 import TutorialCodeOutput from "@Modules/Tutorials/TutorialCodeOutput/TutorialCodeOutput";
-import { dbLanguageToMonacoLanguage, programmingLanguages, ShouldLanguageCompile } from "@Utils/static";
+import { dbLanguageToMonacoLanguage, programmingLanguages, ShouldLanguageCompile, tutorialStatus } from "@Utils/static";
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
@@ -24,8 +24,10 @@ export async function getServerSideProps(context) {
   const isRegistered = await checkIfInCourse(values.courseId, token);
 
   if (isRegistered) {
-    const tutorialDetails = await getUserTutorialsDetailsFromCourse(values.courseId, token);
-    const thisCourseIndex = tutorialDetails.findIndex(tute => tute.id == values.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
+    const courseDetails = await getCourseDetails(values.courseId, token);
+    const tutorialDetails = courseDetails.userTutorialList;
+
+    const thisCourseIndex = tutorialDetails.findIndex(tute => tute.tutorialId == values.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
     if (isRegistered && thisCourseIndex == -1)
       console.log(`User is registered for course ${values.courseId}, but not for tutorial ${id}: '${values.title}'.`);
 
@@ -34,13 +36,13 @@ export async function getServerSideProps(context) {
     // We want to grab the next tutorial id while we're already grabbing UserTutorials
     const detailsForNextTutorial = tutorialDetails[thisCourseIndex + 1];
     if (detailsForNextTutorial)
-      nextTutorialId = detailsForNextTutorial.id;
+      nextTutorialId = detailsForNextTutorial.tutorialId;
 
-    let inProgress = (detailsForThisTutorial) ? detailsForThisTutorial.inProgress : false;
-    values['inProgress'] = inProgress;
+    let status = (detailsForThisTutorial) ? detailsForThisTutorial.status : tutorialStatus.NotStarted;
+    values['status'] = status;
 
-    let isCompleted = (detailsForThisTutorial) ? detailsForThisTutorial.isCompleted : false;
-    values['isCompleted'] = isCompleted;
+    let userCode = (detailsForThisTutorial) ? detailsForThisTutorial.userCode : null;
+    values['userCode'] = userCode;
   }
 
   console.log(values);
@@ -56,23 +58,25 @@ export async function getServerSideProps(context) {
 }
 
 function Tutorial(props) {
-  const { id, courseId, prompt, template } = props.values;
+  const { id, courseId, status, userCode, prompt, template } = props.values;
   const { language } = props;
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const isLoggedIn = loggedIn(cookies.user);
   const token = cookies.user;
 
   const [showSidebar, setShow] = useState(true);
+
+  const [thisStatus, setThisStatus] = useState(status); // we don't want to overwrite tutorialStatus from static.js
   const [compiling, setCompilationStatus] = useState(false);
   const [compiledText, setCompiledText] = useState('');
 
-  const [editorText, setText] = useState(template || ``);
+  const [editorText, setText] = useState(userCode || template || ``);
 
   /**
    * Saves progress, using tutorial id from query context. 
    */
   async function saveInProgress(event) {
-    let success = await updateUserTutorial(id, token, true, false);
+    let success = await updateUserTutorial(id, token, tutorialStatus.InProgress, editorText);
     if (success) {
       let redirect = `/courses/${courseId}`;
       Router.push(redirect);
@@ -88,6 +92,22 @@ function Tutorial(props) {
     Router.push(redirect);
   }
 
+  async function submitCode(event) {    
+    setCompilationStatus(true);
+    const res = await compileAndRunCode(id, token, language, editorText);
+    setCompilationStatus(false);
+
+    // did the code run?
+    // TODO: see if the checks passed. if they did, set status to completed
+    if (res) {
+      setCompiledText(res.data)
+      let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
+      if (updateResult) {
+        setThisStatus(tutorialStatus.Completed);
+      }
+    }
+  }
+
   /**
    * Sends code to compile to the server, setting inProgress and isComplete as necessary. 
    */
@@ -98,7 +118,6 @@ function Tutorial(props) {
     setCompilationStatus(false);
     if (res) {
       setCompiledText(res.data)
-      console.log(res.data);
     }
   }
 
@@ -143,9 +162,12 @@ function Tutorial(props) {
         </Flex>
         <Flex h="50px" bg="ce_darkgrey" justify={"end"} align="center">
           <Button w="10%" maxW="150px" mr={2} variant="yellowOutline">Exit</Button>
-          {(props.isCompleted)
-            ? <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={goToNext}>CONTINUE {'>'}</Button>
-            : <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={saveInProgress}>SAVE PROGRESS</Button>
+          <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={saveInProgress}>SAVE PROGRESS</Button>
+          {[tutorialStatus.Completed].includes(thisStatus) &&
+            <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={goToNext}>CONTINUE {'>'}</Button>
+          }
+          {[tutorialStatus.InProgress, tutorialStatus.NotStarted, tutorialStatus.Restarted].includes(thisStatus) &&
+            <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={submitCode}>SUBMIT</Button>
           }
         </Flex>
       </Flex>

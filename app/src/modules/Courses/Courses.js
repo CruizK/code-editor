@@ -36,7 +36,6 @@ async function getCourseDetails(id, token) {
             headers: {...headers},
         });
         
-        if (courseResponse.statusText == "OK")
         return courseResponse.data;
     } catch (error) {
         console.log(error);

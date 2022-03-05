@@ -6,5 +6,6 @@
     <DeployScriptFileName>CodeEditorApiData.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=10.116.0.2;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;User Id=sa;Password=&amp;52#Z3#^2D@Fv!</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
+    <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
   </PropertyGroup>
 </Project>

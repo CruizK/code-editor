@@ -59,3 +59,14 @@ BEGIN
     END CATCH
 END;
 GO
+
+/* Migration 3 */
+
+BEGIN
+    BEGIN TRY
+        INSERT INTO cfgTutorialStatus(Id, Status) VALUES (1, 'NotStarted'), (2, 'InProgress'), (3, 'Completed'), (4, 'Restarted');
+    END TRY
+    BEGIN CATCH
+    END CATCH
+END;
+GO
