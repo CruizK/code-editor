@@ -167,7 +167,14 @@ function Tutorial(props) {
             <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={goToNext}>CONTINUE {'>'}</Button>
           }
           {[tutorialStatus.InProgress, tutorialStatus.NotStarted, tutorialStatus.Restarted].includes(thisStatus) &&
-            <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={submitCode}>SUBMIT</Button>
+            <Button w="10%" maxW="150px" mr={2} variant="black" onClick={submitCode}
+              _hover={{
+                color: "ce_white",
+                backgroundColor: "ce_yellow",
+                borderColor: "ce_yellow",
+                boxShadow: "none"
+              }}
+            >SUBMIT</Button>
           }
         </Flex>
       </Flex>
