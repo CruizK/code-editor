@@ -10,6 +10,7 @@ import { useCookies } from "react-cookie";
 import { checkIfInCourse, getCourseDetails } from "@Modules/Courses/Courses";
 import TutorialCodeOutput from "@Modules/Tutorials/TutorialCodeOutput/TutorialCodeOutput";
 import { dbLanguageToMonacoLanguage, programmingLanguages, ShouldLanguageCompile, tutorialStatus } from "@Utils/static";
+import { getRole } from "@Utils/jwt";
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
@@ -62,6 +63,7 @@ function Tutorial(props) {
   const { language } = props;
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const isLoggedIn = loggedIn(cookies.user);
+  const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
   const token = cookies.user;
 
   const [showSidebar, setShow] = useState(true);
@@ -162,12 +164,15 @@ function Tutorial(props) {
         </Flex>
         <Flex h="50px" bg="ce_darkgrey" justify={"end"} align="center">
           <Button w="10%" maxW="150px" mr={2} variant="yellowOutline">Exit</Button>
-          <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={saveInProgress}>SAVE PROGRESS</Button>
+          <Button w="10%" maxW="150px" mr={2} variant="yellow"
+            onClick={(userRole == 'Student') ? saveInProgress : undefined}
+          >SAVE PROGRESS</Button>
           {[tutorialStatus.Completed].includes(thisStatus) &&
             <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={goToNext}>CONTINUE {'>'}</Button>
           }
           {[tutorialStatus.InProgress, tutorialStatus.NotStarted, tutorialStatus.Restarted].includes(thisStatus) &&
-            <Button w="10%" maxW="150px" mr={2} variant="black" onClick={submitCode}
+            <Button w="10%" maxW="150px" mr={2} variant="black"
+              onClick={(userRole == 'Student') ? submitCode : undefined}
               _hover={{
                 color: "ce_white",
                 backgroundColor: "ce_yellow",
