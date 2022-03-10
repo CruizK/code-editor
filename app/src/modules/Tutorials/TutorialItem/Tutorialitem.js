@@ -4,9 +4,12 @@ import Router from "next/router";
 import { Button } from "@chakra-ui/react";
 import { checkIfInCourse, registerForCourse } from "@Modules/Courses/Courses";
 import { tutorialStatus } from "@Utils/static";
+import { getRole } from "@Utils/jwt";
 
 function TutorialItem(props) {
     const { token } = props;
+    const userRole = getRole(token);
+
     const { id, title, courseId, status } = props.data;
     const tags = [];
     if (props.data.difficulty) {
@@ -30,12 +33,17 @@ function TutorialItem(props) {
      * @param {integer} from Course id
      */
      async function start(event, to, from) {
-        let isRegistered = await checkIfInCourse(from, token);
 
         let success = true;
-        if (!isRegistered) {
-            success = await registerForCourse(from, token);
+        
+        // we only want to register students to a course
+        // teachers and admins should just be redirected no matter what
+        if (userRole == "Student") {
+            let isRegistered = await checkIfInCourse(from, token);
+            if (!isRegistered)
+                success = await registerForCourse(from, token);
         }
+
         if (success) {
             let redirect = '/tutorials/' + to; 
             Router.push(redirect);
@@ -74,6 +82,9 @@ function TutorialItem(props) {
             </GridItem>
             <GridItem colStart={6}>
                 <HStack spacing={3}>
+                    {
+                        
+                    }
                     {[tutorialStatus.InProgress, tutorialStatus.Restarted].includes(status) &&
                     <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
                         Continue
