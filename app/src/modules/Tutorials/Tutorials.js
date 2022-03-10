@@ -3,6 +3,32 @@ import { getID } from "@Utils/jwt";
 import { tutorialStatus } from "@Utils/static";
 
 /**
+ * A function that gets the lats tutorial a user was working on
+ * @param {*} courseId
+ * @param {*} token 
+ */
+async function getLastTutorial(courseId, token) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    try {
+        
+        let response = await instance.get("/Tutorials/GetUserLastInProgressTutorial/" + courseId, {
+            headers: {...headers},
+        });
+
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+
+    return false;
+}
+
+/**
  * A function that gets tutorial details from the server using a tutorial ID.
  * @param {integer} id Tutorial id
  * @returns {Object|boolean} Tutorial objects if successful, 'false' if unsuccessful
@@ -279,4 +305,4 @@ async function compileAndRunCode(id, token, language, code) {
     return false;
 }
 
-export { getUserTutorialDetailsFromId, getTutorialsFromCourse, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial }
+export { getLastTutorial, getUserTutorialDetailsFromId, getTutorialsFromCourse, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial }
