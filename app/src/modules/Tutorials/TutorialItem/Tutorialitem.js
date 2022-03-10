@@ -82,9 +82,6 @@ function TutorialItem(props) {
             </GridItem>
             <GridItem colStart={6}>
                 <HStack spacing={3}>
-                    {
-                        
-                    }
                     {[tutorialStatus.InProgress, tutorialStatus.Restarted].includes(status) &&
                     <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
                         Continue
