@@ -36,10 +36,12 @@ export async function getServerSideProps(context) {
         }
     });
 
-    const lastTutorialResponse = await getLastTutorial(id, token); // last in progress tutorial
+    if (isRegistered) {    
+        const lastTutorialResponse = await getLastTutorial(id, token); // last in progress tutorial
 
-    if (lastTutorialResponse) {
-        lastTutorial = lastTutorialResponse.data;
+        if (lastTutorialResponse) {
+            lastTutorial = lastTutorialResponse.data;
+        }
     }
 
     return {
@@ -89,6 +91,7 @@ function Course(props) {
                     {isRegistered && 
                     <SNoLinkButton 
                         href={(lastTutorialId) ? "/tutorials/" + lastTutorialId : undefined}
+                        disabled={(typeof lastTutorialId == 'undefined') ? true : undefined}
                         variant="black"  w="xs" maxW="md" pt={15} pb={15} mb={15} mr={15}
                     >
                         Continue From Last Tutorial
