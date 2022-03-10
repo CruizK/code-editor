@@ -7,6 +7,7 @@ import { loggedIn } from "@Modules/Auth/Auth";
 import { useCookies } from "react-cookie";
 import { getLastTutorial, getTutorialsFromCourse, getUserTutorialsDetailsFromCourse } from "@Modules/Tutorials/Tutorials";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
+import { getRole } from "@Utils/jwt";
 
 export async function getServerSideProps(context) {
     const { id } = context.query;
@@ -58,6 +59,7 @@ function Course(props) {
     const [cookies, setCookie, removeCookie] = useCookies(["user"]);
     const isLoggedIn = loggedIn(cookies.user);
     const token = cookies.user;
+    const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
     
     const { id, title, description, tutorials, isRegistered, lastTutorialId } = props;
 
@@ -97,9 +99,11 @@ function Course(props) {
                         Continue From Last Tutorial
                     </SNoLinkButton>
                     }
+                    {(userRole == "Student") &&
                     <Button variant="maroon" onClick={(event) => start(event, tutorials[0].id, id)} w="xs" maxW="md" pt={15} pb={15} mb={15}>
                         Start from Beginning
                     </Button>
+                    }
                 </Center>
                 <Box borderColor="ce_grey" borderWidth="2px" borderRadius="md" pl={15} pr={15}>
                     <Heading size="sm" fontWeight="bold">Tutorial</Heading>
