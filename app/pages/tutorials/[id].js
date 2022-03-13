@@ -21,11 +21,13 @@ export async function getServerSideProps(context) {
   let token = cookies.user;
 
   var values = await getUserTutorialDetailsFromId(id, token) || {};
+  var courseTutorials = null;
 
   const isRegistered = await checkIfInCourse(values.courseId, token);
 
   if (isRegistered) {
     const courseDetails = await getCourseDetails(values.courseId, token);
+    courseTutorials = courseDetails.courseTutorials;
     const tutorialDetails = courseDetails.userTutorialList;
 
     const thisCourseIndex = tutorialDetails.findIndex(tute => tute.tutorialId == values.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
@@ -52,6 +54,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       values: values,
+      courseTutorials: courseTutorials,
       nextTutorialId: nextTutorialId,
       language
     }, // will be passed to the page component as props
@@ -60,7 +63,7 @@ export async function getServerSideProps(context) {
 
 function Tutorial(props) {
   const { id, courseId, status, userCode, prompt, template } = props.values;
-  const { language } = props;
+  const { language, courseTutorials } = props;
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const isLoggedIn = loggedIn(cookies.user);
   const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
@@ -127,7 +130,7 @@ function Tutorial(props) {
     <Container maxW="100%" p="0">
       <Flex direction={"column"} height="calc(100vh - 50px)">
         <Flex width="100%" flex="1">
-          <TutorialSideBar prompt={prompt} show={showSidebar} setShow={setShow} />
+          <TutorialSideBar prompt={prompt} tutorials={courseTutorials} show={showSidebar} setShow={setShow} />
           <Flex flex="2" maxW="50%" direction={"column"}>
             <Flex flex="1">
               <Editor

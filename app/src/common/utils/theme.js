@@ -9,6 +9,7 @@ import SelectStyle from "@Common/styles/Select.style";
 import TagStyle from "@Common/styles/Tag.style";
 import TextareaStyle from "@Common/styles/Textarea.style";
 import CarouselStyle from "@Common/styles/Carousel.style";
+import PopoverStyle from "@Common/styles/Popover.style";
 
 // ce_ is prepended to differentiate from default css colors
 const colors = {
@@ -113,6 +114,7 @@ const components = {
   Main: MainStyle,
   Select: SelectStyle,
   Carousel: CarouselStyle,
+  Popover: PopoverStyle,
 }
 
 const theme = extendTheme({ colors, config, fonts, fontSizes, styles, components })
