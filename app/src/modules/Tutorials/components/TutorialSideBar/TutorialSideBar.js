@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon, HamburgerIcon, SmallCloseIcon } from "@chakra-ui/icons";
-import { Collapse, Flex, Icon, List, ListItem, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Spacer } from "@chakra-ui/react";
+import { Collapse, Flex, Icon, List, ListItem, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Spacer } from "@chakra-ui/react";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import dynamic from 'next/dynamic'; 
 import { useRef } from "react";
@@ -10,7 +10,6 @@ const MarkdownRenderer = dynamic(
 
 function TutorialSideBar(props) {
     const { courseId, prompt, show, tutorials } = props;
-    console.log(tutorials);
   
     const handleToggle = () => { props.setShow(!show); };
 
@@ -23,8 +22,9 @@ function TutorialSideBar(props) {
               {({ isOpen, onClose }) => (
                 <>
                   <PopoverTrigger>
-                    <Icon cursor="pointer"s
+                    <Icon cursor="pointer"
                       backgroundColor={(isOpen) ? 'ce_black' : 'ce_mainmaroon'}
+                      pl={(isOpen) ? 0 : 2}
                       as={(isOpen) ? SmallCloseIcon : HamburgerIcon } 
                       w={(isOpen) ? 10: 8} 
                       h={(isOpen) ? '100%' : 8} 
