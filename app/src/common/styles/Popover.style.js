@@ -13,6 +13,7 @@ const PopoverStyle = {
             color: 'ce_white',
         },
         content: {
+            borderRadius: '0',
             backgroundColor: 'ce_black',
             _focus: {
                 boxShadow: 'none',

@@ -1,6 +1,7 @@
-import { ChevronLeftIcon, ChevronRightIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { Collapse, Flex, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Spacer } from "@chakra-ui/react";
+import { ChevronLeftIcon, ChevronRightIcon, HamburgerIcon, SmallCloseIcon } from "@chakra-ui/icons";
+import { Collapse, Flex, Icon, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Spacer } from "@chakra-ui/react";
 import dynamic from 'next/dynamic'; 
+import { useRef } from "react";
 const MarkdownRenderer = dynamic(
   () => import("@Modules/Tutorials/components/MarkdownRenderer/MarkdownRenderer"),
   { ssr: false }
@@ -12,17 +13,28 @@ function TutorialSideBar(props) {
   
     const handleToggle = () => { props.setShow(!show); };
 
+    const initRef = useRef();
+
     return(
         <Flex flex={(show) ? "1" : "0"} direction="column">
-          <Flex h="50px" px={3} bg="ce_mainmaroon" color="ce_white" align={"center"}>
-            <Popover>
-              <PopoverTrigger>
-                <HamburgerIcon w={8} h={8} cursor="pointer" />
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverHeader>Back to Course</PopoverHeader>
-                <PopoverBody>Are you sure you want to have that milkshake?</PopoverBody>
-              </PopoverContent>
+          <Flex h="50px" pr={3} bg="ce_mainmaroon" color="ce_white" align={"center"}>
+            <Popover closeOnBlur={false} initialFocusRef={initRef} offset={[0, 0]}>
+              {({ isOpen, onClose }) => (
+                <>
+                  <PopoverTrigger>
+                    <Icon cursor="pointer"s
+                      backgroundColor={(isOpen) ? 'ce_black' : 'ce_mainmaroon'}
+                      as={(isOpen) ? SmallCloseIcon : HamburgerIcon } 
+                      w={(isOpen) ? 10: 8} 
+                      h={(isOpen) ? '100%' : 8} 
+                    />
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverHeader>Back to Course</PopoverHeader>
+                    <PopoverBody>Are you sure you want to have that milkshake?</PopoverBody>
+                  </PopoverContent>
+                </>
+              )}
             </Popover>
             {show && <>
               <Spacer />
