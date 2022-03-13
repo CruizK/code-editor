@@ -1,20 +1,35 @@
-import { Center, Grid } from "@chakra-ui/layout";
+import { Center } from "@chakra-ui/layout";
+import Carousel from "@Components/Carousel/Carousel";
 import Main from "@Components/Main/Main";
 import SectionHeader from "@Components/SectionHeader/SectionHeader";
 import SNoLink from "@Components/SNoLink/SNoLink";
+import { loggedIn } from "@Modules/Auth/Auth";
+import { getUserCourses } from "@Modules/Courses/Courses";
 
-function Dashboard(props) {
+export async function getServerSideProps(context) {
+  const cookies = context.req.cookies;
+  const isLoggedIn = loggedIn(cookies.user);
+  let token = cookies.user;
 
-    return(
-        <Main>
-            <Grid templateRows="5 1fr" gap={6} width="100%">
-                <Center><SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink></Center>
-                <SectionHeader title="Continue Learning">
-                    Stuff
-                </SectionHeader>
-            </Grid>
-        </Main>
-    );
+  let myCourses = await getUserCourses(token);
+
+  return {
+    props: {
+        myCourses: myCourses || [],
+    }, // will be passed to the page component as props
   }
+}  
 
-export default Dashboard;
+function Mine(props) {
+  const { myCourses } = props;
+
+  return(
+    <Main>
+      <Center><SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink></Center>
+      <SectionHeader title="Continue Learning" />
+      <Carousel items={myCourses} />
+    </Main>
+  );
+}
+
+export default Mine;
