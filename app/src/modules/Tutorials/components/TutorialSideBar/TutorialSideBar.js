@@ -9,7 +9,7 @@ const MarkdownRenderer = dynamic(
 );
 
 function TutorialSideBar(props) {
-    const { prompt, show, tutorials } = props;
+    const { courseId, prompt, show, tutorials } = props;
     console.log(tutorials);
   
     const handleToggle = () => { props.setShow(!show); };
@@ -31,7 +31,7 @@ function TutorialSideBar(props) {
                     />
                   </PopoverTrigger>
                   <PopoverContent>
-                    <PopoverHeader>Back to Course</PopoverHeader>
+                    <PopoverHeader><SNoLink href={`/courses/${courseId}`}>Back to Course</SNoLink></PopoverHeader>
                     <PopoverBody>
                       <List>
                       {tutorials.map((tutorialData, index) => {
