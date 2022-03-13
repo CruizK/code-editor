@@ -1,5 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon, HamburgerIcon, SmallCloseIcon } from "@chakra-ui/icons";
-import { Collapse, Flex, Icon, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Spacer } from "@chakra-ui/react";
+import { Collapse, Flex, Icon, List, ListItem, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Spacer } from "@chakra-ui/react";
+import SNoLink from "@Components/SNoLink/SNoLink";
 import dynamic from 'next/dynamic'; 
 import { useRef } from "react";
 const MarkdownRenderer = dynamic(
@@ -31,7 +32,15 @@ function TutorialSideBar(props) {
                   </PopoverTrigger>
                   <PopoverContent>
                     <PopoverHeader>Back to Course</PopoverHeader>
-                    <PopoverBody>Are you sure you want to have that milkshake?</PopoverBody>
+                    <PopoverBody>
+                      <List>
+                      {tutorials.map((tutorialData, index) => {
+                        //console.log(tutorialData);
+                        const { id, title } = tutorialData;
+                        return <ListItem key={index}><SNoLink href={`/tutorials/${id}`}>{title}</SNoLink></ListItem>;
+                      })}
+                      </List>
+                    </PopoverBody>
                   </PopoverContent>
                 </>
               )}
