@@ -90,7 +90,7 @@ function Course(props) {
                 <Heading size="sm" fontWeight="bold">Description</Heading>
                 {description}
                 <Center>
-                    {isRegistered && 
+                    {(isRegistered && lastTutorialId) &&
                     <SNoLinkButton 
                         href={(lastTutorialId) ? "/tutorials/" + lastTutorialId : undefined}
                         disabled={(typeof lastTutorialId == 'undefined') ? true : undefined}
