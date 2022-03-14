@@ -36,7 +36,7 @@ function Carousel(props) {
         // additionally, if the value passed into end exceeds the maximum size of the array, slice will just cut off at the last element
         const endIndex = page * itemsPerPage;
         setSub(items.slice(startIndex, endIndex));
-    }, [page]);
+    }, [page, items]);
 
     /**
      * This lowers the the page number by one
