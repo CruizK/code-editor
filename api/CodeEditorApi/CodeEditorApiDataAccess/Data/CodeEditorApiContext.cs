@@ -22,6 +22,8 @@ namespace CodeEditorApiDataAccess.Data
         public virtual DbSet<CfgRole> CfgRoles { get; set; }
         public virtual DbSet<CfgTutorialStatus> CfgTutorialStatuses { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<CourseDifficultyTags> CourseDifficultyTags { get; set; }
+        public virtual DbSet<CourseLanguageTags> CourseLanguageTags { get; set; }
         public virtual DbSet<Tutorial> Tutorials { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserRegisteredCourse> UserRegisteredCourses { get; set; }
@@ -109,6 +111,22 @@ namespace CodeEditorApiDataAccess.Data
                     .HasForeignKey(d => d.Author)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Course_UserId");
+            });
+
+            modelBuilder.Entity<CourseDifficultyTags>(entity =>
+            {
+                entity.HasKey(e => e.CourseId)
+                    .HasName("PK__CourseDi__C92D71A7F7C82828");
+
+                entity.Property(e => e.CourseId).ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<CourseLanguageTags>(entity =>
+            {
+                entity.HasKey(e => e.CourseId)
+                    .HasName("PK__CourseLa__C92D71A70CB9203F");
+
+                entity.Property(e => e.CourseId).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<Tutorial>(entity =>
