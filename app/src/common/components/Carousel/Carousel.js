@@ -8,6 +8,7 @@ import paletteToRGB, { getRainbowAtIteration } from "@Utils/color";
 import { useEffect, useState } from "react";
 import Router from 'next/router';
 import { Text, useStyleConfig } from "@chakra-ui/react";
+import CourseAvatar from "@Modules/Courses/components/CourseAvatar/CourseAvatar";
 
 /**
  * A component that allows horizontal, incremental scrolling
@@ -72,7 +73,7 @@ function Carousel(props) {
                     <Tooltip label={title} aria-label={title} placement="right" borderRadius="md">
                         <VStack __css={styles} borderColor={color} bgColor={color} spacing={0} onClick={() => goToCourse(id)}>
                             <Flex height="50%" w="100%" justifyContent="right" pr={1}>
-                                {/** Top right of card */}
+                                <CourseAvatar identifier={id} />
                             </Flex>
                             <Flex alignItems="end"
                                 height="50%" w="100%" pl={1}
