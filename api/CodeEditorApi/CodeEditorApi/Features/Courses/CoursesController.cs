@@ -27,6 +27,7 @@ namespace CodeEditorApi.Features.Courses
         private readonly IGetCourseDetailsCommand _getCourseDetailsCommand;
         private readonly IGetAllPublishedCoursesCommand _getAllPublishedCoursesCommand;
         private readonly IGetMostPopularCoursesCommand _getMostPopularCoursesCommand;
+        private readonly ISearchCoursesCommand _searchCoursesCommand;
 
         public CoursesController(
             IGetCoursesCommand getCoursesCommand, 
@@ -38,7 +39,8 @@ namespace CodeEditorApi.Features.Courses
             IUnregisterUserCommand unregisterUserCommand,
             IGetCourseDetailsCommand getCourseDetailsCommand,
             IGetAllPublishedCoursesCommand getAllPublishedCoursesCommand,
-            IGetMostPopularCoursesCommand getMostPopularCoursesCommand)
+            IGetMostPopularCoursesCommand getMostPopularCoursesCommand,
+            ISearchCoursesCommand searchCoursesCommand)
         {
             _getCoursesCommand = getCoursesCommand;
             _getUserCreatedCoursesCommand = getUserCreatedCoursesCommand;
@@ -50,6 +52,7 @@ namespace CodeEditorApi.Features.Courses
             _getCourseDetailsCommand = getCourseDetailsCommand;
             _getAllPublishedCoursesCommand = getAllPublishedCoursesCommand;
             _getMostPopularCoursesCommand = getMostPopularCoursesCommand;
+            _searchCoursesCommand = searchCoursesCommand;
         }
 
         /// <summary>
@@ -121,6 +124,18 @@ namespace CodeEditorApi.Features.Courses
         public async Task<ActionResult<List<Course>>> GetMostPopularCourses()
         {
             return await _getMostPopularCoursesCommand.ExecuteAsync();
+        }
+
+        /// <summary>
+        /// Returns Course Details of Courses that match a search string, and filtered by user's choice of Language and/or Difficulty level
+        /// </summary>
+        /// <param name="si"></param>
+        /// <returns></returns>
+        [HttpGet("SearchCourses")]
+        public async Task<ActionResult<List<Course>>> SearchCourses([FromQuery] string searchString, [FromQuery] int difficultyId, [FromQuery] int languageId)
+        {
+            
+            return await _searchCoursesCommand.ExecuteAsync(searchString, difficultyId, languageId);
         }
 
         /// <summary>

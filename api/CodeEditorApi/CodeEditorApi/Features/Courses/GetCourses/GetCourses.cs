@@ -20,6 +20,8 @@ namespace CodeEditorApi.Features.Courses.GetCourses
         public Task<List<Course>> GetAllPublishedCoursesSortByModifyDate();
 
         public Task<List<Course>> GetMostPopularCourses();
+
+        public Task<List<Course>> SearchCourses(SearchInput si);
     }
     public class GetCourses : IGetCourses
     {
@@ -88,6 +90,71 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 
             return courses;
 
+        }
+
+        public async Task<List<Course>> SearchCourses(SearchInput si)
+        {
+            var LID = si.languageId;
+            var DID = si.difficultyId;
+            var courseIds = new List<int>();
+
+            //if filtering by both Language and Difficulty
+            if (LID > 0 && DID > 0)
+                courseIds = await _context.Tutorials
+                    .Where(t => t.Title.Contains(si.searchString)
+                        && t.LanguageId == si.languageId
+                        && t.DifficultyId == si.difficultyId)
+                    .Distinct()
+                    .Select(t => t.CourseId).ToListAsync();
+
+            //if filtering by only Language
+            if (LID > 0 && DID == 0)
+                courseIds = await _context.Tutorials
+                    .Where(t => t.Title.Contains(si.searchString)
+                        && t.LanguageId == si.languageId)
+                    .Distinct()
+                    .Select(t => t.CourseId).ToListAsync();
+
+            //if filtering by only Difficulty
+            if(LID == 0 && DID > 0)
+                courseIds = await _context.Tutorials
+                    .Where(t => t.Title.Contains(si.searchString)
+                        && t.DifficultyId == si.difficultyId)
+                    .Distinct()
+                    .Select(t => t.CourseId).ToListAsync();
+
+            //if not filtering by either Language or Difficulty
+            courseIds = await _context.Tutorials
+                    .Where(t => t.Title.Contains(si.searchString)) //keeping by Title because we still need Course Ids where they contain Tutorials with matching Titles to search string                    
+                    .Select(t => t.CourseId).Distinct()
+                    .ToListAsync();
+
+            return await _context.Courses.Where(c => courseIds.Contains(c.Id)).ToListAsync();
+
+            /*
+             * pseudo-code:
+             * 
+             * var DID = diffIdInput
+             * var LID = langIdInput
+             * 
+             * if (search Diff/Lang Id == 0) then DID = DifficultyId and LID = LanguageId
+             * 
+             * var CourseIds = 
+             *      SELECT DISTINCT CourseId 
+             *      FROM Tutorial 
+             *      WHERE LanguageId IS NOT NULL
+             *          AND DifficultyId IS NOT NULL
+             *          AND Title IS LIKE "%<searchInput>%"
+             *          AND LanguageId = LID
+             *          AND DifficultyId = DID
+             *  
+             *      
+             *          
+             * var CourseDetails = SELECT * FROM Course WHERE Ids = CourseIds
+             * 
+             * return CourseDetails
+             * 
+             */
         }
     }
 }
