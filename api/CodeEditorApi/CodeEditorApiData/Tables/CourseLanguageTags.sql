@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [dbo].[CourseLanguageTags]
 (
-	[CourseId] INT NOT NULL PRIMARY KEY, 
-    [LanguageId] INT NOT NULL
+	[CourseId] INT NOT NULL , 
+    [LanguageId] INT NOT NULL, 
+    PRIMARY KEY ([CourseId], [LanguageId])
 )
