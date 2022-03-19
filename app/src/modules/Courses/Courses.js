@@ -1,5 +1,6 @@
 import instance from "@Utils/instance"; 
 import { getID } from "@Utils/jwt";
+import Identicon from "identicon.js";
 
 /**
  * No *, &, !, @, _, or -
@@ -16,6 +17,30 @@ function courseRegEx() {
     'No *, &, !, @, _, or -',
     'Does not start with a number.',
 ];
+
+/**
+ * Converts a course identifier (ID) into an SVG.
+ * We could theoretically use an actual crypto/hashing algorithm for this, but we don't need this to be secure. Just long and unique.
+ * @param {String} identifier
+ * @param {*} options Identicon options
+ * @returns {String} base64 encoded SVG 
+ */
+function courseSvg(identifier, options) {
+    // not intended for security, just to get a digest
+    var hval = 'siuCode';
+
+    identifier.split('').forEach((charac) => {
+        hval ^= charac.charCodeAt(0);
+        hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
+    });
+    var hash = ("0000000" + (hval >>> 0).toString(16));
+    // gotta be greater than 15 characters
+    hash = hash.padEnd(17, identifier);
+
+    // create a base64 encoded SVG
+    var icon = new Identicon(hash, options).toString();
+    return icon;
+}
 
 /**
  * A function that gets course data from the server using a course ID.
@@ -305,4 +330,4 @@ async function checkIfInCourse(id, token) {
     return inCourse;
 }
 
-export { getCourseDetails, getUserCourses, getMostPopularCourses, getAllPublishedCoursesSortByModifyDate, createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines, registerForCourse, checkIfInCourse }
+export { getCourseDetails, getUserCourses, getMostPopularCourses, getAllPublishedCoursesSortByModifyDate, createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines, courseSvg, registerForCourse, checkIfInCourse }
