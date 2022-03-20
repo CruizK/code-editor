@@ -89,6 +89,13 @@ function TutorialForm(props) {
                         })}
                     </Select>
                 </Flex>
+                <Flex w="100%" mt={spacing}>
+                    <Box w="20%" fontWeight={"bold"} fontSize={"md"}>Solution</Box>
+                    <FormControl w="80%" id="solution">
+                        <Textarea placeholder="..." defaultValue={dvs["solution"]} required />
+                    </FormControl>
+
+                </Flex>
                 <Flex w="100%" mt={spacing} direction="column">
                     <Box w="100%" fontWeight={"bold"} fontSize={"md"}>Tutorial Base Code</Box>
                     <p>Choose whether you want to upload an existing code file or if you want to edit boilerplate code provided by us.</p>
