@@ -11,6 +11,7 @@ const { useDisclosure } = require("@chakra-ui/hooks")
  *      title: String,
  *      text?: String,
  *      callback: Function
+ *      conditional: Function
  *  }} props
  */
 function ValidationBarrier(props) {
