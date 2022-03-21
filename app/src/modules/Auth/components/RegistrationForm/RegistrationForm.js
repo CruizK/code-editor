@@ -41,7 +41,7 @@ function RegistrationForm() {
             if (e.response && e.response.status != 500) {
                 const msg = e.response.data.message;
                 console.log(msg.includes('email'));
-                if (msg.includes('email') || msg.includes('user')) {
+                if (msg.includes('email')) {
                     setEmailError(msg);
                 }
             }
