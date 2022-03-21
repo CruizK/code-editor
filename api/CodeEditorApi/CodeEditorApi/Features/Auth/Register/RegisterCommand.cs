@@ -2,15 +2,17 @@
 using CodeEditorApi.Features.Auth.GetUser;
 using CodeEditorApi.Services;
 using CodeEditorApiDataAccess.StaticData;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 
 namespace CodeEditorApi.Features.Auth.Register
 {
     public interface IRegisterCommand
     {
-        Task<ActionResult<string>> ExecuteAsync(RegisterBody registerModel);
+        Task<ActionResult> ExecuteAsync(RegisterBody registerModel);
     }
 
     public class RegisterCommand : IRegisterCommand
@@ -19,23 +21,28 @@ namespace CodeEditorApi.Features.Auth.Register
         private readonly IGetUser _getUser;
         private readonly IConfiguration _configuration;
         private readonly IHashService _hashService;
-        private readonly IJwtService _jwtService;
+        private readonly IEmailService _emailService;
+        private readonly IWebHostEnvironment _env;
 
         public RegisterCommand(IRegister register, 
             IGetUser getUser, 
             IConfiguration configuration, 
             IHashService hashService,
-            IJwtService jwtService)
+            IEmailService emailService,
+            IWebHostEnvironment env)
         {
             _register = register;
             _getUser = getUser;
             _configuration = configuration;
             _hashService = hashService;
-            _jwtService = jwtService;
+            _emailService = emailService;
+            _env = env;
         }
 
-        public async Task<ActionResult<string>> ExecuteAsync(RegisterBody registerBody)
+        public async Task<ActionResult> ExecuteAsync(RegisterBody registerBody)
         {
+            registerBody.Email = registerBody.Email.ToLower();
+
             var existingUser = await _getUser.ExecuteAsync(registerBody.Email);
 
             if (existingUser != null) return ApiError.BadRequest("User with email already exists");
@@ -54,9 +61,31 @@ namespace CodeEditorApi.Features.Auth.Register
 
             var newUser = await _register.ExecuteAsync(registerBody);
 
-            var token = _jwtService.GenerateToken(_configuration, newUser);
+            var verifyToken = VerifyAccountTokenService.GenerateToken(registerBody.Email);
 
-            return token;
+
+            var baseURL = "https://siucode.io/auth/verify";
+
+            if(_env.IsDevelopment())
+            {
+                baseURL = "http://localhost:3000/auth/verify";
+            }
+            else if(_env.IsStaging())
+            {
+                baseURL = "https://dev.siucode.io/auth/verify";
+            }
+
+            var link = baseURL + "?token=" + verifyToken;
+
+            await _emailService.SendEmailAsync(new MailRequest
+            {
+                ToEmail = newUser.Email,
+                Subject = "[SiuCode] Verify Account",
+                Body = $"Click link to verify account: <a href=\"{link}\">here</a>"
+
+            });
+
+            return new OkObjectResult("OK");
         }
     }
 }

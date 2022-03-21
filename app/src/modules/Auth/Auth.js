@@ -76,6 +76,15 @@ function register(event, needsAccessCode) {
     return instance.post("/Auth/Register", data);
 }
 
+function verify(verifyToken) {
+
+    const data = {
+        verifyToken
+    };
+
+    return instance.post("/Auth/VerifyAccount", data);
+}
+
 /**
  * A function that sends form data to the server for user-settings updating
  * Validation is done through attributes on the form's html
@@ -107,4 +116,4 @@ function updateUser(event, token) {
     });
 }
 
-export { maxAgeInHours, loggedIn, validatePassword, login, register, updateUser };
+export { maxAgeInHours, loggedIn, validatePassword, login, register, updateUser, verify };

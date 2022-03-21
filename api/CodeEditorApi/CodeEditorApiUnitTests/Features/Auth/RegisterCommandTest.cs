@@ -30,7 +30,7 @@ namespace CodeEditorApiUnitTests.Features.Auth
 
             var actionResult = await Target().ExecuteAsync(body);
 
-            var result = actionResult.Result as BadRequestObjectResult;
+            var result = actionResult as BadRequestObjectResult;
             result.Should().NotBeNull();
             result.Value.Should().BeEquivalentTo(expected);
 
@@ -57,7 +57,7 @@ namespace CodeEditorApiUnitTests.Features.Auth
 
             var actionResult = await Target().ExecuteAsync(body);
 
-            var result = actionResult.Result as BadRequestObjectResult;
+            var result = actionResult as BadRequestObjectResult;
             result.Should().NotBeNull();
             result.Value.Should().BeEquivalentTo(expected);
 
@@ -85,7 +85,7 @@ namespace CodeEditorApiUnitTests.Features.Auth
 
             var actionResult = await Target().ExecuteAsync(body);
 
-            var result = actionResult.Result as BadRequestObjectResult;
+            var result = actionResult as BadRequestObjectResult;
             result.Should().NotBeNull();
             result.Value.Should().BeEquivalentTo(expected);
 
@@ -117,8 +117,7 @@ namespace CodeEditorApiUnitTests.Features.Auth
 
             var actionResult = await Target().ExecuteAsync(body);
 
-            actionResult.Result.Should().BeNull();
-            actionResult.Value.Should().Be(token);
+            actionResult.Should().BeNull();
 
             Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email), Times.Once);
             Freeze<IRegister>().Verify(x => x.ExecuteAsync(body), Times.Once);

@@ -2,6 +2,7 @@
 using CodeEditorApi.Features.Auth.Login;
 using CodeEditorApi.Features.Auth.Register;
 using CodeEditorApi.Features.Auth.UpdateUser;
+using CodeEditorApi.Features.Auth.VerifyAccount;
 using CodeEditorApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -17,18 +18,26 @@ namespace CodeEditorApi.Features.Auth
     {
 
         private readonly IRegisterCommand _registerCommand;
+        private readonly IVerifyAccountCommand _verifyAccountCommand;
         private readonly ILoginCommand _loginCommand;
         private readonly IEmailService _emailService;
         private readonly IUpdateUserCommand _updateUserCommand;
         private readonly IWebHostEnvironment _enviornment;
 
-        public AuthController(IRegisterCommand registerCommand, ILoginCommand loginCommand, IEmailService emailService, IUpdateUserCommand updateUserCommand, IWebHostEnvironment environment)
+        public AuthController(
+            IRegisterCommand registerCommand, 
+            ILoginCommand loginCommand, 
+            IEmailService emailService, 
+            IUpdateUserCommand updateUserCommand, 
+            IWebHostEnvironment environment,
+            IVerifyAccountCommand verifyAccountCommand)
         {
             _registerCommand = registerCommand;
             _loginCommand = loginCommand;
             _emailService = emailService;
             _updateUserCommand = updateUserCommand;
             _enviornment = environment;
+            _verifyAccountCommand = verifyAccountCommand;
         }
 
         /// <summary>
@@ -38,7 +47,7 @@ namespace CodeEditorApi.Features.Auth
         /// <returns></returns>
         [HttpPost("Register")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> Register([FromBody] RegisterBody registerBody)
+        public async Task<ActionResult> Register([FromBody] RegisterBody registerBody)
         {
             if(_enviornment.EnvironmentName == "Staging")
             {
@@ -57,6 +66,18 @@ namespace CodeEditorApi.Features.Auth
         public async Task<ActionResult<string>> Login([FromBody] LoginBody loginBody)
         {
             return await _loginCommand.ExecuteAsync(loginBody);
+        }
+
+        /// <summary>
+        /// Verify Account
+        /// </summary>
+        /// <param name="loginBody"></param>
+        /// <returns></returns>
+        [HttpPost("VerifyAccount")]
+        [AllowAnonymous]
+        public async Task<ActionResult<string>> VerifyAccount([FromBody] VerifyAccountBody verifyAccountBody)
+        {
+            return await _verifyAccountCommand.ExecuteAsync(verifyAccountBody);
         }
 
         /// <summary>

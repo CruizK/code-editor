@@ -31,9 +31,11 @@ namespace CodeEditorApi.Features.Auth.Login
 
         public async Task<ActionResult<string>> ExecuteAsync(LoginBody loginBody)
         {
+            loginBody.Email = loginBody.Email.ToLower();
+
             var user = await _getUser.ExecuteAsync(loginBody.Email);
 
-            if (user == null) return ApiError.BadRequest("User does not exist");
+            if (user == null || !user.IsConfirmed) return ApiError.BadRequest("User does not exist or not verified");
 
             if(_hashService.ComparePassword(user.Hash, loginBody.Password))
             {
