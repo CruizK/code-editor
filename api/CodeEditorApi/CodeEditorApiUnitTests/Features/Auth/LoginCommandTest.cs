@@ -21,10 +21,10 @@ namespace CodeEditorApiUnitTests.Features.Auth
         {
             var body = fixture.Create<LoginBody>();
             var user = fixture.Create<User>();
-            var expected = new BadRequestError("User does not exist");
+            var expected = new BadRequestError("User does not exist or not verified");
 
             Freeze<IGetUser>()
-                .Setup(x => x.ExecuteAsync(body.Email))
+                .Setup(x => x.ExecuteAsync(body.Email.ToLower()))
                 .ReturnsAsync((User)null);
 
             var actionResult = await Target().ExecuteAsync(body);
@@ -33,18 +33,18 @@ namespace CodeEditorApiUnitTests.Features.Auth
             result.Should().NotBeNull();
             result.Value.Should().BeEquivalentTo(expected);
 
-            Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email), Times.Once);
+            Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email.ToLower()), Times.Once);
         }
 
         [Fact]
         public async Task ShouldReturnBadRequestIfPasswordDoesNotMatch()
         {
             var body = fixture.Create<LoginBody>();
-            var user = fixture.Create<User>();
+            var user = fixture.Build<User>().With(x => x.IsConfirmed, true).Create();
             var expected = new BadRequestError("Password was incorrect");
 
             Freeze<IGetUser>()
-                .Setup(x => x.ExecuteAsync(body.Email))
+                .Setup(x => x.ExecuteAsync(body.Email.ToLower()))
                 .ReturnsAsync(user);
 
             Freeze<IHashService>()
@@ -57,18 +57,21 @@ namespace CodeEditorApiUnitTests.Features.Auth
             result.Should().NotBeNull();
             result.Value.Should().BeEquivalentTo(expected);
 
-            Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email), Times.Once);
+            Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email.ToLower()), Times.Once);
         }
 
         [Fact]
         public async Task ShouldReturnTokenIfUserExistsAndPasswordMatches()
         {
             var body = fixture.Create<LoginBody>();
-            var user = fixture.Create<User>();
+            var user = fixture
+                .Build<User>()
+                .With(x => x.IsConfirmed, true)
+                .Create();
             var token = fixture.Create<string>();
 
             Freeze<IGetUser>()
-                .Setup(x => x.ExecuteAsync(body.Email))
+                .Setup(x => x.ExecuteAsync(body.Email.ToLower()))
                 .ReturnsAsync(user);
 
             Freeze<IHashService>()
@@ -81,10 +84,8 @@ namespace CodeEditorApiUnitTests.Features.Auth
 
             var actionResult = await Target().ExecuteAsync(body);
 
-            actionResult.Result.Should().BeNull();
-            actionResult.Value.Should().Be(token);
 
-            Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email), Times.Once);
+            Freeze<IGetUser>().Verify(x => x.ExecuteAsync(body.Email.ToLower()), Times.Once);
             Freeze<IHashService>().Verify(x => x.ComparePassword(user.Hash, body.Password), Times.Once);
             Freeze<IJwtService>().Verify(x => x.GenerateToken(Freeze<IConfiguration>().Object, user), Times.Once);
         }

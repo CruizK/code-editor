@@ -28,10 +28,11 @@ GO
 
 BEGIN
     BEGIN TRY
-        INSERT INTO [dbo].[User](Name, Email, Hash, RoleId) VALUES (
+        INSERT INTO [dbo].[User](Name, Email, Hash, RoleId, IsConfirmed) VALUES (
             'Admin', 
-            'Admin@admin.com', 
+            'admin@admin.com', 
             'Pbkdf2-10000-OWVkYzBmNzA3YWZiNzgyYzFiNDZiN2ZlYzlhNWQ3NTA4ODQ5MTJiNTUzZjhiODI0N2RkMTAxNGNlMDRlMGQ5Yw==-O94HOZo1o75Ee35YiBGYfRjad5MdrKr36ClPKtRN+R4=',
+            1,
             1
         );
     END TRY
@@ -42,17 +43,19 @@ GO
 
 BEGIN
     BEGIN TRY
-        INSERT INTO [dbo].[User](Name, Email, Hash, RoleId) VALUES (
+        INSERT INTO [dbo].[User](Name, Email, Hash, RoleId, IsConfirmed) VALUES (
             'Teacher', 
-            'DevTeacher@teacher.com', 
+            'devteacher@teacher.com', 
             'Pbkdf2-10000-hOUYyxfF4fkhRjwDOn8McQ==-nN7GLmMf7964lucYG7ZOwKpEtHhzuxnIksxZQ27YWgA=',
-            2
+            2,
+            1
         );
-        INSERT INTO [dbo].[User](Name, Email, Hash, RoleId) VALUES (
+        INSERT INTO [dbo].[User](Name, Email, Hash, RoleId, IsConfirmed) VALUES (
             'Student', 
-            'DevStudent@student.com', 
+            'devstudent@student.com', 
             'Pbkdf2-10000-peqYKfUKbJXx+9FnBL+92Q==-VNDl+0Wwdwb6skyOHPJjggp5tXvwabfDEaN5cULY7ZU=',
-            3
+            3,
+            1
         );
     END TRY
     BEGIN CATCH

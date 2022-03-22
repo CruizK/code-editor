@@ -32,7 +32,7 @@ function LoginForm() {
                const status = e.response.data.statusCode;
 
                if(status == 400) {
-                   setPasswordError("Password Incorrect");
+                   setPasswordError(e.response.data.message);
                }
             }
         }

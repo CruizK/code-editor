@@ -1,11 +1,12 @@
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormErrorMessage } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Grid, Flex, Text } from "@chakra-ui/layout";
+import { Flex, Grid, Text } from "@chakra-ui/layout";
+import { useDisclosure } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/select";
-import { maxAgeInHours, register, validatePassword } from "@Modules/Auth/Auth";
+import { register, validatePassword } from "@Modules/Auth/Auth";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
+import EmailSentModal from "../EmailSentModal/EmailSentModal";
 
 /**
  * Handles displaying form UI and sending formdata to the server.
@@ -13,10 +14,11 @@ import { useCookies } from "react-cookie";
 function RegistrationForm() {
     const [email, setEmail] = useState("placeholder");
     const [password, setPassword] = useState('');
-    const [cookies, setCookie] = useCookies(["user"]);
     const [role, setRole] = useState('Student');
     const [emailError, setEmailError] = useState(undefined);
     const [passwordErrors, setPaswordErrors] = useState(undefined);
+    const { isOpen, onClose, onOpen } = useDisclosure();
+
 
     const showAccessCode = role != "Student";
 
@@ -27,25 +29,19 @@ function RegistrationForm() {
         if (errors) {
             return;
         }
-        
+
         try {
             setEmailError(undefined);
             let res = await register(event, showAccessCode);
-            const token = res.data;
+            if (res.data == "OK")
+                onOpen()
 
-            if (token) {
-                setCookie("user", token, {
-                    path: "/",
-                    maxAge: maxAgeInHours * 60 * 60, //seconds
-                    sameSite: true,
-                })
-            }
-        } catch(e) {
+        } catch (e) {
             console.dir(e);
-            if(e.response) {
+            if (e.response && e.response.status != 500) {
                 const msg = e.response.data.message;
                 console.log(msg.includes('email'));
-                if(msg.includes('email')) {
+                if (msg.includes('email')) {
                     setEmailError(msg);
                 }
             }
@@ -55,43 +51,46 @@ function RegistrationForm() {
     const selectWidth = '200px';
 
     return (
-        <form onSubmit={handleSubmit} w="100%">
-            <Grid templateRows="5 1fr" gap={6} w="100%">
-                <FormControl id="email" isRequired isInvalid={emailError}>
-                    <Input placeholder="Email" type="email" onChange={(e) => setEmail(e.target.value)} />
-                    { emailError ? (
-                        <FormErrorMessage>
-                            {emailError}
-                        </FormErrorMessage>
-                    ) : null}
-                </FormControl>
-                <FormControl id="name" isRequired>
-                    <Input placeholder="Name" />
-                </FormControl>
-                <FormControl id="password" isRequired isInvalid={passwordErrors != undefined}>
-                    <Input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
-                    {passwordErrors ? (
-                        <FormErrorMessage>
-                            {passwordErrors}
-                        </FormErrorMessage>
-                    ) : null}
-                </FormControl>
-                <Flex justify={"space-between"} align="center" my={1}>
-                    <Text fontWeight={"bold"} fontSize={"19px"}>Requesting Account Type of: </Text>
-                    <Select w="30%" maxW={selectWidth} id="role" defaultValue={"Student"} onChange={(e) => setRole(e.target.value)}>
-                        <option id={"Student"} value={"Student"}>Student</option>
-                        <option id={"Teacher"} value={"Teacher"}>Teacher</option>
-                        <option id={"Admin"} value={"Admin"}>Admin</option>
-                    </Select>
-                </Flex>
-                {showAccessCode ?
-                    <FormControl id="accesscode">
-                        <Input placeholder="Access Code" />
+        <>
+            <form onSubmit={handleSubmit} w="100%">
+                <Grid templateRows="5 1fr" gap={6} w="100%">
+                    <FormControl id="email" isRequired isInvalid={emailError}>
+                        <Input placeholder="Email" type="email" onChange={(e) => setEmail(e.target.value)} />
+                        {emailError ? (
+                            <FormErrorMessage>
+                                {emailError}
+                            </FormErrorMessage>
+                        ) : null}
                     </FormControl>
-                    : null}
-                <Button variant="white" type="submit">Sign Up</Button>
-            </Grid>
-        </form>
+                    <FormControl id="name" isRequired>
+                        <Input placeholder="Name" />
+                    </FormControl>
+                    <FormControl id="password" isRequired isInvalid={passwordErrors != undefined}>
+                        <Input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
+                        {passwordErrors ? (
+                            <FormErrorMessage>
+                                {passwordErrors}
+                            </FormErrorMessage>
+                        ) : null}
+                    </FormControl>
+                    <Flex justify={"space-between"} align="center" my={1}>
+                        <Text fontWeight={"bold"} fontSize={"19px"}>Requesting Account Type of: </Text>
+                        <Select w="30%" maxW={selectWidth} id="role" defaultValue={"Student"} onChange={(e) => setRole(e.target.value)}>
+                            <option id={"Student"} value={"Student"}>Student</option>
+                            <option id={"Teacher"} value={"Teacher"}>Teacher</option>
+                            <option id={"Admin"} value={"Admin"}>Admin</option>
+                        </Select>
+                    </Flex>
+                    {showAccessCode ?
+                        <FormControl id="accesscode">
+                            <Input placeholder="Access Code" />
+                        </FormControl>
+                        : null}
+                    <Button variant="white" type="submit">Sign Up</Button>
+                </Grid>
+            </form>
+            <EmailSentModal email={email} isOpen={isOpen} onClose={onClose}/>
+        </>
     );
 }
 

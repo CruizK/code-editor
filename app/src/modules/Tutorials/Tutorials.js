@@ -138,6 +138,7 @@ async function createTutorial(isPublished, token, prompt) {
                 isPublished: isPublished,
                 languageId: form["language"].value,
                 difficultyId: form["difficulty"].value,
+                solution: form["solution"].value,
                 prompt: form["md"].value,
                 template: form["template"].value,
             }, {
@@ -188,6 +189,7 @@ async function createTutorial(isPublished, token, prompt) {
                 isPublished: isPublished,
                 languageId: form["language"].value,
                 difficultyId: form["difficulty"].value,
+                solution: form["solution"].value,
                 prompt: form["md"].value,
                 template: form["template"].value,
             }, {

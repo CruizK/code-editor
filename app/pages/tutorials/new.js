@@ -16,6 +16,7 @@ const TutorialForm = dynamic(
 );
 import instance from "@Utils/instance";
 import { createTutorial } from "@Modules/Tutorials/Tutorials";
+import ValidationBarrier from "@Components/ValidationBarrier/ValidationBarrier";
 
 export async function getServerSideProps(context) {
   var data = [];
@@ -64,6 +65,12 @@ function NewTutorial(props) {
     }
   }
 
+  function hasNoSolution() {
+    const solutionNode = document.getElementById('solution');
+    const isEmpty = solutionNode.value === '';
+    return isEmpty;
+  }
+
   return(
       <Main>
         <Grid templateRows="5 1fr" gap={6} width="100%">
@@ -75,9 +82,17 @@ function NewTutorial(props) {
           <Button variant="black" onClick={() => handleSubmit(false, token)} disabled={!hasCourses}>
             Save As Draft
           </Button>
-          <Button variant="maroon" onClick={() => handleSubmit(true, token)} disabled={!hasCourses}>
-            Publish
-          </Button>
+          <ValidationBarrier 
+            buttonText={
+              <Button variant="maroon" disabled={!hasCourses}>
+                Publish
+              </Button>
+            }
+            title="Alert"
+            text="You must have a solution to publish a tutorial."
+            conditional={hasNoSolution}
+            callback={() => handleSubmit(true, token)}
+          />;
           </SectionHeader>
           <TutorialForm courses={props.courses} />
         </Grid>

@@ -1,26 +1,9 @@
-import { Center, Divider, Flex, Grid, Heading, Container } from "@chakra-ui/layout";
-import Main from "@Components/Main/Main";
+import { Center, Container, Divider, Grid, Heading } from "@chakra-ui/layout";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
-import { loggedIn } from "@Modules/Auth/Auth";
 import RegistrationForm from "@Modules/Auth/components/RegistrationForm/RegistrationForm";
-import Router from "next/router";
-import { useCookies } from "react-cookie";
 
 function Register() {
-    const [cookies, setCookie, removeCookie] = useCookies(["user"]);
-    const isLoggedIn = loggedIn(cookies.user);
-  
-    if (isLoggedIn) { 
-      let redirect = '/home'; 
-      Router.push(redirect);
-      return(
-        <Main>
-          <Heading as="h2">Redirecting...</Heading>
-        </Main>
-      );
-    }
-
     return(
         <Container w="450px">   
             <Center>

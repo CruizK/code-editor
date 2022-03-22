@@ -24,10 +24,10 @@ export async function getServerSideProps(context) {
   var courseTutorials = null;
 
   const isRegistered = await checkIfInCourse(values.courseId, token);
+  const courseDetails = await getCourseDetails(values.courseId, token);
+  courseTutorials = courseDetails.courseTutorials;
 
   if (isRegistered) {
-    const courseDetails = await getCourseDetails(values.courseId, token);
-    courseTutorials = courseDetails.courseTutorials;
     const tutorialDetails = courseDetails.userTutorialList;
 
     const thisCourseIndex = tutorialDetails.findIndex(tute => tute.tutorialId == values.id); // it's possible a tutorial added after someone registers for a course doesnt have a tutorialDetails
