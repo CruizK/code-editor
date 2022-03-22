@@ -24,12 +24,13 @@ namespace CodeEditorApi.Features.Tutorials
         private readonly IGetUserLastInProgressTutorialCommand _getUserLastInProgressTutorialCommand;
         private readonly IUpdateUserTutorialsCommand _updateUserTutorialsCommand;
         private readonly IUnregisterUserCommand _unregisterUserCommand;
+        private readonly ISearchTutorialsCommand _searchTutorialsCommand;
 
         public TutorialsController(IGetTutorialsCommand getTutorialsCommand, ICreateTutorialsCommand createTutorialsCommand,
             IDeleteTutorialsCommand deleteTutorialsCommand, IUpdateTutorialsCommand updateTutorialsCommand,
             IGetUserCreatedTutorialsCommand getUserCreatedTutorialsCommand, IGetCourseTutorialsCommand getCourseTutorialsCommand,
             IGetUserLastInProgressTutorialCommand getUserLastInProgressTutorialCommand, IUpdateUserTutorialsCommand updateUserTutorialsCommand,
-            IUnregisterUserCommand unregisterUserCommand)
+            IUnregisterUserCommand unregisterUserCommand, ISearchTutorialsCommand searchTutorialsCommand)
         {
             _getTutorialsCommand = getTutorialsCommand;
             _createTutorialsCommand = createTutorialsCommand;
@@ -40,6 +41,7 @@ namespace CodeEditorApi.Features.Tutorials
             _getUserLastInProgressTutorialCommand = getUserLastInProgressTutorialCommand;
             _updateUserTutorialsCommand = updateUserTutorialsCommand;
             _unregisterUserCommand = unregisterUserCommand;
+            _searchTutorialsCommand = searchTutorialsCommand;
         }
 
         /// <summary>
@@ -90,6 +92,12 @@ namespace CodeEditorApi.Features.Tutorials
             var userId = HttpContextHelper.retrieveRequestUserId(HttpContext);
             return await _getUserLastInProgressTutorialCommand.ExecuteAsync(userId, courseId);
             
+        }
+
+        [HttpGet("SearchTutorials/{courseId:int}")]
+        public async Task<ActionResult<List<SearchTutorialsBody>>> SearchTutorials(int courseId, [FromQuery] string searchString, [FromQuery] int difficultyId, [FromQuery] int languageId)
+        {
+            return await _searchTutorialsCommand.ExecuteAsync(courseId, searchString, difficultyId, languageId);
         }
 
         /// <summary>

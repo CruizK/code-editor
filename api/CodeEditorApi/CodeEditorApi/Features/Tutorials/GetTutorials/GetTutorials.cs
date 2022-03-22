@@ -23,6 +23,8 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         public Task<List<UserTutorial>> GetUserRegisteredTutorials(int courseId, int userId);
 
         public Task<List<UserTutorial>> GetUserRegisteredTutorials(int userId);
+
+        public Task<List<SearchTutorialsBody>> SearchTutorials(int courseId, SearchInput si);
     }
     public class GetTutorials : IGetTutorials
     {
@@ -117,6 +119,43 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             var tutorial = await _context.Tutorials.Where(t => t.Id == inProgressTutorialId).Select(t => t).FirstOrDefaultAsync();
 
             return tutorial;
+        }
+
+        public async Task<List<SearchTutorialsBody>> SearchTutorials(int courseId, SearchInput si)
+        {
+            var LID = si.languageId;
+            var DID = si.difficultyId;
+            var tutorials = await _context.Tutorials
+                .Where(t => t.CourseId == courseId)
+                .Select(t => new SearchTutorialsBody
+                {
+                    Title = t.Title,
+                    DifficultyId = t.DifficultyId,
+                    LanguageId = t.LanguageId
+                }).ToListAsync();
+
+            var query = new List<SearchTutorialsBody>();
+
+            //if filtering by both Language and Difficulty
+            if (LID > 0 && DID > 0) 
+            {
+                query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId == si.difficultyId || t.LanguageId == si.languageId).ToList();
+            }//if filtering by only Language
+            else if (LID > 0 && DID == 0) 
+            { 
+                query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId.HasValue || t.LanguageId == si.languageId).ToList(); 
+            }//if filtering by only Difficulty
+            else if (LID == 0 && DID > 0)
+            {
+                query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId == si.difficultyId || t.LanguageId.HasValue).ToList();
+            }
+            else
+            {
+                query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId.HasValue || t.LanguageId.HasValue).ToList();
+            }
+                
+
+            return query;
         }
 
     }
