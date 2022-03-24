@@ -1,5 +1,6 @@
 import instance from "@Utils/instance"; 
 import { getID } from "@Utils/jwt";
+import { defaultSearchParams } from "@Utils/static";
 import Identicon from "identicon.js";
 
 /**
@@ -142,6 +143,44 @@ async function getCourseDetails(id, token) {
         return courseResponse.data;
     } catch (error) {
         console.log(error);
+    }
+    return false;
+}
+
+/**
+ * A function that gets an array of courses from the server using search parameters.
+ * @param {Object} searchParams An object containing any of the following keys: 'searchString, languageId, difficultyId'. Only searchString is mandatory
+ * @returns {Array<Object>|boolean} Array of course objects if successful, 'false' if unsuccessful
+ */
+async function getCoursesFromSearch(searchParams, token) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    var queryParmas = {
+        searchString: searchParams.searchString,
+        languageId: searchParams.languageId || defaultSearchParams.languageId,
+        difficultyId: searchParams.difficultyId || defaultSearchParams.difficultyId,
+    }
+
+    var queryPieces = [];
+    for (const [key, value] of Object.entries(queryParmas)) {
+        queryPieces.push(`${key}=${value}`);
+    }
+
+    const queryString = `?${queryPieces.join('&')}`;
+
+    try {       
+        let response = await instance.get("/Courses/SearchCourses" + queryString, {
+            headers: {...headers},
+        });
+
+        return response.data;
+    } catch (error) {
+        //TODO: Error handling.
+        //console.log(error.response);
     }
     return false;
 }
@@ -330,4 +369,4 @@ async function checkIfInCourse(id, token) {
     return inCourse;
 }
 
-export { getCourseDetails, getUserCourses, getMostPopularCourses, getAllPublishedCoursesSortByModifyDate, createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines, courseSvg, registerForCourse, checkIfInCourse }
+export { getCourseDetails, getUserCourses, getMostPopularCourses, getAllPublishedCoursesSortByModifyDate, getCoursesFromSearch, createCourse, updateCourse, deleteCourse, courseRegEx, courseTitleTooltipLines, courseSvg, registerForCourse, checkIfInCourse }
