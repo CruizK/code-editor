@@ -1,6 +1,6 @@
 import instance from "@Utils/instance";
 import { getID } from "@Utils/jwt";
-import { tutorialStatus } from "@Utils/static";
+import { difficultylevels, programmingLanguages, tutorialStatus } from "@Utils/static";
 
 /**
  * A function that gets the lats tutorial a user was working on
@@ -70,6 +70,71 @@ async function getTutorialsFromCourse(id, token) {
         });
 
         return response.data;
+    } catch (error) {
+        //TODO: Error handling.
+        //console.log(error.response);
+    }
+    return false;
+}
+
+const defaultSearchParams = {
+    languageId: 0, // Any
+    difficultyId: 0, // Any
+}
+
+/**
+ * A function that gets an array of tutorials from the server using a course ID.
+ * @param {integer} id Course id
+ * @param {Object} searchParams An object containing any of the following keys: 'searchString, languageId, difficultyId'. Only searchString is mandatory
+ * @returns {Array<Object>|boolean} Array of tutorial objects if successful, 'false' if unsuccessful
+ */
+ async function getTutorialsFromCourseSearch(id, searchParams, token) {
+    const headers = {};
+
+    if (typeof token != 'undefined') {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    var queryParmas = {
+        searchString: searchParams.searchString,
+        languageId: searchParams.languageId || defaultSearchParams.languageId,
+        difficultyId: searchParams.difficultyId || defaultSearchParams.difficultyId,
+    }
+
+    var queryPieces = [];
+    for (const [key, value] of Object.entries(queryParmas)) {
+        queryPieces.push(`${key}=${value}`);
+    }
+
+    const queryString = `?${queryPieces.join('&')}`;
+
+    try {       
+        let response = await instance.get("/Tutorials/SearchTutorials/" + id + queryString, {
+            headers: {...headers},
+        });
+
+        /**
+         * This route returns ids, so we need to convert to names.
+         */
+        const tutorials = response.data.map((tute) => {
+            const tempTute = tute;
+
+            tempTute.difficulty = {
+                difficulty: difficultylevels.find((dl) => {
+                    return dl.id == tute.id;
+                }).value
+            };
+            
+            tempTute.language = {
+                language: programmingLanguages.find((pl) => {
+                    return pl.id == tute.id;
+                }).value
+            };
+
+            return tempTute;
+        });
+
+        return tutorials;
     } catch (error) {
         //TODO: Error handling.
         //console.log(error.response);
@@ -307,4 +372,4 @@ async function compileAndRunCode(id, token, language, code) {
     return false;
 }
 
-export { getLastTutorial, getUserTutorialDetailsFromId, getTutorialsFromCourse, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial }
+export { getLastTutorial, getUserTutorialDetailsFromId, getTutorialsFromCourse, getTutorialsFromCourseSearch, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial }
