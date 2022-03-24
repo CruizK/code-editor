@@ -14,7 +14,7 @@ function CourseBox(props) {
 
     const styles = useStyleConfig("CourseBox", {});
 
-    const { course, searchParameters, ...rest } = props;
+    const { course = {}, searchParameters, ...rest } = props;
     const { id, title, description } = course;
 
     const [tutorials, setTutorials] = useState([]);
@@ -26,6 +26,19 @@ function CourseBox(props) {
             setTutorials(success);
         }
     }, [id]);
+
+    if (typeof course.id == 'undefined') {
+        return (
+            <Box _css={styles} {...rest}>
+                <SectionHeader title={
+                    <Text color="ce_black">DESCRIPTION</Text>
+                } />
+                <Text mt={2}>
+                    You don't currently have a course selected- try searching for one.
+                </Text>
+            </Box>
+        );
+    }
 
     return (
         <Box __css={styles} {...rest}>

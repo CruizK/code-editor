@@ -25,20 +25,7 @@ function Search() {
         languageId: languageId,
     });
 
-    const [courses, setCourses] = useState([
-        {
-            id: 16, title: 'A courseassad', description: 'Course stiff' 
-        },
-        {
-            id: 2, title: 'Another??', description: 'Course steff' 
-        },
-        {
-            id: 3, title: 'Anotha One', description: 'Course staff' 
-        },
-        {
-            id: 4, title: 'Anotha One', description: 'Course staff' 
-        },
-    ]);
+    const [courses, setCourses] = useState([]);
 
     const [currentCourse, setCurrentCourse] = useState(courses[0]);
 
