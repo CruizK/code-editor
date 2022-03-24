@@ -4,8 +4,19 @@ import Carousel from "@Components/Carousel/Carousel";
 import Main from "@Components/Main/Main";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import CourseBox from "@Modules/Courses/components/CourseBox/CourseBox";
+import { useState } from "react";
 
 function Search() {
+    const [searchString, setSearchString] = useState('Course');
+    const [difficultyId, setDifficulty] = useState(0);    
+    const [languageId, setLanguage] = useState(0);
+
+    const [searchParameters, setSearch] = useState({
+        searchString: searchString,
+        difficultyId: difficultyId,
+        languageId: languageId,
+    });
+
     const courses = [
         {
             id: 16, title: 'A courseassad', description: 'Course stiff' 
@@ -48,7 +59,7 @@ function Search() {
                     <Carousel direction={'vertical'} items={courses} />
                 </VStack>
                 <Spacer flexBasis="5%" />
-                <CourseBox course={currentCourse} flexBasis="70%" h="100%" />
+                <CourseBox course={currentCourse} searchParameters={searchParameters} flexBasis="70%" h="100%" />
             </Flex>
         </Main>
     )
