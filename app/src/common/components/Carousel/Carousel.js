@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/button";
-import { Icon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { Icon, ChevronLeftIcon, ChevronRightIcon, ChevronUpIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Grid, GridItem, Heading, HStack, VStack } from "@chakra-ui/layout";
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
@@ -47,6 +47,8 @@ function Carousel(props) {
         setPage(Math.max(1, page - 1));
     }
 
+    const DecrementIcon = (direction == 'vertical') ? ChevronUpIcon : ChevronLeftIcon;
+
     /**
      * This increases the page number by one
      * We don't want weird behavior with increasing the page number, so setting an upper bound to it works best 
@@ -55,11 +57,13 @@ function Carousel(props) {
         setPage(Math.min(page + 1, Math.ceil(items.length / itemsPerPage)));
     }
 
+    const IncrementIcon = (direction == 'vertical') ? ChevronDownIcon : ChevronRightIcon;
+
     const RootComponent = (direction == 'vertical') ? VStack : HStack;
 
     return (
         <RootComponent spacing="35px" mt="15px" mb="15px" alignContent="center" justifyContent="start">
-            <ChevronLeftIcon onClick={decrementPage}
+            <DecrementIcon onClick={decrementPage}
                 color={(page != 1) ? "ce_white" : "transparent"} 
                 bgColor={(page != 1) ? "ce_mainmaroon" : "transparent"}
                 boxSize="2em" borderRadius="2xl" 
@@ -89,7 +93,7 @@ function Carousel(props) {
                     </Tooltip>
                 );
             })}
-            <ChevronRightIcon onClick={incrementPage}
+            <IncrementIcon onClick={incrementPage}
                 color={(page != Math.ceil(items.length / itemsPerPage)) ? "ce_white" : "transparent"} 
                 bgColor={(page != Math.ceil(items.length / itemsPerPage)) ? "ce_mainmaroon" : "transparent"}
                 boxSize="2em" borderRadius="2xl" 
