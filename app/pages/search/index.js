@@ -6,6 +6,7 @@ import SNoLink from "@Components/SNoLink/SNoLink";
 import { loggedIn } from "@Modules/Auth/Auth";
 import CourseBox from "@Modules/Courses/components/CourseBox/CourseBox";
 import { getCoursesFromSearch } from "@Modules/Courses/Courses";
+import { difficultylevels, programmingLanguages } from "@Utils/static";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
@@ -62,7 +63,7 @@ function Search() {
     async function handleSearch() {
         let success = await getCoursesFromSearch(searchParameters, token);
         if (success) {
-            console.log(success);
+            setCourses(success);
         }
     }
 
@@ -71,7 +72,7 @@ function Search() {
             <VStack>
                 <SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink>
                 <HStack spacing={3} id="search">
-                    <Input w="lg" id="searchBar" placeholder="Search" />
+                    <Input w="lg" id="searchBar" placeholder="Search" onChange={(e) => setSearchString(e.target.value)} />
                     <Search2Icon onClick={handleSearch}
                         color="ce_white" boxSize="2em" borderRadius="md" backgroundColor="ce_mainmaroon" padding={2} 
                     />
@@ -79,12 +80,20 @@ function Search() {
                 <Spacer />
                 <HStack w="lg">
                     <Spacer />
-                    <Select flexBasis="132px">
+                    <Select flexBasis="132px" onChange={(e) => setDifficulty(e.target.value)}>
                         <option id={"Any"} value={0}>Difficulty</option>
+                        {difficultylevels.map((option, index) => {
+                            const { dbIndex, value } = option;
+                            return <option id={index} value={dbIndex}>{value}</option>
+                        })}
                     </Select>
                     <Spacer />
-                    <Select flexBasis="132px">
+                    <Select flexBasis="132px" onChange={(e) => setLanguage(e.target.value)}>
                         <option id={"Any"} value={0}>Language</option>
+                        {programmingLanguages.map((option, index) => {
+                            const { dbIndex, value } = option;
+                            return <option id={index} value={dbIndex}>{value}</option>
+                        })}
                     </Select>
                     <Spacer />
                 </HStack>
