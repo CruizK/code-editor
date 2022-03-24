@@ -3,10 +3,17 @@ import { Box, Center, Flex, HStack, Input, Select, Spacer, Text, VStack } from "
 import Carousel from "@Components/Carousel/Carousel";
 import Main from "@Components/Main/Main";
 import SNoLink from "@Components/SNoLink/SNoLink";
+import { loggedIn } from "@Modules/Auth/Auth";
 import CourseBox from "@Modules/Courses/components/CourseBox/CourseBox";
-import { useState } from "react";
+import { getCoursesFromSearch } from "@Modules/Courses/Courses";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 function Search() {
+    const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+    const isLoggedIn = loggedIn(cookies.user);
+    const token = cookies.user;
+
     const [searchString, setSearchString] = useState('Course');
     const [difficultyId, setDifficulty] = useState(0);    
     const [languageId, setLanguage] = useState(0);
@@ -17,7 +24,7 @@ function Search() {
         languageId: languageId,
     });
 
-    const courses = [
+    const [courses, setCourses] = useState([
         {
             id: 16, title: 'A courseassad', description: 'Course stiff' 
         },
@@ -30,16 +37,44 @@ function Search() {
         {
             id: 4, title: 'Anotha One', description: 'Course staff' 
         },
-    ];
+    ]);
 
-    const currentCourse = courses[0];
+    const [currentCourse, setCurrentCourse] = useState(courses[0]);
+
+    /**
+     * We don't want to immediately call the API, hence updating a buffer object
+     */
+    useEffect(() => {
+        var newSearchParameters = searchParameters;
+
+        if (searchString != searchParameters.searchString)
+            newSearchParameters.searchString = searchString;
+        
+        if (difficultyId != searchParameters.difficultyId)
+            newSearchParameters.difficultyId = difficultyId;
+
+        if (languageId != searchParameters.languageId)
+            newSearchParameters.languageId = languageId;
+
+        setSearch(newSearchParameters);
+    }, [searchString, difficultyId, languageId]);
+
+    async function handleSearch() {
+        let success = await getCoursesFromSearch(searchParameters, token);
+        if (success) {
+            console.log(success);
+        }
+    }
 
     return (
         <Main>
             <VStack>
                 <SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink>
                 <HStack spacing={3} id="search">
-                    <Input w="lg" id="searchBar" placeholder="Search" /><Search2Icon color="ce_white" boxSize="2em" borderRadius="md" backgroundColor="ce_mainmaroon" padding={2} />
+                    <Input w="lg" id="searchBar" placeholder="Search" />
+                    <Search2Icon onClick={handleSearch}
+                        color="ce_white" boxSize="2em" borderRadius="md" backgroundColor="ce_mainmaroon" padding={2} 
+                    />
                 </HStack>
                 <Spacer />
                 <HStack w="lg">
