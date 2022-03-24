@@ -67,6 +67,14 @@ function Search() {
         }
     }
 
+    function handleCarouselClick(courseId) {
+        const tempCourse = courses.find((tc) => {
+            return tc.id == courseId;
+        });
+
+        setCurrentCourse(tempCourse);
+    }
+
     return (
         <Main>
             <VStack>
@@ -100,7 +108,7 @@ function Search() {
             </VStack>
             <Flex w="100%" minHeight="654px" alignItems="left" mt={5}>
                 <VStack flexBasis="25%">
-                    <Carousel direction={'vertical'} items={courses} />
+                    <Carousel clickOverride={handleCarouselClick} direction={'vertical'} items={courses} />
                 </VStack>
                 <Spacer flexBasis="5%" />
                 <CourseBox course={currentCourse} searchParameters={searchParameters} flexBasis="70%" h="100%" />

@@ -73,7 +73,7 @@ function Carousel(props) {
 
                 return (
                     <Tooltip label={title} aria-label={title} placement="right" borderRadius="md">
-                        <VStack __css={styles} borderColor={color} bgColor={color} spacing={0} onClick={() => goToCourse(id)}>
+                        <VStack __css={styles} borderColor={color} bgColor={color} spacing={0} onClick={() => (props.clickOverride) ? props.clickOverride(id) : goToCourse(id)}>
                             <Flex height="50%" w="100%" justifyContent="right" pr={1}>
                                 <CourseAvatar identifier={id} />
                             </Flex>
