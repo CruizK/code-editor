@@ -17,6 +17,9 @@ function TutorialList(props) {
     const isLoggedIn = loggedIn(cookies.user);
     const token = cookies.user;
 
+    /**
+     * When tutorials are provided by TutorialList
+     */
     useEffect(async function() {
         if (getTutorials) {
             let success = await getTutorialsFromCourse(courseId, token);
@@ -25,6 +28,13 @@ function TutorialList(props) {
             }
         }
     }, [getTutorials]);
+
+    /**
+     * When tutorials are provided from a page
+     */
+    useEffect(function() {
+        setTutorials(props.tutorials || []);
+    }, [props.tutorials]);
 
     return(
         <>
