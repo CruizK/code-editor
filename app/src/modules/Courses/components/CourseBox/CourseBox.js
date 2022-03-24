@@ -24,11 +24,15 @@ function CourseBox(props) {
                     Go To Course {'>'}
                 </SNoLinkButton>
             </SectionHeader><br />
-            <SectionHeader title={'DESCRIPTION'} />
+            <SectionHeader title={
+                <Text color="ce_black">DESCRIPTION</Text>
+            } />
             <Text mt={2}>
                 {description}
             </Text>
-            <TutorialList courseId={id} getTutorials={true} />
+            <Box borderColor="ce_grey" borderWidth="2px" borderRadius="2xl" mt={15} pl={25} pr={5}>
+                <TutorialList courseId={id} getTutorials={true} />
+            </Box>
         </Box>
     )
 }
