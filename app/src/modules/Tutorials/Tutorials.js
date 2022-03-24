@@ -1,6 +1,6 @@
 import instance from "@Utils/instance";
 import { getID } from "@Utils/jwt";
-import { difficultylevels, programmingLanguages, tutorialStatus } from "@Utils/static";
+import { defaultSearchParams, difficultylevels, programmingLanguages, tutorialStatus } from "@Utils/static";
 
 /**
  * A function that gets the lats tutorial a user was working on
@@ -75,11 +75,6 @@ async function getTutorialsFromCourse(id, token) {
         //console.log(error.response);
     }
     return false;
-}
-
-const defaultSearchParams = {
-    languageId: 0, // Any
-    difficultyId: 0, // Any
 }
 
 /**

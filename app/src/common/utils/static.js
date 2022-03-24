@@ -65,4 +65,9 @@ function ShouldLanguageCompile(language) {
     return !(language == 'CSS' || language == 'HTML' || language == 'Javascript')
 }
 
-export { difficultylevels, programmingLanguages, tutorialStatus, dbLanguageToMonacoLanguage, ShouldLanguageCompile };
+const defaultSearchParams = {
+    languageId: 0, // Any
+    difficultyId: 0, // Any
+}
+
+export { difficultylevels, programmingLanguages, tutorialStatus, dbLanguageToMonacoLanguage, ShouldLanguageCompile, defaultSearchParams };
