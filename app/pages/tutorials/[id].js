@@ -1,4 +1,4 @@
-import { Flex, Container, Button, Spinner } from "@chakra-ui/react";
+import { Flex, Container, Button, Spinner, useToast } from "@chakra-ui/react";
 import { loggedIn } from "@Modules/Auth/Auth";
 import instance from "@Utils/instance";
 import Editor from "@monaco-editor/react";
@@ -62,7 +62,7 @@ export async function getServerSideProps(context) {
 }
 
 function Tutorial(props) {
-  const { id, courseId, status, userCode, prompt, template } = props.values;
+  const { id, courseId, status, userCode, prompt, template, solution } = props.values;
   const { language, courseTutorials } = props;
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const isLoggedIn = loggedIn(cookies.user);
@@ -76,6 +76,8 @@ function Tutorial(props) {
   const [compiledText, setCompiledText] = useState('');
 
   const [editorText, setText] = useState(userCode || template || ``);
+
+  const toast = useToast();
 
   /**
    * Saves progress, using tutorial id from query context. 
@@ -105,10 +107,22 @@ function Tutorial(props) {
     // did the code run?
     // TODO: see if the checks passed. if they did, set status to completed
     if (res) {
-      setCompiledText(res.data)
-      let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
-      if (updateResult) {
-        setThisStatus(tutorialStatus.Completed);
+      setCompiledText(res.data);
+      // not the most robust check
+      // maybe we could check difference percentage?
+      if (res.data == solution) {  
+        let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
+        if (updateResult) {
+          setThisStatus(tutorialStatus.Completed);
+        }
+      } else{
+        toast({
+          title: 'Incorrect output!',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top'
+        });
       }
     }
   }
