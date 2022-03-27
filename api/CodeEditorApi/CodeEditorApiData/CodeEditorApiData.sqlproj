@@ -80,8 +80,6 @@
     <Build Include="Stored Procedures\spUserRegisteredCourse.sql" />
     <Build Include="Stored Procedures\spCourseRegisteredUsersCount.sql" />
     <Build Include="Tables\cfgTutorialStatus.sql" />
-    <Build Include="Tables\CourseLanguageTags.sql" />
-    <Build Include="Tables\CourseDifficultyTags.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="CodeEditorApiData.refactorlog" />
