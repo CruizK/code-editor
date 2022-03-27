@@ -110,12 +110,13 @@ function Tutorial(props) {
       setCompiledText(res.data);
       // not the most robust check
       // maybe we could check difference percentage?
-      if (res.data == solution) {  
+      if (solution == res.data || solution.includes(res.data)) {  
         let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
         if (updateResult) {
           setThisStatus(tutorialStatus.Completed);
         }
       } else{
+        console.log(`${res.data} did not equal ${solution}`)
         toast({
           title: 'Incorrect output!',
           status: 'error',
