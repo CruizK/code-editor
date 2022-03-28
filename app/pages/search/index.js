@@ -15,7 +15,7 @@ function Search() {
     const isLoggedIn = loggedIn(cookies.user);
     const token = cookies.user;
 
-    const [searchString, setSearchString] = useState('Course');
+    const [searchString, setSearchString] = useState('');
     const [difficultyId, setDifficulty] = useState(0);    
     const [languageId, setLanguage] = useState(0);
 
