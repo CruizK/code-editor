@@ -132,6 +132,7 @@ namespace CodeEditorApi.Features.Courses
         /// <param name="si"></param>
         /// <returns></returns>
         [HttpGet("SearchCourses")]
+        [Authorize]
         public async Task<ActionResult<List<Course>>> SearchCourses([FromQuery] string searchString, [FromQuery] int difficultyId, [FromQuery] int languageId)
         {
             
