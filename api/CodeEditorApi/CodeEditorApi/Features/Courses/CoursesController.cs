@@ -134,7 +134,7 @@ namespace CodeEditorApi.Features.Courses
         [HttpGet("SearchCourses")]
         public async Task<ActionResult<List<Course>>> SearchCourses([FromQuery] string searchString, [FromQuery] int difficultyId, [FromQuery] int languageId)
         {
-            
+            searchString = searchString ?? "";
             return await _searchCoursesCommand.ExecuteAsync(searchString, difficultyId, languageId);
         }
 

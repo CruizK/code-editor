@@ -97,6 +97,7 @@ namespace CodeEditorApi.Features.Tutorials
         [HttpGet("SearchTutorials/{courseId:int}")]
         public async Task<ActionResult<List<SearchTutorialsBody>>> SearchTutorials(int courseId, [FromQuery] string searchString, [FromQuery] int difficultyId, [FromQuery] int languageId)
         {
+            searchString = searchString ?? "";
             return await _searchTutorialsCommand.ExecuteAsync(courseId, searchString, difficultyId, languageId);
         }
 
