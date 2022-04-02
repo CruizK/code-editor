@@ -3,11 +3,22 @@ name: Deploy Dev
 on: workflow_dispatch
 
 jobs:
+  deploy_logging:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy To Logging Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST_LOGGING }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY_LOGGING}}
+        script: |
+          cd code-editor/logging
+          git pull
+          docker-compose up -d
+
   deploy-backend:
     runs-on: ubuntu-latest
-    env:
-      API_URL: registry.digitalocean.com/code-editor-images/code-editor-api:dev
-      DB_URL: registry.digitalocean.com/code-editor-images/code-editor-db:dev
         
     steps:
     - uses: actions/checkout@v2
