@@ -13,12 +13,13 @@ services:
 
   elasticsearch:
     restart: unless-stopped
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - xpack.security.enabled=true
+      - ELASTIC_USERNAME=kibana_user
       - ELASTIC_PASSWORD=QCNxSe}u6)}{]2v#
     volumes:
       - es_data:/usr/share/elasticsearch/data
@@ -35,7 +36,7 @@ services:
       - "elasticsearch"
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_USERNAME=kibana_user
       - ELASTICSEARCH_PASSWORD=QCNxSe}u6)}{]2v#
     ports:
       - "5601:5601"
