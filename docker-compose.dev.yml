@@ -1,10 +1,17 @@
 version: "3.9"
+
+x-logging: &logging
+  driver: "fluentd"
+  options:
+    fluentd-address: 159.223.100.111:24224
+
 networks:
   compile-network:
     driver: bridge
 services:
   api:
     restart: unless-stopped
+    logging: *logging
     depends_on:
       - db
     build:
@@ -19,6 +26,7 @@ services:
     - compile-network
   goapi:
     restart: unless-stopped
+    logging: *logging
     build:
       context: ./go-api
       dockerfile: Dockerfile
@@ -32,6 +40,7 @@ services:
         aliases:
           - "goapi"
   db:
+    logging: *logging
     build:
       context: ./api
       dockerfile: Dockerfile.db
