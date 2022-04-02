@@ -25,6 +25,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     user: root
     environment:
+      - FLEET_ENROLLMENT_TOKEN=bENPTTdIOEJQN0NQbEt2VTZLbGQ6Q0d5ckpEU1hUdnVnSHJIUFZ6NFpqZw==
+      - FLEET_ENROLL=1
+      - FLEET_URL=http://localhost:8200
       - FLEET_SERVER_ENABLE=true
       - FLEET_SERVER_ELASTICSEARCH_HOST=http://elasticsearch:9200
       - FLEET_SERVER_SERVICE_TOKEN=AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuLTE2NDg5NDA3Mzk0NjE6UmlJdHNteV9UeGFHTWxfUmJCVF92dw
@@ -37,6 +40,7 @@ services:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms1g -Xmx1g
       - xpack.security.enabled=true
+      - xpack.security.authc.api_key.enabled=true
       - ELASTIC_PASSWORD=QCNxSe}u6)}{]2v#
     volumes:
       - es_data:/usr/share/elasticsearch/data
