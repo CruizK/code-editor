@@ -15,7 +15,7 @@ jobs:
         script: |
           cd code-editor/logging
           git pull
-          docker-compose up -d
+          docker-compose up --build -d
 
   deploy-backend:
     runs-on: ubuntu-latest
