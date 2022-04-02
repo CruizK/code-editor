@@ -13,6 +13,7 @@ services:
 
   agent:
     restart: unless-stopped
+    container_name: agent
     image: docker.elastic.co/beats/elastic-agent:8.1.2
     links:
       - "elasticsearch"
