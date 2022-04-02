@@ -11,13 +11,26 @@ services:
       - "24224:24224"
       - "24224:24224/udp"
 
+  agent:
+    restart: unless-stopped
+    image: docker.elastic.co/beats/elastic-agent:8.1.2
+    links:
+      - "elasticsearch"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    user: root
+    environment:
+      - FLEET_SERVER_ENABLE=true
+      - FLEET_SERVER_ELASTICSEARCH_HOST=http://elasticsearch:9200
+      - FLEET_SERVER_SERVICE_TOKEN=AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuLTE2NDg5MzkyMzE0Mzc6dk11d1hxUWZTbkdkWlZ0bE9uYkI5UQ
+    
   elasticsearch:
     restart: unless-stopped
     image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
       - xpack.security.enabled=true
       - ELASTIC_PASSWORD=QCNxSe}u6)}{]2v#
     volumes:
@@ -37,6 +50,7 @@ services:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=M&9D87?TPv!NUFnr
+      - SERVER_PUBLICBASEURL=https://kibana.siucode.io
     ports:
       - "5601:5601"
 volumes:
