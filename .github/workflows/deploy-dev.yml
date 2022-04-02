@@ -13,8 +13,38 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY_LOGGING}}
         script: |
-          ls code-editor
-          docker-compose --version
+          cd code-editor/logging
+          git pull
+          docker-compose up -d
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+        
+    steps:
+    - uses: actions/checkout@v2
+    - name: Builds Images
+      run: docker compose -f docker-compose.dev.yml build
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with: 
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Log Into DO Container Registry
+      run: doctl registry login --expiry-seconds 600
+    - name: Push images to DO Container Registry
+      run: docker compose -f docker-compose.dev.yml push
+    - name: Deploy to Dev
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          docker login registry.digitalocean.com -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          cd code-editor
+          git pull
+          docker-compose -f docker-compose.dev.yml pull
+          docker-compose -f docker-compose.dev.yml up --detach
+          docker image prune -f
           
 
       
