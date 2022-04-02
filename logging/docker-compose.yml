@@ -35,8 +35,8 @@ services:
       - "elasticsearch"
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=QCNxSe}u6)}{]2v#
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=M&9D87?TPv!NUFnr
     ports:
       - "5601:5601"
 volumes:
