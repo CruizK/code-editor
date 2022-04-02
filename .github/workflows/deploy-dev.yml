@@ -11,9 +11,11 @@ jobs:
       with:
         host: ${{ secrets.HOST_LOGGING }}
         username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_KEY_LOGGING }}
+        key: ${{ secrets.SSH_KEY_LOGGING}}
         script: |
-          ls
+          cd code-editor/logging
+          git pull
+          docker-compose up -d
           
 
       
