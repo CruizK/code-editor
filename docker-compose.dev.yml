@@ -3,7 +3,7 @@ version: "3.9"
 x-logging: &logging
   driver: "fluentd"
   options:
-    fluentd-address: 159.223.100.111:24224
+    fluentd-address: 10.116.0.4:24224
 
 networks:
   compile-network:
