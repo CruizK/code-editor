@@ -4,6 +4,7 @@ networks:
     driver: bridge
 services:
   api:
+    restart: unless-stopped
     depends_on:
       - db
     build:
@@ -17,6 +18,7 @@ services:
     networks:
     - compile-network
   goapi:
+    restart: unless-stopped
     build:
       context: ./go-api
       dockerfile: Dockerfile

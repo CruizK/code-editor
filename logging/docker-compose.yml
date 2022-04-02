@@ -1,6 +1,7 @@
 version: "3"
 services:
   fluentd:
+    restart: unless-stopped
     build: ./fluentd
     volumes:
       - ./fluentd/conf:/fluentd/etc
@@ -11,6 +12,7 @@ services:
       - "24224:24224/udp"
 
   elasticsearch:
+    restart: unless-stopped
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.1
     container_name: elasticsearch
     environment:
@@ -27,6 +29,7 @@ services:
     mem_limit: 2g
 
   kibana:
+    restart: unless-stopped
     image: docker.elastic.co/kibana/kibana:7.13.1
     links:
       - "elasticsearch"
