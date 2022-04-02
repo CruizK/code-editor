@@ -1,0 +1,4 @@
+xpack.security.encryptionKey: "!mnC!Z3JGm;Y`7]uwLFT5LG8xxh)D^YV@'d@Y("
+xpack.reporting.encryptionKey: "r<}}29Y$7z7.!>C/{CUs,f;.*Mcg-,a4@?P4f("
+xpack.encryptedSavedObjects.encryptionKey: "t?3==P,nm3sfTQQNE{rsEe%=!/6r;[Lm3#p`}*"
+elasticsearch.hosts: ["http://localhost:9200"]
