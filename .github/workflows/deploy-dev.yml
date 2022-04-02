@@ -13,8 +13,9 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY_LOGGING}}
         script: |
-          ls code-editor
-          docker-compose --version
+          cd code-editor/logging
+          git pull
+          docker-compose up -d
           
 
       
