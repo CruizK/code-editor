@@ -22,7 +22,7 @@ services:
     environment:
       - FLEET_SERVER_ENABLE=true
       - FLEET_SERVER_ELASTICSEARCH_HOST=http://elasticsearch:9200
-      - FLEET_SERVER_SERVICE_TOKEN=AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuLTE2NDg5MzkyMzE0Mzc6dk11d1hxUWZTbkdkWlZ0bE9uYkI5UQ
+      - FLEET_SERVER_SERVICE_TOKEN=AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuLTE2NDg5Mzk4Mzk1NzE6a2hoZ1lPSmFScUdvU0pDVWFtc003Zw
     
   elasticsearch:
     restart: unless-stopped
