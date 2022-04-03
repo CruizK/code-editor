@@ -5,7 +5,7 @@ import Editor from "@monaco-editor/react";
 import { useEffect, useRef, useState } from "react";
 import Router from "next/router";
 import TutorialSideBar from "@Modules/Tutorials/components/TutorialSideBar/TutorialSideBar";
-import { compileAndRunCode, getTutorialsFromCourse, getUserTutorialDetailsFromId, getUserTutorialsDetailsFromCourse, updateUserTutorial } from "@Modules/Tutorials/Tutorials";
+import { compileAndRunCode, getTutorialsFromCourse, getUserTutorialDetailsFromId, getUserTutorialsDetailsFromCourse, levenshtein, updateUserTutorial } from "@Modules/Tutorials/Tutorials";
 import { useCookies } from "react-cookie";
 import { checkIfInCourse, getCourseDetails } from "@Modules/Courses/Courses";
 import TutorialCodeOutput from "@Modules/Tutorials/TutorialCodeOutput/TutorialCodeOutput";
@@ -107,10 +107,11 @@ function Tutorial(props) {
     // did the code run?
     // TODO: see if the checks passed. if they did, set status to completed
     if (res) {
-      setCompiledText(res.data);
-      // not the most robust check
-      // maybe we could check difference percentage?
-      if (solution == res.data || solution.includes(res.data)) {  
+      const userSolution = res.data;
+      setCompiledText(userSolution);
+      
+      const passes = levenshtein(solution, userSolution).passes;
+      if (solution == userSolution || passes) {  
         let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
         if (updateResult) {
           setThisStatus(tutorialStatus.Completed);

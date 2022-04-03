@@ -367,4 +367,60 @@ async function compileAndRunCode(id, token, language, code) {
     return false;
 }
 
-export { getLastTutorial, getUserTutorialDetailsFromId, getTutorialsFromCourse, getTutorialsFromCourseSearch, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial }
+const maxDistCoefficient = 0.05;
+
+/**
+ * Levenshtein distance calculator
+ * To transform a string, we can either delete, insert, or replace a single character as a single operation
+ * We're calculating how many of those operations we need to get to userSolution
+ * @param {String} solution 
+ * @param {String} userSolution
+ */
+function levenshtein(solution, userSolution) {
+    const columns = userSolution.length;
+    const rows = solution.length;
+    
+    // Multi-dimensional array of (userSolution.length + 1) columns and (solution.length + 1) rows. The plus one is because we want the bottom-right-most value
+    var scoreMatrix = Array(columns + 1).fill(0);
+    scoreMatrix = scoreMatrix.map(() => {
+        return Array(rows + 1).fill(null)
+    });
+
+    // first column
+    for (let rowIndex = 0; rowIndex <= rows; rowIndex += 1) {
+        scoreMatrix[0][rowIndex] = rowIndex;
+    }
+
+    // first row
+    for (let colIndex = 0; colIndex <= columns; colIndex += 1) {
+        scoreMatrix[colIndex][0] = colIndex;
+    }
+
+    // we're starting at colIndex = 1 and rowIndex = 1, so we don't need to check for out-of-array errors
+    for (let colIndex = 1; colIndex <= columns; colIndex += 1) {
+        for (let rowIndex = 1; rowIndex <= rows; rowIndex += 1) {
+            const sub = (solution[rowIndex - 1] === userSolution[colIndex - 1]) ? 0 : 1;
+
+            const scoreAt = Math.min(
+                scoreMatrix[colIndex][rowIndex - 1] + 1, // deletion
+                scoreMatrix[colIndex - 1][rowIndex] + 1, // insertion
+                scoreMatrix[colIndex - 1][rowIndex - 1] + sub, // substitution
+            );
+
+            scoreMatrix[colIndex][rowIndex] = scoreAt;
+        }
+    }
+
+    const passDistance = Math.max(1, maxDistCoefficient * rows);
+    const distance = scoreMatrix[columns][rows];
+    // userSolution can at most 5% different from solution
+    // if we want stricter/looser comparisons, just change the 0.05
+    const passes = distance <= passDistance; 
+    return {
+        passDistance: passDistance,
+        distance: distance,
+        passes: passes
+    };
+}
+
+export { getLastTutorial, getUserTutorialDetailsFromId, getTutorialsFromCourse, getTutorialsFromCourseSearch, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial, levenshtein }
