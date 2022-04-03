@@ -1,3 +1,4 @@
+import { CopyIcon } from "@chakra-ui/icons";
 import { Button, Center, Code, Flex, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Spacer, Stack, Text, useClipboard, useDisclosure } from "@chakra-ui/react"
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 import { generateAccessCode } from "@Modules/Admin/Admin";
@@ -58,7 +59,12 @@ function AccessCodeModal() {
                                         Email Code
                                     </SNoLinkButton>
                                     <Button variant="black" onClick={onCopy}>
-                                        {hasCopied ? 'Copied' : 'Copy'}
+                                        {hasCopied ? 
+                                            'Copied' : 
+                                            <>
+                                                <Text mr={3}>Copy</Text><CopyIcon />
+                                            </>
+                                        }
                                     </Button>
                                 </HStack>
                             </Flex>
