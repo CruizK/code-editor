@@ -17,6 +17,7 @@ const TutorialForm = dynamic(
 import instance from "@Utils/instance";
 import { createTutorial, getUserTutorialDetailsFromId, updateTutorial } from "@Modules/Tutorials/Tutorials";
 import ValidationBarrier from "@Components/ValidationBarrier/ValidationBarrier";
+import { getLanguageFromId } from "@Utils/templates";
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
