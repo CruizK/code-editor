@@ -2,12 +2,15 @@ import { useBreakpointValue } from '@chakra-ui/media-query';
 import { Input } from '@chakra-ui/react';
 import { DefaultDraftBlockRenderMap } from 'draft-js';
 import { ContentState, convertFromRaw, convertToRaw, EditorState } from 'draft-js';
+import RichTextEditorUtil from 'draft-js/lib/RichTextEditorUtil';
 import Immutable from 'immutable';
 import { draftToMarkdown as toMarkdown, markdownToDraft } from 'markdown-draft-js';
 import { useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import blockRenderer from './BlockRenderFunc';
+import insertCheckbox from './insertCheckbox';
+import { customKeyBindingFn } from './keybinds';
 
 function MarkdownEditor(props) {
     const { prompt } = props;
@@ -31,12 +34,27 @@ function MarkdownEditor(props) {
         if (props.callback) props.callback(newMarkdown);
     };
 
+    function handleKeyCommand(command) {
+        let newEditorState = null;
+        switch (command) {
+            case 'insert-checkbox':
+                newEditorState = insertCheckbox(editorState);
+                break;
+            default:
+                newEditorState = RichTextEditorUtil.handleKeyCommand(editorState, command);
+        }
+        console.log(command, newEditorState);
+        setEditorState(newEditorState);
+    }
+
     const maxWidth = useBreakpointValue({ base: "350px", lg: "550px" });
 
     return (
         <>
             <Editor
                 editorState={editorState}
+                handleKeyCommand={handleKeyCommand}
+                keyBindingFn={customKeyBindingFn}
                 onEditorStateChange={handleEditorChange}
                 toolbar={
                     {
