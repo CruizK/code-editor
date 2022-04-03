@@ -29,7 +29,7 @@ import { useCookies } from "react-cookie";
                     <Flex height="100%" justifyContent="right" alignItems="center">
                         {isLoggedIn && 
                         <HStack spacing={3}>
-                            {(userRole == "Teacher" || userRole == "Admin") && 
+                            {(userRole == "Teacher") && 
                                 <SNoLink href="/dashboard/teacher">My Content</SNoLink>
                             }
                             {(userRole == "Student") &&

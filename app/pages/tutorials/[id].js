@@ -99,33 +99,59 @@ function Tutorial(props) {
     Router.push(redirect);
   }
 
-  async function submitCode(event) {    
-    setCompilationStatus(true);
-    const res = await compileAndRunCode(id, token, language, editorText);
-    setCompilationStatus(false);
+  const validateBoxes = () => {
+    const checkBoxes = document.getElementsByClassName("task-list-item");
 
-    // did the code run?
-    // TODO: see if the checks passed. if they did, set status to completed
-    if (res) {
-      const userSolution = res.data;
-      setCompiledText(userSolution);
-      
-      const passes = levenshtein(solution, userSolution).passes;
-      if (solution == userSolution || passes) {  
-        let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
-        if (updateResult) {
-          setThisStatus(tutorialStatus.Completed);
+    var passes = true;
+    for (let index = 0; index < checkBoxes.length; index++) {
+      const element = checkBoxes.item(index).children[0];
+      if (!element.checked)
+        passes = false;
+    }
+    
+    return passes;
+  }
+
+  async function submitCode(event) {    
+    if (validateBoxes()) {
+      setThisStatus(tutorialStatus.Completed);
+    } else if (ShouldLanguageCompile(language)) {
+      setCompilationStatus(true);
+      const res = await compileAndRunCode(id, token, language, editorText);
+      setCompilationStatus(false);
+  
+      // did the code run?
+      // TODO: see if the checks passed. if they did, set status to completed
+      if (res) {
+        const userSolution = res.data;
+        setCompiledText(userSolution);
+        
+        const passes = levenshtein(solution, userSolution).passes;
+        if (solution == userSolution || passes) {  
+          let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
+          if (updateResult) {
+            setThisStatus(tutorialStatus.Completed);
+          }
+        } else{
+          console.log(`${res.data} did not equal ${solution}`)
+          toast({
+            title: 'Incorrect output!',
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+            position: 'top'
+          });
         }
-      } else{
-        console.log(`${res.data} did not equal ${solution}`)
-        toast({
-          title: 'Incorrect output!',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top'
-        });
       }
+    } else {
+      //shouldlangaugecompile = false and validateBoxes() = false
+      toast({
+        title: 'Try again!',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top'
+      });
     }
   }
 
