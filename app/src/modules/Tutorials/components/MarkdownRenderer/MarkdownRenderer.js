@@ -13,7 +13,18 @@ function MarkdownRenderer(props) {
 
     return(
         <Box id="rendered" whiteSpace="pre-wrap" maxWidth={maxWidth}>
-            <ReactMarkdown className="demo-wrapper markdown-renderer" remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown 
+                className="demo-wrapper markdown-renderer" 
+                remarkPlugins={[remarkGfm]}
+                components={{
+                    input: ({disabled, checked, ...props}) => {
+                        //console.log(props);
+                        props.node.properties.checked = undefined;
+                        props.node.properties.disabled = undefined;
+                        return <input disabled={(props.type !== 'checkbox') ? true : undefined} {...props} />
+                    }
+                }}
+            >
                 {props.children}
             </ReactMarkdown>
         </Box>
