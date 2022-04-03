@@ -18,7 +18,7 @@ services:
     user: root
     environment:
       - FLEET_ENROLL=1
-      - FLEET_ENROLLMENT_TOKEN=UnNQQTdIOEJWRVRTbFJnQTF3YTk6cmlHX3FQSG1UYXU1U2V5b3laa1Y0UQ==
+      - FLEET_ENROLLMENT_TOKEN=N0Q4TzdYOEJ5RFNJb1NaWG5xZ0c6elEtRzVPLWVUXy1tZ3doOXRLUDNOQQ==
       - FLEET_URL=http://10.116.0.4:8220
   api:
     restart: unless-stopped
