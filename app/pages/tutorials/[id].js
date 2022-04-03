@@ -113,9 +113,12 @@ function Tutorial(props) {
   }
 
   async function submitCode(event) {
+    let passedCodeCheck = true;
+    const passedValidation = validateBoxes();
+    console.log(passedValidation);
      
     // disabled for now
-    if (false && ShouldLanguageCompile(language)) {
+    if (ShouldLanguageCompile(language)) {
       setCompilationStatus(true);
       const res = await compileAndRunCode(id, token, language, editorText);
       setCompilationStatus(false);
@@ -126,27 +129,35 @@ function Tutorial(props) {
         const userSolution = res.data;
         setCompiledText(userSolution);
         
-        const passes = levenshtein(solution, userSolution).passes;
-        if (solution == userSolution || passes) {  
-          let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
-          if (updateResult) {
-            setThisStatus(tutorialStatus.Completed);
+        const codeCheckDisabled = true;
+        if (codeCheckDisabled !== true) {
+          passedCodeCheck = solution == userSolution || levenshtein(solution, userSolution).passes;
+          if (!passedCodeCheck) {
+            console.log(`${res.data} did not equal ${solution}`)
+            toast({
+              title: 'Incorrect output!',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+              position: 'top'
+            });
           }
-        } else{
-          console.log(`${res.data} did not equal ${solution}`)
-          toast({
-            title: 'Incorrect output!',
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-            position: 'top'
-          });
         }
       }
     }
 
-    if (validateBoxes()) {
-      setThisStatus(tutorialStatus.Completed);
+    if (passedValidation) {
+      let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
+      if (updateResult) {
+        setThisStatus(tutorialStatus.Completed);
+      }
+      toast({
+        title: 'Success!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top'
+      });
     } else {
       toast({
         title: 'Try again!',
