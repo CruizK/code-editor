@@ -129,16 +129,19 @@ function Tutorial(props) {
         const userSolution = res.data;
         setCompiledText(userSolution);
         
-        passedCodeCheck = solution == userSolution || levenshtein(solution, userSolution).passes;
-        if (!passedCodeCheck) {
-          console.log(`${res.data} did not equal ${solution}`)
-          toast({
-            title: 'Incorrect output!',
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-            position: 'top'
-          });
+        const codeCheckDisabled = true;
+        if (codeCheckDisabled !== true) {
+          passedCodeCheck = solution == userSolution || levenshtein(solution, userSolution).passes;
+          if (!passedCodeCheck) {
+            console.log(`${res.data} did not equal ${solution}`)
+            toast({
+              title: 'Incorrect output!',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+              position: 'top'
+            });
+          }
         }
       }
     }
