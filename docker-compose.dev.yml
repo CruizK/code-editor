@@ -10,6 +10,7 @@ networks:
     driver: bridge
 services:
   agent:
+    hostname: backend-api
     restart: unless-stopped
     container_name: agent
     image: docker.elastic.co/beats/elastic-agent:8.1.2
@@ -19,8 +20,8 @@ services:
     environment:
       - FLEET_ENROLL=1
       - FLEET_ENROLLMENT_TOKEN=N0Q4TzdYOEJ5RFNJb1NaWG5xZ0c6elEtRzVPLWVUXy1tZ3doOXRLUDNOQQ==
-      - FLEET_URL=http://10.116.0.4:8220
-      - FLEET_ENROLL_INSECURE=1
+      - FLEET_URL=https://10.116.0.4:8220
+      - FLEET_INSECURE=1
   api:
     restart: unless-stopped
     logging: *logging

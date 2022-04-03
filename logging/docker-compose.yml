@@ -10,19 +10,8 @@ services:
     ports:
       - "24224:24224"
       - "24224:24224/udp"
-  metrics:
-    restart: unless-stopped
-    container_name: metrics
-    image: docker.elastic.co/beats/elastic-agent:8.1.2
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    user: root
-    environment:
-      - FLEET_ENROLL=1
-      - FLEET_ENROLLMENT_TOKEN=N0Q4TzdYOEJ5RFNJb1NaWG5xZ0c6elEtRzVPLWVUXy1tZ3doOXRLUDNOQQ==
-      - FLEET_URL=https://agent:8220
-      - FLEET_INSECURE=1
   agent:
+    hostname: logging-server
     restart: unless-stopped
     container_name: agent
     image: docker.elastic.co/beats/elastic-agent:8.1.2
