@@ -15,7 +15,7 @@ services:
     user: root
     environment:
       - FLEET_ENROLL=1
-      - FLEET_ENROLLMENT_TOKEN=SGdwejdYOEJkNGFFZmg4QWNrNEY6OFRnMElJVW5TS2lhUHk4S00tX1REZw==
+      - FLEET_ENROLLMENT_TOKEN=aXhFVzhIOEJkNGFFZmg4QVpYNmM6TExfRUtiWTRSWEdYdEs2cHhPN21BZw==
       - FLEET_URL=https://10.116.0.4:8220
       - FLEET_INSECURE=1
   db:
