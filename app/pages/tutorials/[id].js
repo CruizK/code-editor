@@ -113,9 +113,11 @@ function Tutorial(props) {
   }
 
   async function submitCode(event) {
+    const passedCodeCheck = true;
+    const passedValidation = validateBoxes();
      
     // disabled for now
-    if (false && ShouldLanguageCompile(language)) {
+    if (ShouldLanguageCompile(language)) {
       setCompilationStatus(true);
       const res = await compileAndRunCode(id, token, language, editorText);
       setCompilationStatus(false);
@@ -126,13 +128,8 @@ function Tutorial(props) {
         const userSolution = res.data;
         setCompiledText(userSolution);
         
-        const passes = levenshtein(solution, userSolution).passes;
-        if (solution == userSolution || passes) {  
-          let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
-          if (updateResult) {
-            setThisStatus(tutorialStatus.Completed);
-          }
-        } else{
+        passedCodeCheck = solution == userSolution || levenshtein(solution, userSolution).passes;
+        if (!passedCodeCheck) {
           console.log(`${res.data} did not equal ${solution}`)
           toast({
             title: 'Incorrect output!',
@@ -145,8 +142,11 @@ function Tutorial(props) {
       }
     }
 
-    if (validateBoxes()) {
-      setThisStatus(tutorialStatus.Completed);
+    if (passedValidation) {
+      let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
+      if (updateResult) {
+        setThisStatus(tutorialStatus.Completed);
+      }
       toast({
         title: 'Success!',
         status: 'success',
