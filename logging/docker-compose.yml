@@ -67,6 +67,9 @@ services:
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=M&9D87?TPv!NUFnr
       - SERVER_PUBLICBASEURL=https://kibana.siucode.io
+      - xpack.encryptedSavedObjects.encryptionKey=0f9fa0780e614093c0813d3063afa7df
+      - xpack.reporting.encryptionKey=fe622f672ceb6edb5545122809474bec
+      - xpack.security.encryptionKey=1b3567c43396dea7fc4b51a4cd329b8c
     ports:
       - "5601:5601"
 volumes:
