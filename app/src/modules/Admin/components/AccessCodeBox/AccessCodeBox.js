@@ -1,4 +1,5 @@
 import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react";
+import AccessCodeModal from "../AccessCodeModal/AccessCodeModal";
 
 function AccessCodeBox() {
     return(
@@ -15,7 +16,7 @@ function AccessCodeBox() {
                 </Text>
             </Flex>
             <Center w="12%">
-                <Button variant="maroon" />
+                <AccessCodeModal />
             </Center>
         </Center>
     )
