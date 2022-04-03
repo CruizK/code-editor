@@ -1,4 +1,9 @@
 version: "3"
+x-logging: &logging
+  driver: "fluentd"
+  options:
+    fluentd-address: localhost:24224
+
 services:
   fluentd:
     restart: unless-stopped
@@ -11,6 +16,7 @@ services:
       - "24224:24224"
       - "24224:24224/udp"
   agent:
+    logging: *logging
     hostname: logging-server
     restart: unless-stopped
     container_name: agent
@@ -34,6 +40,7 @@ services:
       - FLEET_SERVER_INSECURE_HTTP
     
   elasticsearch:
+    logging: *logging
     restart: unless-stopped
     image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
     container_name: elasticsearch
@@ -52,6 +59,7 @@ services:
     mem_limit: 2g
 
   kibana:
+    logging: *logging
     restart: unless-stopped
     image: docker.elastic.co/kibana/kibana:8.1.2
     links:

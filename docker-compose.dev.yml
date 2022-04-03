@@ -10,6 +10,7 @@ networks:
     driver: bridge
 services:
   agent:
+    logging: *logging
     hostname: backend-api
     restart: unless-stopped
     container_name: agent
