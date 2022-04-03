@@ -16,11 +16,11 @@ function AccessCodeModal() {
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
-                <ModalContent borderRadius="3xl">
+                <ModalContent borderRadius="3xl" px="25px" maxW="40%">
                     <ModalHeader></ModalHeader>
                     <ModalCloseButton />
                     
-                    <ModalBody px="9%" py="12%">
+                    <ModalBody py="12%">
                         <RadioGroup onChange={setUserRole} value={userRole} py="20px">
                             <Stack direction='row'>
                                 <FormLabel>User Role</FormLabel>
