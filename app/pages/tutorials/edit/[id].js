@@ -78,7 +78,12 @@ function EditTutorial(props) {
     }
   }
 
+  /**
+   * Currently short-circuits, re-enable if need be
+   * @returns false
+   */
   function hasNoSolution() {
+    return false;
     const languageNode = document.getElementById('language');
     const solutionNode = document.getElementById('solution');
     

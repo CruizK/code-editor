@@ -112,10 +112,9 @@ function Tutorial(props) {
     return passes;
   }
 
-  async function submitCode(event) {    
-    if (validateBoxes()) {
-      setThisStatus(tutorialStatus.Completed);
-    } else if (ShouldLanguageCompile(language)) {
+  async function submitCode(event) {
+     
+    if (ShouldLanguageCompile(language)) {
       setCompilationStatus(true);
       const res = await compileAndRunCode(id, token, language, editorText);
       setCompilationStatus(false);
@@ -126,25 +125,30 @@ function Tutorial(props) {
         const userSolution = res.data;
         setCompiledText(userSolution);
         
-        const passes = levenshtein(solution, userSolution).passes;
-        if (solution == userSolution || passes) {  
-          let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
-          if (updateResult) {
-            setThisStatus(tutorialStatus.Completed);
+        // disabled for now
+        if (false) {
+          const passes = levenshtein(solution, userSolution).passes;
+          if (solution == userSolution || passes) {  
+            let updateResult = await updateUserTutorial(id, token, tutorialStatus.Completed, editorText);
+            if (updateResult) {
+              setThisStatus(tutorialStatus.Completed);
+            }
+          } else{
+            console.log(`${res.data} did not equal ${solution}`)
+            toast({
+              title: 'Incorrect output!',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+              position: 'top'
+            });
           }
-        } else{
-          console.log(`${res.data} did not equal ${solution}`)
-          toast({
-            title: 'Incorrect output!',
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-            position: 'top'
-          });
         }
       }
+    }
+    if (validateBoxes()) {
+      setThisStatus(tutorialStatus.Completed);
     } else {
-      //shouldlangaugecompile = false and validateBoxes() = false
       toast({
         title: 'Try again!',
         status: 'error',

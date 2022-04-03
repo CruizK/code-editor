@@ -89,7 +89,7 @@ function TutorialForm(props) {
                         })}
                     </Select>
                 </Flex>
-                <Flex w="100%" mt={spacing}>
+                <Flex w="100%" mt={spacing} visibility="collapse">
                     <Box w="20%" fontWeight={"bold"} fontSize={"md"}>Solution</Box>
                     <FormControl w="80%" id="solution">
                         <Textarea placeholder="..." defaultValue={dvs["solution"]} required />
