@@ -113,8 +113,9 @@ function Tutorial(props) {
   }
 
   async function submitCode(event) {
-    const passedCodeCheck = true;
+    let passedCodeCheck = true;
     const passedValidation = validateBoxes();
+    console.log(passedValidation);
      
     // disabled for now
     if (ShouldLanguageCompile(language)) {
