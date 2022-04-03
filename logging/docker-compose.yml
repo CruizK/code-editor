@@ -26,6 +26,9 @@ services:
     user: root
     environment:
       - FLEET_SERVER_ENABLE=true
+      - FLEET_ENROLL=1
+      - FLEET_ENROLLMENT_TOKEN=UnNQQTdIOEJWRVRTbFJnQTF3YTk6cmlHX3FQSG1UYXU1U2V5b3laa1Y0UQ==
+      - FLEET_URL=http://localhost:8220
       - FLEET_SERVER_POLICY_ID=fleet-server-policy
       - FLEET_SERVER_ELASTICSEARCH_HOST=http://elasticsearch:9200
       - FLEET_SERVER_SERVICE_TOKEN=AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuLTE2NDg5NDQ1NjA5OTc6Tzk2dFZkUEpRa3kyYnJfRmF3QWFuQQ
