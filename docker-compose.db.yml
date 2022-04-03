@@ -6,10 +6,9 @@ x-logging: &logging
     fluentd-address: 10.116.0.4:24224
 
 services:
-  sql-agent:
+  agent:
     hostname: sql-agent
     restart: unless-stopped
-    container_name: agent
     image: docker.elastic.co/beats/elastic-agent:8.1.2
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro

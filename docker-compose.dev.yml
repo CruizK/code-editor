@@ -9,10 +9,9 @@ networks:
   compile-network:
     driver: bridge
 services:
-  backend-agent:
+  agent:
     hostname: backend-agent
     restart: unless-stopped
-    container_name: agent
     image: docker.elastic.co/beats/elastic-agent:8.1.2
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro

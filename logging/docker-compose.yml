@@ -15,7 +15,7 @@ services:
     ports:
       - "24224:24224"
       - "24224:24224/udp"
-  logging-agent:
+  agent:
     hostname: logging-agent
     restart: unless-stopped
     image: docker.elastic.co/beats/elastic-agent:8.1.2
