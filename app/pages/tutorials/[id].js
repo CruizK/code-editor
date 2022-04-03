@@ -147,6 +147,13 @@ function Tutorial(props) {
 
     if (validateBoxes()) {
       setThisStatus(tutorialStatus.Completed);
+      toast({
+        title: 'Success!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top'
+      });
     } else {
       toast({
         title: 'Try again!',
