@@ -14,7 +14,7 @@ function insertCheckbox(editorState) {
     let newContent = Modifier.insertText(
         editorState.getCurrentContent(),
         selectionState,
-        '- [ ]'
+        '- [ ]\n'
     );
 
     // Set Checkbox Entity on this element
@@ -37,4 +37,14 @@ function insertCheckbox(editorState) {
     );
 }
 
-export { insertCheckbox as default }
+function CheckBoxButton(props) {
+    const { handler, editorState } = props;
+
+    return(
+        <div onClick={() => handler(insertCheckbox(editorState))}>
+            ✔️
+        </div>
+    )
+}
+
+export { CheckBoxButton, insertCheckbox }

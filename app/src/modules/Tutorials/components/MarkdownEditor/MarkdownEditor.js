@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import blockRenderer from './BlockRenderFunc';
-import insertCheckbox from './insertCheckbox';
+import { CheckBoxButton, insertCheckbox } from './insertCheckbox';
 import { customKeyBindingFn } from './keybinds';
 
 function MarkdownEditor(props) {
@@ -69,6 +69,9 @@ function MarkdownEditor(props) {
                         }
                     }
                 }
+                toolbarCustomButtons={[
+                    <CheckBoxButton editorState={editorState} handler={handleEditorChange} />
+                ]}
                 wrapperClassName="demo-wrapper"
                 editorClassName="demo-editor"
                 wrapperStyle={{ 
