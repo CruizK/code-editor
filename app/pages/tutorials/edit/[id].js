@@ -77,8 +77,11 @@ function EditTutorial(props) {
   }
 
   function hasNoSolution() {
+    const languageNode = document.getElementById('language');
     const solutionNode = document.getElementById('solution');
-    const isEmpty = solutionNode.value === '';
+    
+    const language = getLanguageFromId(languageNode.value);
+    const isEmpty = ShouldLanguageCompile(language) && solutionNode.value === '';
     return isEmpty;
   }
 
