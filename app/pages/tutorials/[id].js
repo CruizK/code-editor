@@ -144,6 +144,7 @@ function Tutorial(props) {
         }
       }
     } else {
+      //shouldlangaugecompile = false and validateBoxes() = false
       toast({
         title: 'Try again!',
         status: 'error',
