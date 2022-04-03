@@ -20,7 +20,7 @@ services:
     environment:
       - FLEET_ENROLL=1
       - FLEET_ENROLLMENT_TOKEN=N0Q4TzdYOEJ5RFNJb1NaWG5xZ0c6elEtRzVPLWVUXy1tZ3doOXRLUDNOQQ==
-      - FLEET_URL=http://localhost:8220
+      - FLEET_URL=http://agent:8220
       - FLEET_INSECURE=1
   agent:
     restart: unless-stopped
