@@ -15,7 +15,7 @@ jobs:
         script: |
           cd code-editor
           git pull
-          docker-compose -f docker-compose.db.yml up -d
+          docker-compose -p db -f docker-compose.db.yml up -d
 
   deploy_logging:
     runs-on: ubuntu-latest
