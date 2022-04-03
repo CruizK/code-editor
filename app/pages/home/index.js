@@ -1,5 +1,5 @@
 import { Center } from "@chakra-ui/layout";
-import AccessCodeBox from "@Components/AccessCodeBox/AccessCodeBox";
+import AccessCodeBox from "@Modules/Admin/components/AccessCodeBox/AccessCodeBox";
 import Carousel from "@Components/Carousel/Carousel";
 import Main from "@Components/Main/Main";
 import SectionHeader from "@Components/SectionHeader/SectionHeader";
