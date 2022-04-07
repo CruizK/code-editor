@@ -11,6 +11,7 @@ import { checkIfInCourse, getCourseDetails } from "@Modules/Courses/Courses";
 import TutorialCodeOutput from "@Modules/Tutorials/TutorialCodeOutput/TutorialCodeOutput";
 import { dbLanguageToMonacoLanguage, programmingLanguages, ShouldLanguageCompile, tutorialStatus } from "@Utils/static";
 import { getRole } from "@Utils/jwt";
+import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
@@ -222,7 +223,9 @@ function Tutorial(props) {
           <TutorialCodeOutput language={language} editorText={editorText} compiledText={compiledText}/>
         </Flex>
         <Flex h="50px" bg="ce_darkgrey" justify={"end"} align="center">
-          <Button w="10%" maxW="150px" mr={2} variant="yellowOutline">Exit</Button>
+          <SNoLinkButton href={`/courses/${courseId}`} w="10%" maxW="150px" mr={2} variant="yellowOutline">
+            Exit
+          </SNoLinkButton>
           <Button w="10%" maxW="150px" mr={2} variant="yellow"
             onClick={(userRole == 'Student') ? saveInProgress : undefined}
           >SAVE PROGRESS</Button>
