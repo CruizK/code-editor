@@ -7,6 +7,7 @@ import SNoLink from "@Components/SNoLink/SNoLink";
 import { loggedIn } from "@Modules/Auth/Auth";
 import { getAllPublishedCoursesSortByModifyDate, getMostPopularCourses } from "@Modules/Courses/Courses";
 import { getRole } from "@Utils/jwt";
+import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 
 export async function getServerSideProps(context) {
   const cookies = context.req.cookies;
@@ -37,7 +38,11 @@ function Home(props) {
       }
       <Main>
         <Center><SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink></Center>
-        <SectionHeader title="Most Popular" />
+        <SectionHeader title="Most Popular" justifyContent="end">
+          <SNoLinkButton href="/search" variant="maroon" maxW="180px" mr={2}>
+            Search Courses
+          </SNoLinkButton>
+        </SectionHeader>
         <Carousel items={mostPopular} />
 
         <SectionHeader title="Recently Updated" />
