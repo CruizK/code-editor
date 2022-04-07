@@ -89,22 +89,22 @@ function Course(props) {
             <Box maxWidth="container.lg" margin="auto">
                 <Heading size="sm" fontWeight="bold">Description</Heading>
                 {description}
-                <Center>
-                    {(isRegistered && lastTutorialId) &&
-                    <SNoLinkButton 
-                        href={(lastTutorialId) ? "/tutorials/" + lastTutorialId : undefined}
-                        disabled={(typeof lastTutorialId == 'undefined') ? true : undefined}
-                        variant="black"  w="xs" maxW="md" pt={15} pb={15} mb={15} mr={15}
-                    >
-                        Continue From Last Tutorial
-                    </SNoLinkButton>
-                    }
-                    {(userRole == "Student") &&
-                    <Button variant="maroon" onClick={(event) => start(event, tutorials[0].id, id)} w="xs" maxW="md" pt={15} pb={15} mb={15}>
-                        Start from Beginning
-                    </Button>
-                    }
-                </Center>
+                {(userRole == "Student") &&
+                    <Center>
+                        {(isRegistered && lastTutorialId) &&
+                        <SNoLinkButton 
+                            href={(lastTutorialId) ? "/tutorials/" + lastTutorialId : undefined}
+                            disabled={(typeof lastTutorialId == 'undefined') ? true : undefined}
+                            variant="black"  w="xs" maxW="md" pt={15} pb={15} mb={15} mr={15}
+                        >
+                            Continue From Last Tutorial
+                        </SNoLinkButton>
+                        }
+                        <Button variant="maroon" onClick={(event) => start(event, tutorials[0].id, id)} w="xs" maxW="md" pt={15} pb={15} mb={15}>
+                            Start from Beginning
+                        </Button>
+                    </Center>
+                }
                 <Box borderColor="ce_grey" borderWidth="2px" borderRadius="md" pl={15} pr={15}>
                     <Heading size="sm" fontWeight="bold">Tutorial</Heading>
                     <TutorialList courseId={id} tutorials={tutorials} />

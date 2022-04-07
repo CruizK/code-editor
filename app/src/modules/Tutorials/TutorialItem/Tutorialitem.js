@@ -81,23 +81,25 @@ function TutorialItem(props) {
                 </HStack>
             </GridItem>
             <GridItem colStart={6}>
-                <HStack spacing={3}>
-                    {[tutorialStatus.InProgress, tutorialStatus.Restarted].includes(status) &&
-                    <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
-                        Continue
-                    </Button>
-                    }
-                    {[tutorialStatus.Completed].includes(status) &&
-                    <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
-                        Restart
-                    </Button>
-                    }
-                    {[tutorialStatus.NotStarted].includes(status) &&
-                    <Button variant="white" onClick={(e) => start(e, id, courseId)}>
-                        Start
-                    </Button>
-                    }
-                </HStack>
+                {(userRole == 'Student') &&
+                    <HStack spacing={3}>
+                        {[tutorialStatus.InProgress, tutorialStatus.Restarted].includes(status) &&
+                        <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
+                            Continue
+                        </Button>
+                        }
+                        {[tutorialStatus.Completed].includes(status) &&
+                        <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
+                            Restart
+                        </Button>
+                        }
+                        {[tutorialStatus.NotStarted].includes(status) &&
+                        <Button variant="white" onClick={(e) => start(e, id, courseId)}>
+                            Start
+                        </Button>
+                        }
+                    </HStack>
+                }
             </GridItem>
             <GridItem colSpan={6}>
                 <Center>
