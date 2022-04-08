@@ -52,9 +52,9 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<ActionResult<List<Tutorial>>> GetUserCreatedTutorialsList(int userId)
+        public async Task<ActionResult<List<Tutorial>>> GetUserCreatedTutorialsList(int courseId)
         {
-            return await _context.Tutorials.Where(t => t.Author == userId).Select(t => t).ToListAsync();
+            return await _context.Tutorials.Where(t => t.CourseId == courseId).ToListAsync();
         }
 
         /// <summary>

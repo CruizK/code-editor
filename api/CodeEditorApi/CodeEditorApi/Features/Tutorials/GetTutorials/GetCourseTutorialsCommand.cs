@@ -21,7 +21,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         }
         public async Task<ActionResult<List<Tutorial>>> ExecuteAsync(int courseId)
         {
-            return await _getTutorials.GetCourseTutorials(courseId);
+            return await _getTutorials.GetUserCreatedTutorialsList(courseId);
         }
     }
 }
