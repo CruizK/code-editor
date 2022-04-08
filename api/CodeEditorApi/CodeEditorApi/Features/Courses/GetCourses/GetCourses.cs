@@ -33,6 +33,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
             _context = context;
         }
 
+        //get the courses that a user is registered to
         public async Task<List<Course>> GetUserCourses(int userId)
         {
             var courseList = await _context.UserRegisteredCourses.Where(urc => urc.UserId == userId).Select(urc => urc.Course).ToListAsync();
@@ -40,6 +41,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
             return courseList;
         }
 
+        //get courses created by a teacher
         public async Task<List<Course>> GetUserCreatedCourses(int userId)
         {
             return await _context.Courses.Where(c => c.Author == userId).Select(c => c).ToListAsync();
