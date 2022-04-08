@@ -29,7 +29,7 @@ export async function getServerSideProps(context) {
 
     let course = await getCourseDetails(id, token);
     if (course) {
-        defaultValues = course;
+        defaultValues = course.courseDetails;
     } 
 
     return {
