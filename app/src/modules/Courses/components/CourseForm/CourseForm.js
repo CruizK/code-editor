@@ -10,6 +10,7 @@ import { courseRegEx, courseTitleTooltipLines } from "@Modules/Courses/Courses";
  */
 function CourseForm(props) {
     const dvs = (props.defaultValues) ? props.defaultValues : {};
+    //console.log(dvs);
 
     return(
         <Flex alignItems="end" flexDir="column">
