@@ -53,25 +53,16 @@ namespace CodeEditorApi.Features.Courses.GetCourses
         public async Task<List<Course>> GetAllPublishedCourses()
         {
             return await _context.Courses
-                .Where(c => c.IsPublished == true)
-                .Select(c => new Course {
-                    Id = c.Id,
-                    Title = c.Title,
-                    Author = c.Author
-                }).ToListAsync();
+                .Where(c => c.IsPublished)
+                .ToListAsync();
         }
 
         public async Task<List<Course>> GetAllPublishedCoursesSortByModifyDate()
         {
             return await _context.Courses
-                .Where(c => c.IsPublished == true)
+                .Where(c => c.IsPublished)
                 .OrderByDescending(c => c.ModifyDate)
-                .Select(c => new Course
-                {
-                    Id = c.Id,
-                    Title = c.Title,
-                    Author = c.Author
-                }).ToListAsync();
+                .ToListAsync();
         }
 
         public async Task<List<Course>> GetMostPopularCourses()
@@ -86,7 +77,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 
             var mostPopularCourseIds = result.Take(top).ToList();
 
-            var courses = await _context.Courses.Where(c => mostPopularCourseIds.Contains(c.Id)).ToListAsync();
+            var courses = await _context.Courses.Where(c => c.IsPublished && mostPopularCourseIds.Contains(c.Id)).ToListAsync();
 
             return courses;
 
@@ -102,36 +93,45 @@ namespace CodeEditorApi.Features.Courses.GetCourses
             if (LID > 0 && DID > 0)
             {
                 courseIds = await _context.Tutorials
-                                    .Where(t => t.Title.ToLower().Contains(si.searchString.ToLower())
+                                    .Where(t => t.IsPublished && 
+                                        (t.Title.ToLower().Contains(si.searchString.ToLower())
                                         || t.LanguageId == si.languageId
-                                        || t.DifficultyId == si.difficultyId)
+                                        || t.DifficultyId == si.difficultyId))
                                     .Select(t => t.CourseId).Distinct()
                                     .ToListAsync();
             }//if filtering by only Language
             else if (LID > 0 && DID == 0)
             {
                 courseIds = await _context.Tutorials
-                                    .Where(t => t.Title.ToLower().Contains(si.searchString.ToLower())
-                                        || t.LanguageId == si.languageId)
+                                    .Where(t => t.IsPublished && 
+                                        (t.Title.ToLower().Contains(si.searchString.ToLower())
+                                        || t.LanguageId == si.languageId))
                                     .Select(t => t.CourseId).Distinct()
                                     .ToListAsync();
             }//if filtering by only Difficulty
             else if (LID == 0 && DID > 0)
             {
                 courseIds = await _context.Tutorials
-                                    .Where(t => t.Title.ToLower().Contains(si.searchString.ToLower())
-                                        || t.DifficultyId == si.difficultyId)
+                                    .Where(t => t.IsPublished && 
+                                        (t.Title.ToLower().Contains(si.searchString.ToLower())
+                                        || t.DifficultyId == si.difficultyId))
                                     .Select(t => t.CourseId).Distinct()
                                     .ToListAsync();
             }//if not filtering by either Language or Difficulty
             else {
                 courseIds = await _context.Tutorials
-                                    .Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()))                   
+                                    .Where(t => t.IsPublished && 
+                                        (t.Title.ToLower().Contains(si.searchString.ToLower())))                   
                                     .Select(t => t.CourseId).Distinct()
                                     .ToListAsync();
             }           
 
-            var courseDetails = await _context.Courses.Where(c => c.Title.Contains(si.searchString) || courseIds.Contains(c.Id)).ToListAsync();
+            var courseDetails = await _context.Courses
+                                    .Where(c => c.IsPublished && 
+                                                (c.Tutorials.Where(t => t.IsPublished).Count() > 0) && 
+                                                (c.Title.Contains(si.searchString) 
+                                                || courseIds.Contains(c.Id)))
+                                    .ToListAsync();
 
             
 

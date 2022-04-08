@@ -64,7 +64,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
         /// <returns></returns>
         public async Task<List<Tutorial>> GetCourseTutorials(int courseId)
         {
-            return await _context.Tutorials.Where(t => t.CourseId == courseId)
+            return await _context.Tutorials.Where(t => t.IsPublished && t.CourseId == courseId)
                 .Include(c => c.Difficulty)
                 .Include(c => c.Language)
                 .Select(t => t).ToListAsync();
@@ -126,7 +126,7 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
             var LID = si.languageId;
             var DID = si.difficultyId;
             var tutorials = await _context.Tutorials
-                .Where(t => t.CourseId == courseId)
+                .Where(t => t.CourseId == courseId && t.IsPublished)
                 .Select(t => new SearchTutorialsBody
                 {
                     Title = t.Title,
