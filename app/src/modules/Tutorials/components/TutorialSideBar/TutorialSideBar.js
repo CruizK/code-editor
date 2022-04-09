@@ -53,7 +53,7 @@ function TutorialSideBar(props) {
               <ChevronRightIcon w={8} h={8} onClick={handleToggle} cursor="pointer" />
             }
           </Flex>
-          <Box overflowY="scroll">
+          <Box overflowY="auto">
             <Collapse in={show}>
               <MarkdownRenderer>
                 {prompt}
