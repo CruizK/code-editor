@@ -186,7 +186,7 @@ function Tutorial(props) {
   return (
     <Container maxW="100%" p="0">
       <Flex direction={"column"} height="calc(100vh - 50px)">
-        <Flex width="100%" flex="1">
+        <Flex width="100%" flex="1" maxHeight="calc(100vh - 100px)">
           <TutorialSideBar courseId={courseId} prompt={prompt} tutorials={courseTutorials} show={showSidebar} setShow={setShow} />
           <Flex flex="2" maxW="50%" direction={"column"}>
             <Flex flex="1">

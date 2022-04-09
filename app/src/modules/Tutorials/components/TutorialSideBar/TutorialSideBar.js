@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon, HamburgerIcon, SmallCloseIcon } from "@chakra-ui/icons";
-import { Collapse, Flex, Icon, List, ListItem, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Spacer } from "@chakra-ui/react";
+import { Box, Collapse, Flex, Icon, List, ListItem, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Spacer } from "@chakra-ui/react";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import dynamic from 'next/dynamic'; 
 import { useRef } from "react";
@@ -53,11 +53,13 @@ function TutorialSideBar(props) {
               <ChevronRightIcon w={8} h={8} onClick={handleToggle} cursor="pointer" />
             }
           </Flex>
-          <Collapse in={show}>
-            <MarkdownRenderer>
-              {prompt}
-            </MarkdownRenderer>
-          </Collapse>
+          <Box overflowY="scroll">
+            <Collapse in={show}>
+              <MarkdownRenderer>
+                {prompt}
+              </MarkdownRenderer>
+            </Collapse>
+          </Box>
         </Flex>
     )
 }

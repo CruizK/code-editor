@@ -9,10 +9,8 @@ import remarkGfm from 'remark-gfm';
  * @returns A 'rendered' div wrapping a ReactMarkDown instance
  */
 function MarkdownRenderer(props) {
-    const maxWidth = useBreakpointValue({ base: "350px", lg: "768px"});
-
     return(
-        <Box id="rendered" whiteSpace="pre-wrap" maxWidth={maxWidth}>
+        <Box id="rendered" whiteSpace="pre-wrap" maxWidth={['350px', '350px', '350px', '350px', '350px', '768px']}>
             <ReactMarkdown 
                 className="demo-wrapper markdown-renderer" 
                 remarkPlugins={[remarkGfm]}
