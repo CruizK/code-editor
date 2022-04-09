@@ -96,6 +96,9 @@ const styles = {
       },
     },
     '.markdown-renderer': {
+      maxHeight: '450px',
+      whitespace: 'pre-wrap',
+      //maxWidth: ['350px', '350px', '350px', '350px', '350px', '768px'],
       fontFamily: 'arial',
       pt: '5px',
       mx: '5px'
