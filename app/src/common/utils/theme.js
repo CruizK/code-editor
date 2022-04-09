@@ -49,7 +49,7 @@ const colors = {
   },
   difficulties: {
     easy: "#880000",
-    med: "#FFD700",
+    medium: "#FFD700",
     hard: "#228B22",
   }
 };
