@@ -116,13 +116,13 @@ async function getTutorialsFromCourse(id, token) {
 
             tempTute.difficulty = {
                 difficulty: difficultylevels.find((dl) => {
-                    return dl.id == tute.id;
+                    return dl.dbIndex == tute.difficultyId;
                 }).value
             };
             
             tempTute.language = {
                 language: programmingLanguages.find((pl) => {
-                    return pl.id == tute.id;
+                    return pl.dbIndex == tute.languageId;
                 }).value
             };
 
@@ -131,8 +131,7 @@ async function getTutorialsFromCourse(id, token) {
 
         return tutorials;
     } catch (error) {
-        //TODO: Error handling.
-        //console.log(error.response);
+        console.error(error);
     }
     return false;
 }
