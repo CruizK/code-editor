@@ -8,6 +8,7 @@ using Xunit;
 using AutoFixture;
 using Moq;
 using FluentAssertions;
+using static CodeEditorApi.Features.Courses.GetCourses.GetCourses;
 
 namespace CodeEditorApiUnitTests.Features.Courses
 {
@@ -23,7 +24,7 @@ namespace CodeEditorApiUnitTests.Features.Courses
         {
             var si = fixture.Create<SearchInput>();
 
-            var courseList = fixture.Create<List<Course>>();
+            var courseList = fixture.Create<List<SearchCoursesResponse>>();
 
             Freeze<IGetCourses>().Setup(gc => gc.SearchCourses(si)).ReturnsAsync(courseList);
 
