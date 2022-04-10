@@ -42,7 +42,7 @@ const colors = {
   languages: {
     python: "#ffa800",
     java: "#246181",
-    js: "#246181",
+    javascript: "#246181",
     html: "#660000",
     css: "#000000",
     csharp: "#7d2196"
