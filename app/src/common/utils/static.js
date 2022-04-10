@@ -57,8 +57,8 @@ const dbLanguageToMonacoLanguage = {
     HTML: 'html',
     Java: 'java',
     Python: 'python',
-    Javascript: 'javascript',
-    CSS: 'css',
+    Javascript: 'html', // edge case
+    CSS: 'html', // edge case
 }
 
 function ShouldLanguageCompile(language) {
