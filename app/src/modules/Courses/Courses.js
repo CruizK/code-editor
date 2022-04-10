@@ -1,6 +1,7 @@
+import { addTagsToTutorials } from "@Modules/Tutorials/Tutorials";
 import instance from "@Utils/instance"; 
 import { getID } from "@Utils/jwt";
-import { defaultSearchParams } from "@Utils/static";
+import { defaultSearchParams, difficultylevels, programmingLanguages } from "@Utils/static";
 import Identicon from "identicon.js";
 
 /**
@@ -61,8 +62,11 @@ async function getCourseDetails(id, token) {
         courseResponse = await instance.get("/Courses/GetCourseDetails/" + id, {
             headers: {...headers},
         });
+
+        var course = courseResponse.data;
+        addTagsToTutorials(course.courseTutorials);
         
-        return courseResponse.data;
+        return course;
     } catch (error) {
         console.log(error);
     }
