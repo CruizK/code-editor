@@ -102,6 +102,13 @@ const styles = {
       fontFamily: 'arial',
       pt: '5px',
       mx: '5px'
+    },
+    'code, .code': { // markdown code-blocks
+      backgroundColor: 'ce_grey'
+    },
+    '.code': { // markdown code-blocks
+      width: "100%",
+      'white-space': 'pre-wrap',
     }
   },
 }
