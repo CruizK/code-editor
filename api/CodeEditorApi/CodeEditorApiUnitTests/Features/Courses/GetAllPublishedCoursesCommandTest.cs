@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using static CodeEditorApi.Features.Courses.GetCourses.GetCourses;
 
 namespace CodeEditorApiUnitTests.Features.Courses
 {
@@ -21,13 +22,23 @@ namespace CodeEditorApiUnitTests.Features.Courses
             var publishedCourses = fixture.Build<Course>()
                 .With(c => c.IsPublished, true)
                 .CreateMany();
+            
+            var searchCoursesResponse = fixture.Create<List<SearchCoursesResponse>>();
 
-            Freeze<IGetCourses>().Setup(gc => gc.GetAllPublishedCourses()).ReturnsAsync(publishedCourses.ToList());
+            foreach(var c in publishedCourses)
+            {
+                searchCoursesResponse.Add( new SearchCoursesResponse
+                {
+                    courseId = c.Id,
+                    courseTitle = c.Title
+                });
+            }
+            Freeze<IGetCourses>().Setup(gc => gc.GetAllPublishedCourses()).ReturnsAsync(searchCoursesResponse);
 
             var actionResult = await Target().GetAllPublishedCourses();
 
             actionResult.Result.Should().BeNull();
-            actionResult.Value.Should().BeEquivalentTo(publishedCourses);
+            actionResult.Value.Should().BeEquivalentTo(searchCoursesResponse);
         }
 
         [Fact]
@@ -35,7 +46,7 @@ namespace CodeEditorApiUnitTests.Features.Courses
         {
             var expected = ApiError.BadRequest("No published courses found");            
 
-            Freeze<IGetCourses>().Setup(gc => gc.GetAllPublishedCourses()).ReturnsAsync(new List<Course>());
+            Freeze<IGetCourses>().Setup(gc => gc.GetAllPublishedCourses()).ReturnsAsync(new List<SearchCoursesResponse>());
 
             var actionResult = await Target().GetAllPublishedCourses();
 
