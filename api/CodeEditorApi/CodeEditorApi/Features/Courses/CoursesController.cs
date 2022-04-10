@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static CodeEditorApi.Features.Courses.GetCourses.GetCourses;
 
 namespace CodeEditorApi.Features.Courses
 {
@@ -99,7 +100,7 @@ namespace CodeEditorApi.Features.Courses
         /// <returns></returns>
         [HttpGet("GetAllPublishedCourses")]
         [Authorize]
-        public async Task<ActionResult<List<Course>>> GetAllPublishedCourses()
+        public async Task<ActionResult<List<SearchCoursesResponse>>> GetAllPublishedCourses()
         {
             return await _getAllPublishedCoursesCommand.GetAllPublishedCourses();
         }
@@ -132,9 +133,8 @@ namespace CodeEditorApi.Features.Courses
         /// <param name="si"></param>
         /// <returns></returns>
         [HttpGet("SearchCourses")]
-        public async Task<ActionResult<List<Course>>> SearchCourses([FromQuery] string searchString, [FromQuery] int difficultyId, [FromQuery] int languageId)
+        public async Task<ActionResult<List<SearchCoursesResponse>>> SearchCourses([FromQuery] string searchString, [FromQuery] int difficultyId, [FromQuery] int languageId)
         {
-            searchString = searchString ?? "";
             return await _searchCoursesCommand.ExecuteAsync(searchString, difficultyId, languageId);
         }
 
