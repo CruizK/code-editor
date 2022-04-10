@@ -29,7 +29,20 @@ function MarkdownEditor(props) {
     const handleEditorChange = (state) => {
         setEditorState(state);
         let currentContent = convertToRaw(state.getCurrentContent());
-        let newMarkdown = toMarkdown(currentContent);
+        let newMarkdown = toMarkdown(currentContent, {
+            styleItems: {
+                code: {
+                    open: function (entity, block) {
+                        return '```'
+                    },
+
+                    close: function (entity, block) {
+                        return '```'
+                    }
+                }
+            }
+        });
+        console.log(newMarkdown);
         setMarkdown(newMarkdown);
         if (props.callback) props.callback(newMarkdown);
     };
