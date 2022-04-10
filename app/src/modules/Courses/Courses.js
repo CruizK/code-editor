@@ -1,7 +1,7 @@
 import { addTagsToTutorials } from "@Modules/Tutorials/Tutorials";
 import instance from "@Utils/instance"; 
 import { getID } from "@Utils/jwt";
-import { defaultSearchParams, difficultylevels, programmingLanguages } from "@Utils/static";
+import { defaultSearchParams } from "@Utils/static";
 import Identicon from "identicon.js";
 
 /**
