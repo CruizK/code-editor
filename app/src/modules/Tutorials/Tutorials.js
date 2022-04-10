@@ -69,7 +69,10 @@ async function getTutorialsFromCourse(id, token) {
             headers: {...headers},
         });
 
-        return response.data;
+        const tutorials = response.data;
+        addTagsToTutorials(tutorials);
+
+        return tutorials;
     } catch (error) {
         //TODO: Error handling.
         //console.log(error.response);
@@ -108,31 +111,12 @@ async function getTutorialsFromCourse(id, token) {
             headers: {...headers},
         });
 
-        /**
-         * This route returns ids, so we need to convert to names.
-         */
-        const tutorials = response.data.map((tute) => {
-            const tempTute = tute;
-
-            tempTute.difficulty = {
-                difficulty: difficultylevels.find((dl) => {
-                    return dl.id == tute.id;
-                }).value
-            };
-            
-            tempTute.language = {
-                language: programmingLanguages.find((pl) => {
-                    return pl.id == tute.id;
-                }).value
-            };
-
-            return tempTute;
-        });
+        const tutorials = response.data;
+        addTagsToTutorials(tutorials);
 
         return tutorials;
     } catch (error) {
-        //TODO: Error handling.
-        //console.log(error.response);
+        console.error(error);
     }
     return false;
 }
@@ -423,4 +407,24 @@ function levenshtein(solution, userSolution) {
     };
 }
 
-export { getLastTutorial, getUserTutorialDetailsFromId, getTutorialsFromCourse, getTutorialsFromCourseSearch, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial, levenshtein }
+/**
+ * A function that mutates the tutorials in the given array, adding difficulty / langauge tag data as necessary
+ * @param {Array} tutorials An array of tutorials 
+ */
+function addTagsToTutorials(tutorials) {
+    tutorials.forEach(tute => {
+        tute.difficulty = {
+            difficulty: difficultylevels.find((dl) => {
+                return dl.dbIndex == tute.difficultyId;
+            }).value
+        };
+        
+        tute.language = {
+            language: programmingLanguages.find((pl) => {
+                return pl.dbIndex == tute.languageId;
+            }).value
+        };
+    });
+}
+
+export { getLastTutorial, getUserTutorialDetailsFromId, getTutorialsFromCourse, getTutorialsFromCourseSearch, getUserTutorialsDetailsFromCourse, createTutorial, updateTutorial, updateUserTutorial, compileAndRunCode, deleteTutorial, levenshtein, addTagsToTutorials }
