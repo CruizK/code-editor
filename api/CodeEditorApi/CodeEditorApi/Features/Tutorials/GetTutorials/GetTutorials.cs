@@ -123,40 +123,88 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 
         public async Task<List<SearchTutorialsBody>> SearchTutorials(int courseId, SearchInput si)
         {
-            var LID = si.languageId;
-            var DID = si.difficultyId;
             var tutorials = await _context.Tutorials
-                .Where(t => t.CourseId == courseId && t.IsPublished)
-                .Select(t => new SearchTutorialsBody
-                {
-                    Title = t.Title,
-                    DifficultyId = t.DifficultyId,
-                    LanguageId = t.LanguageId
-                }).ToListAsync();
+                            .Where(t => t.CourseId == courseId && t.IsPublished)
+                            .Select(t => new SearchTutorialsBody
+                            {
+                                Title = t.Title,
+                                DifficultyId = t.DifficultyId,
+                                LanguageId = t.LanguageId
+                            }).ToListAsync();
 
             var query = new List<SearchTutorialsBody>();
-
-            //if filtering by both Language and Difficulty
-            if (LID > 0 && DID > 0) 
+            if (si.searchString != null)
             {
-                query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId == si.difficultyId || t.LanguageId == si.languageId).ToList();
-            }//if filtering by only Language
-            else if (LID > 0 && DID == 0) 
-            { 
-                query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId.HasValue || t.LanguageId == si.languageId).ToList(); 
-            }//if filtering by only Difficulty
-            else if (LID == 0 && DID > 0)
-            {
-                query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId == si.difficultyId || t.LanguageId.HasValue).ToList();
+                query = tutorials.Where(t => t.LanguageId == si.languageId
+                                || t.DifficultyId == si.difficultyId
+                                || t.Title.Contains(si.searchString)
+                                )
+                        .OrderByDescending(t => t.LanguageId == si.languageId)
+                        .ThenByDescending(t => t.DifficultyId == si.difficultyId)
+                        .ThenByDescending(t => t.Title.Contains(si.searchString))
+                        .Select(t => new SearchTutorialsBody
+                        {
+                            Title = t.Title,
+                            LanguageId = t.LanguageId,
+                            DifficultyId = t.DifficultyId
+                        })
+                        .ToList();
             }
-            else
+            // else if the search string is empty, but at least a diff/lang has been chosen, then search only for those 2 criteria
+            // (passing null search string would return bad request error)
+            else if (si.languageId > 0 || si.difficultyId > 0)
             {
-                query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId.HasValue || t.LanguageId.HasValue).ToList();
+                query = tutorials.Where(t => t.LanguageId == si.languageId
+                                || t.DifficultyId == si.difficultyId)
+                        .OrderByDescending(t => t.LanguageId == si.languageId)
+                        .ThenByDescending(t => t.DifficultyId == si.difficultyId)
+                        .Select(t => new SearchTutorialsBody
+                        {
+                            Title = t.Title,
+                            LanguageId = t.LanguageId,
+                            DifficultyId = t.DifficultyId
+                        })
+                        .ToList();
             }
-                
 
             return query;
         }
 
+        //public async SearchTutorials2()
+        //{
+        //    var LID = si.languageId;
+        //                var DID = si.difficultyId;
+        //                var tutorials = await _context.Tutorials
+        //                    .Where(t => t.CourseId == courseId && t.IsPublished)
+        //                    .Select(t => new SearchTutorialsBody
+        //                    {
+        //                        Title = t.Title,
+        //                        DifficultyId = t.DifficultyId,
+        //                        LanguageId = t.LanguageId
+        //                    }).ToListAsync();
+
+        //                var query = new List<SearchTutorialsBody>();
+
+        //                //if filtering by both Language and Difficulty
+        //                if (LID > 0 && DID > 0) 
+        //                {
+        //                    query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId == si.difficultyId || t.LanguageId == si.languageId).ToList();
+        //                }//if filtering by only Language
+        //                else if (LID > 0 && DID == 0) 
+        //                { 
+        //                    query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId.HasValue || t.LanguageId == si.languageId).ToList(); 
+        //                }//if filtering by only Difficulty
+        //                else if (LID == 0 && DID > 0)
+        //                {
+        //                    query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId == si.difficultyId || t.LanguageId.HasValue).ToList();
+        //                }
+        //                else
+        //                {
+        //                    query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId.HasValue || t.LanguageId.HasValue).ToList();
+        //                }
+                
+
+        //                return query;
+        //}
     }
 }

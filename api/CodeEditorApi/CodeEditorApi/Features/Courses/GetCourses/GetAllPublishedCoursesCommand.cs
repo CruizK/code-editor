@@ -5,12 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static CodeEditorApi.Features.Courses.GetCourses.GetCourses;
 
 namespace CodeEditorApi.Features.Courses.GetCourses
 {
     public interface IGetAllPublishedCoursesCommand
     {
-        public Task<ActionResult<List<Course>>> GetAllPublishedCourses();
+        public Task<ActionResult<List<SearchCoursesResponse>>> GetAllPublishedCourses();
         public Task<ActionResult<List<Course>>> GetAllPublishedCoursesSortByModifyDate();
     }
     public class GetAllPublishedCoursesCommand : IGetAllPublishedCoursesCommand
@@ -21,7 +22,7 @@ namespace CodeEditorApi.Features.Courses.GetCourses
         {
             _getCourses = getCourses;
         }
-        public async Task<ActionResult<List<Course>>> GetAllPublishedCourses()
+        public async Task<ActionResult<List<SearchCoursesResponse>>> GetAllPublishedCourses()
         {
             var courses = await _getCourses.GetAllPublishedCourses();
 
