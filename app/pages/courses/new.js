@@ -15,6 +15,7 @@ import { useCookies } from "react-cookie";
 import { loggedIn } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { getRole } from "@Utils/jwt";
+import withAuthorization from "@Utils/withAuthorization";
 
 function NewCourse() {
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
@@ -53,4 +54,4 @@ function NewCourse() {
   );
 }
 
-export default NewCourse;
+export default withAuthorization(NewCourse);

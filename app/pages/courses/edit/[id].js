@@ -12,7 +12,7 @@ import { Center, Flex, Grid } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { getCourseDetails, updateCourse } from "@Modules/Courses/Courses";
 import { useCookies } from "react-cookie";
-import { loggedIn } from "@Modules/Auth/Auth";
+import { loggedIn, redirectPayload } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { getRole } from "@Utils/jwt";
 import Barrier from "@Components/Barrier/Barrier";
@@ -25,6 +25,9 @@ export async function getServerSideProps(context) {
 
     const cookies = context.req.cookies;
     const isLoggedIn = loggedIn(cookies.user);
+
+    if(!isLoggedIn) return redirectPayload;
+
     let token = cookies.user;
 
     let course = await getCourseDetails(id, token);

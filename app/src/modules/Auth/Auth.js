@@ -13,6 +13,15 @@ function loggedIn(userCookie) {
     return false;
 }
 
+const redirectURL = '/auth/login';
+
+const redirectPayload = {
+    redirect: {
+        permanent: false,
+        destination: redirectURL
+    }
+}
+
 /**
  * At least eight characters, but no more than twenty.
  * At least one lowercase letter.
@@ -116,4 +125,4 @@ function updateUser(event, token) {
     });
 }
 
-export { maxAgeInHours, loggedIn, validatePassword, login, register, updateUser, verify };
+export { maxAgeInHours, loggedIn, validatePassword, login, register, updateUser, verify, redirectURL, redirectPayload };
