@@ -4,7 +4,7 @@ import Carousel from "@Components/Carousel/Carousel";
 import Main from "@Components/Main/Main";
 import SectionHeader from "@Components/SectionHeader/SectionHeader";
 import SNoLink from "@Components/SNoLink/SNoLink";
-import { loggedIn } from "@Modules/Auth/Auth";
+import { loggedIn, redirectPayload } from "@Modules/Auth/Auth";
 import { getAllPublishedCoursesSortByModifyDate, getMostPopularCourses } from "@Modules/Courses/Courses";
 import { getRole } from "@Utils/jwt";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
@@ -12,6 +12,9 @@ import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 export async function getServerSideProps(context) {
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
+
+  if (!isLoggedIn) return redirectPayload;
+
   let token = cookies.user;
   const userRole = (isLoggedIn) ? getRole(cookies.user) : "None";
 

@@ -6,7 +6,7 @@ import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
 import { Center, Grid } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { useCookies } from "react-cookie";
-import { loggedIn } from "@Modules/Auth/Auth";
+import { loggedIn, redirectPayload } from "@Modules/Auth/Auth";
 import Router from 'next/router';
 import { getRole } from "@Utils/jwt";
 import dynamic from 'next/dynamic'; 
@@ -27,6 +27,9 @@ export async function getServerSideProps(context) {
 
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
+
+  if (!isLoggedIn) return redirectPayload;
+
   let token = cookies.user;
 
   const headers = {};

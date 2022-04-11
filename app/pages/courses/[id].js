@@ -3,7 +3,7 @@ import Main from "@Components/Main/Main";
 import Router, { useRouter } from 'next/router';
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
 import { checkIfInCourse, getCourseDetails, registerForCourse } from "@Modules/Courses/Courses";
-import { loggedIn } from "@Modules/Auth/Auth";
+import { loggedIn, redirectPayload } from "@Modules/Auth/Auth";
 import { useCookies } from "react-cookie";
 import { getLastTutorial, getTutorialsFromCourse, getUserTutorialsDetailsFromCourse } from "@Modules/Tutorials/Tutorials";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
@@ -16,6 +16,9 @@ export async function getServerSideProps(context) {
 
     const cookies = context.req.cookies;
     const isLoggedIn = loggedIn(cookies.user);
+
+    if(!isLoggedIn) return redirectPayload;
+
     let token = cookies.user;
 
     const course = await getCourseDetails(id, token);

@@ -1,5 +1,5 @@
 import { Flex, Container, Button, Spinner, useToast } from "@chakra-ui/react";
-import { loggedIn } from "@Modules/Auth/Auth";
+import { loggedIn, redirectPayload } from "@Modules/Auth/Auth";
 import instance from "@Utils/instance";
 import Editor from "@monaco-editor/react";
 import { useEffect, useRef, useState } from "react";
@@ -19,6 +19,9 @@ export async function getServerSideProps(context) {
 
   const cookies = context.req.cookies;
   const isLoggedIn = loggedIn(cookies.user);
+
+  if (!isLoggedIn) return redirectPayload;
+
   let token = cookies.user;
 
   var values = await getUserTutorialDetailsFromId(id, token) || {};

@@ -3,7 +3,7 @@ import Main from "@Components/Main/Main";
 import SectionHeader from "@Components/SectionHeader/SectionHeader";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
-import { loggedIn } from "@Modules/Auth/Auth";
+import { loggedIn, redirectPayload } from "@Modules/Auth/Auth";
 import CourseList from "@Modules/Courses/components/CourseList/CourseList";
 import instance from "@Utils/instance";
 
@@ -12,6 +12,9 @@ export async function getServerSideProps(context) {
 
     const cookies = context.req.cookies;
     const isLoggedIn = loggedIn(cookies.user);
+
+    if (!isLoggedIn) return redirectPayload;
+
     const headers = {};
     let response;
     

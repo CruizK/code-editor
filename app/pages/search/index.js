@@ -7,6 +7,7 @@ import { loggedIn } from "@Modules/Auth/Auth";
 import CourseBox from "@Modules/Courses/components/CourseBox/CourseBox";
 import { getCoursesFromSearch } from "@Modules/Courses/Courses";
 import { difficultylevels, programmingLanguages } from "@Utils/static";
+import withAuthorization from "@Utils/withAuthorization";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
@@ -104,4 +105,4 @@ function Search() {
     )
 }
 
-export default Search;
+export default withAuthorization(Search);

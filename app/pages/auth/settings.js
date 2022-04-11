@@ -1,11 +1,7 @@
-import { Center, Divider, Flex, Grid, Heading, Container } from "@chakra-ui/layout";
-import Main from "@Components/Main/Main";
-import SectionHeader from "@Components/SectionHeader/SectionHeader";
-import SNoLink from "@Components/SNoLink/SNoLink";
-import SNoLinkButton from "@Components/SNoLinkButton/SNoLinkButton";
+import { Center, Container, Grid, Heading } from "@chakra-ui/layout";
 import { loggedIn } from "@Modules/Auth/Auth";
 import SettingsForm from "@Modules/Auth/components/SettingsForm/SettingsForm";
-import Router from 'next/router';
+import withAuthorization from "@Utils/withAuthorization";
 import { useCookies } from "react-cookie";
 
 function Settings() {
@@ -25,4 +21,4 @@ function Settings() {
     );
 }
 
-export default Settings;
+export default withAuthorization(Settings);
