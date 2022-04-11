@@ -166,6 +166,11 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
                         })
                         .ToList();
             }
+            //else return all published tutorials under that course
+            else
+            {
+                return tutorials;
+            }
 
             return query;
         }
