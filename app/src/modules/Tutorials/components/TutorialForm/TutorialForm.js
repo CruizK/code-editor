@@ -1,7 +1,7 @@
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Flex, Grid, Box } from "@chakra-ui/layout";
-import { Select, Spacer } from "@chakra-ui/react";
+import { Select, Spacer, Text } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
 import { difficultylevels } from "@Utils/static";
 import dynamic from 'next/dynamic';
@@ -107,8 +107,14 @@ function TutorialForm(props) {
                 </Flex>
             </Flex>
             <Grid pb={"10%"} pt={"20px"} id="panes" w="100%" maxW="container.lg" height="fit-content" templateColumns="repeat(2, 50%)" mx={2} fontFamily="input">
-                <Box fontSize={"md"} py={2}>Tutorial Instructions</Box>
-                <Box fontSize={"md"} py={2}>Template code</Box>
+                <Box py={2}>
+                    <Text fontSize={"md"} >Tutorial Instructions</Text>
+                    <Text>Use checkmarks to give students tasks to complete.</Text>
+                </Box>
+                <Box py={2}>
+                    <Text fontSize={"md"} >Template Code</Text>
+                    <Text>Provide students with a basic code setup to work with.</Text>
+                </Box>
                 <Box>
                     <MarkdownEditor prompt={dvs["prompt"]} callback={setPrompt}/>
                 </Box>
