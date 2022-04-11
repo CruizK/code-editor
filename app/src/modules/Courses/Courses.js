@@ -181,7 +181,14 @@ async function getCoursesFromSearch(searchParams, token) {
             headers: {...headers},
         });
 
-        return response.data;
+        const courses = response.data.map(c => {
+            return {
+                id: c.courseId,
+                title: c.courseTitle,
+            }
+        })
+
+        return courses;
     } catch (error) {
         //TODO: Error handling.
         //console.log(error.response);
