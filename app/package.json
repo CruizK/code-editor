@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest"
+    "test": "jest",
+    "reset" : "sqlcmd -S .\\SQLEXPRESS -i ./src/tsql.sql"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.15",
