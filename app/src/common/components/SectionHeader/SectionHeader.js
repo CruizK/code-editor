@@ -9,7 +9,7 @@ function SectionHeader(props) {
 
     return(
         <Flex>
-            <Heading size="sm" color="ce_middlegrey">
+            <Heading size="sm" pb="5px" color="ce_middlegrey">
                 {title}
             </Heading>
             <Spacer />

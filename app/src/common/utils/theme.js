@@ -60,9 +60,9 @@ const config = {
 }
 
 const fonts = {
-  body: "Ubuntu Mono, monospace",
+  body: "Open Sans, san-serif",
   button: "Open Sans",
-  input: "Arial",
+  input: "Open Sans",
   heading: "Open Sans",
   mono: "Ubuntu Mono, monospace",
 }

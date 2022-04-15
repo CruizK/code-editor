@@ -91,50 +91,6 @@ namespace CodeEditorApi.Features.Courses.GetCourses
 
         }
 
-        //public async Task<List<Course>> SearchCourses2(SearchInput si)
-        //{
-        //    var courseIds = new List<int>();
-
-        //    //if filtering by both Language and Difficulty
-        //    if (LID > 0 && DID > 0)
-        //    {
-        //        courseIds = await _context.Tutorials
-        //                            .Where(t => t.IsPublished &&
-        //                                (t.Title.ToLower().Contains(si.searchString.ToLower())
-        //                                || t.LanguageId == si.languageId
-        //                                || t.DifficultyId == si.difficultyId))
-        //                            .Select(t => t.CourseId).Distinct()
-        //                            .ToListAsync();
-        //    }//if filtering by only Language
-        //    else if (LID > 0 && DID == 0)
-        //    {
-        //        courseIds = await _context.Tutorials
-        //                            .Where(t => t.IsPublished &&
-        //                                (t.Title.ToLower().Contains(si.searchString.ToLower())
-        //                                || t.LanguageId == si.languageId))
-        //                            .Select(t => t.CourseId).Distinct()
-        //                            .ToListAsync();
-        //    }//if filtering by only Difficulty
-        //    else if (LID == 0 && DID > 0)
-        //    {
-        //        courseIds = await _context.Tutorials
-        //                            .Where(t => t.IsPublished &&
-        //                                (t.Title.ToLower().Contains(si.searchString.ToLower())
-        //                                || t.DifficultyId == si.difficultyId))
-        //                            .Select(t => t.CourseId).Distinct()
-        //                            .ToListAsync();
-        //    }//if not filtering by either Language or Difficulty
-        //    else
-        //    {
-        //        courseIds = await _context.Tutorials
-        //                            .Where(t => t.IsPublished &&
-        //                                (t.Title.ToLower().Contains(si.searchString.ToLower())))
-        //                            .Select(t => t.CourseId).Distinct()
-        //                            .ToListAsync();
-        //    }
-
-        //}
-
         public async Task<List<SearchCoursesResponse>> SearchCourses(SearchInput si)
         {
             var courseTutorial = await _context.Courses.Join(

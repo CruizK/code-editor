@@ -28,11 +28,11 @@ function Login() {
                     <SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink>
                     <Center><Heading as="h1">Sign In</Heading></Center>
                     <LoginForm />
-                    <Center>
+                    {/* <Center>
                         <Divider w="75%" borderColor="#ccc" />
                     </Center>
                     <SNoLinkButton href="/auth/login" variant="maroon">Sign in with Google</SNoLinkButton>
-                    <SNoLinkButton href="/auth/register" variant="black">Sign in with GitHub</SNoLinkButton>
+                    <SNoLinkButton href="/auth/register" variant="black">Sign in with GitHub</SNoLinkButton> */}
                 </Grid>
             </Center>
         </Container>

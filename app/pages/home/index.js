@@ -42,7 +42,7 @@ function Home(props) {
       <Main>
         <Center><SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink></Center>
         <SectionHeader title="Most Popular" justifyContent="end">
-          <SNoLinkButton href="/search" variant="maroon" maxW="180px" mr={2}>
+          <SNoLinkButton href="/search" variant="maroon" maxW="180px" mr={2} mb="20px">
             Search Courses
           </SNoLinkButton>
         </SectionHeader>

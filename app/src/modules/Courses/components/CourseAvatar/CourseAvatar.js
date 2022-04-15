@@ -4,9 +4,9 @@ import { courseSvg } from "@Modules/Courses/Courses";
 
 function CourseAvatar(props) {
     const defaultOptions = {
-        foreground: [0, 0, 0, 255],               // rgba black
+        foreground: [255, 255, 255, 255],               // rgba white
         background: [255, 255, 255, 0],         // rgba transparent
-        margin: 0.1,                              // 20% margin
+        margin: 0.2,                              // 20% margin
         size: 128,                                // 128px square
         format: 'svg'                             // use SVG instead of PNG
     };
