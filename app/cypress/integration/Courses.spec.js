@@ -6,7 +6,7 @@ describe('Courses', () => {
     
     context('Unregistered Student', () => {
         beforeEach(function fetchUser () {
-            cy.fixture('users.json').then((users) => {
+            cy.fixture('auth.json').then((users) => {
                 const { email, password } = users.genericStudents[0];
 
                 // send login request without going through UI
@@ -62,7 +62,7 @@ describe('Courses', () => {
     
     context('Registered Student', () => {
         beforeEach(function fetchUser () {
-            cy.fixture('users.json').then((users) => {
+            cy.fixture('auth.json').then((users) => {
                 const { email, password } = users.devStudent;
 
                 // send login request without going through UI

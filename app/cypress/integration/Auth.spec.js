@@ -18,7 +18,7 @@ describe('Authentication', () => {
         it('Can login', function() {
             cy.visit('/auth/login')
 
-            cy.fixture('users.json').then((users) => {
+            cy.fixture('auth.json').then((users) => {
                 const { email, password } = users.devStudent;
 
                 // type credentials
