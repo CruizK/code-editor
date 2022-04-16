@@ -1,0 +1,12 @@
+{
+  "devStudent": {
+    "email": "DevStudent@student.com",
+    "password": "StudentPassword1!"
+  },
+  "genericStudents": [
+    {
+      "email": "TestStudent1@student.com",
+      "password": "StudentPassword1!"
+    }
+  ]
+}
