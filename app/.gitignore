@@ -9,6 +9,7 @@
 
 # testing
 /coverage
+CodeEditorApi.bak
 
 # next.js
 /.next/
