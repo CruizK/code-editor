@@ -28,23 +28,25 @@ import { useCookies } from "react-cookie";
                 <GridItem colSpan={2} colEnd={6}>
                     <Flex height="100%" justifyContent="right" alignItems="center">
                         {isLoggedIn && 
-                        <HStack spacing={3}>
+                        <HStack spacing={6}>
                             {(userRole == "Teacher") && 
-                                <SNoLink href="/dashboard/teacher">My Content</SNoLink>
+                                <SNoLink href="/dashboard/teacher" padding="5px" _hover={{borderWidth: '1px', borderColor: 'white', borderRadius: '3px'}}>My Content</SNoLink>
                             }
                             {(userRole == "Student") &&
-                                <SNoLink href="/dashboard">My Courses</SNoLink>
+                                <SNoLink href="/dashboard" padding="5px" _hover={{borderWidth: '1px', borderColor: 'white', borderRadius: '3px'}}>My Courses</SNoLink>
                             }
-                            <Box id="name">{username}</Box>
-                            <Menu>
-                                <MenuButton>
-                                    <ChevronDownIcon />
+                            <Box id="name">
+                            <Menu>                                
+                                <MenuButton fontWeight="bold">
+                                    {username}
+                                    <ChevronDownIcon width="2em" />
                                 </MenuButton>
                                 <MenuList color="ce_black">
                                     <MenuItem><SNoLink href="/auth/settings">My Account</SNoLink></MenuItem>
                                     <MenuItem><SNoLink href="/auth/logout">Sign Out</SNoLink></MenuItem>
                                 </MenuList>
                             </Menu>
+                            </Box>
                         </HStack>
                         }
                         
