@@ -91,7 +91,6 @@ async function getCourseDetails(id, token) {
             headers: {...headers},
         });
         
-        if (courseResponse.statusText == "OK")
         return courseResponse.data;
     } catch (error) {
         console.log(error);
@@ -371,7 +370,10 @@ async function checkIfInCourse(id, token) {
     }
 
     var courses = await getUserCourses(token);
-    if (!courses) return false;
+    
+    let isArray = Array.isArray(courses);
+    //console.log(courses, isArray);
+    if (!isArray) return false;
 
     let inCourse = courses.some((course, index, ar) => {
         return course.id == id
