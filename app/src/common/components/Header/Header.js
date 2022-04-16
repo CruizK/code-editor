@@ -37,7 +37,7 @@ import { useCookies } from "react-cookie";
                             }
                             <Box id="name">
                             <Menu>                                
-                                <MenuButton fontWeight="bold">
+                                <MenuButton fontWeight="bold" padding="5px" _hover={{borderWidth: '1px', borderColor: 'white', borderRadius: '3px'}}>
                                     {username}
                                     <ChevronDownIcon width="2em" />
                                 </MenuButton>

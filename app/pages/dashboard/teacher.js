@@ -1,4 +1,5 @@
 import { Center, Grid } from "@chakra-ui/layout";
+import { Tooltip } from '@chakra-ui/react'
 import Main from "@Components/Main/Main";
 import SectionHeader from "@Components/SectionHeader/SectionHeader";
 import SNoLink from "@Components/SNoLink/SNoLink";
@@ -47,13 +48,15 @@ function Teacher(props) {
     const { courses } = props;
 
     return(
-        <Main>
+        <Main>            
             <Grid templateRows="5 1fr" gap={6} width="100%">
                 <Center><SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink></Center>
                 <SectionHeader title="MY CREATED CONTENT">
-                    <SNoLinkButton href="/tutorials/new" variant="black">
-                        New Tutorial +
-                    </SNoLinkButton>
+                    {courses.length > 0 ? <SNoLinkButton href="/tutorials/new" variant="black">New Tutorial +</SNoLinkButton> 
+                    : <Tooltip label="Create a Course first!" shouldWrapChildren borderRadius="md">
+                        <SNoLinkButton href="/tutorials/new" variant="black" isDisabled="true">New Tutorial +</SNoLinkButton>
+                    </Tooltip> }
+                        
                     <SNoLinkButton href="/courses/new" variant="maroon">
                         New Course +
                     </SNoLinkButton>
