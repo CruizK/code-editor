@@ -40,6 +40,8 @@ function TutorialItem(props) {
         // teachers and admins should just be redirected no matter what
         if (userRole == "Student") {
             let isRegistered = await checkIfInCourse(from, token);
+            //console.log("Is registered: ", isRegistered);
+            
             if (!isRegistered)
                 success = await registerForCourse(from, token);
         }
@@ -84,17 +86,17 @@ function TutorialItem(props) {
                 {(userRole == 'Student') &&
                     <HStack spacing={3}>
                         {[tutorialStatus.InProgress, tutorialStatus.Restarted].includes(status) &&
-                        <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
+                        <Button className="continue" variant="white" onClick={(e) => enter(e, id, courseId)}>
                             Continue
                         </Button>
                         }
                         {[tutorialStatus.Completed].includes(status) &&
-                        <Button variant="white" onClick={(e) => enter(e, id, courseId)}>
+                        <Button className="restart" variant="white" onClick={(e) => enter(e, id, courseId)}>
                             Restart
                         </Button>
                         }
                         {[tutorialStatus.NotStarted].includes(status) &&
-                        <Button variant="white" onClick={(e) => start(e, id, courseId)}>
+                        <Button className="start" variant="white" onClick={(e) => start(e, id, courseId)}>
                             Start
                         </Button>
                         }
