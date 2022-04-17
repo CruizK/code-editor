@@ -115,7 +115,7 @@ describe('Courses', () => {
             })
         })
 
-        it.only('Can create new course', function() {
+        it('Can create new course', function() {
             const courseTitle = "New Course Title";
 
             cy.visit('/courses/new')
