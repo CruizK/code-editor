@@ -32,7 +32,7 @@ function EditableTutorialItem(props) {
 
     return(
         <Grid templateColumns="repeat(5, 1fr)" gap={3} pl={5} mt={3}>
-            <GridItem>
+            <GridItem colStart={1} colEnd={4}>
                 {title}
             </GridItem>
             <GridItem colStart={4}>
@@ -49,15 +49,15 @@ function EditableTutorialItem(props) {
             </GridItem>
             <GridItem colStart={6}> 
                 <HStack spacing={3} align="center">            
-                    <ViewIcon onClick={() => {
+                    <ViewIcon cursor="pointer" onClick={() => {
                         let redirect = '/tutorials/' + id; 
                         Router.push(redirect);
                     }} />            
-                    <EditIcon color="ce_mainmaroon" onClick={() => {
+                    <EditIcon cursor="pointer" color="ce_mainmaroon" onClick={() => {
                         let redirect = '/tutorials/edit/' + id; 
                         Router.push(redirect);
                     }} />
-                    <DeleteIcon onClick={() => handleDeletion(id, token)} />
+                    <DeleteIcon cursor="pointer" onClick={() => handleDeletion(id, token)} />
                 </HStack>
             </GridItem>
             <GridItem colSpan={6}>

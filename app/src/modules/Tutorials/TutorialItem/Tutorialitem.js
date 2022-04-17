@@ -86,17 +86,17 @@ function TutorialItem(props) {
                 {(userRole == 'Student') &&
                     <HStack spacing={3}>
                         {[tutorialStatus.InProgress, tutorialStatus.Restarted].includes(status) &&
-                        <Button className="continue" variant="white" onClick={(e) => enter(e, id, courseId)}>
+                        <Button className="continue" variant="maroon" onClick={(e) => enter(e, id, courseId)}>
                             Continue
                         </Button>
                         }
                         {[tutorialStatus.Completed].includes(status) &&
-                        <Button className="restart" variant="white" onClick={(e) => enter(e, id, courseId)}>
+                        <Button className="restart" variant="maroon" onClick={(e) => enter(e, id, courseId)}>
                             Restart
                         </Button>
                         }
                         {[tutorialStatus.NotStarted].includes(status) &&
-                        <Button className="start" variant="white" onClick={(e) => start(e, id, courseId)}>
+                        <Button className="start" variant="maroon" onClick={(e) => start(e, id, courseId)}>
                             Start
                         </Button>
                         }
