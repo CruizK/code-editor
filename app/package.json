@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest"
+    "test": "jest",
+    "cypress:open": "cypress open",
+    "db:reset": "sqlcmd -S .\\SQLEXPRESS -i ./src/tsql.sql"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.15",
@@ -34,6 +36,7 @@
   },
   "devDependencies": {
     "babel-jest": "^27.1.1",
+    "cypress": "^9.5.4",
     "jest": "^27.1.1"
   }
 }
