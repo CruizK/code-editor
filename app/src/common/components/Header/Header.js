@@ -1,5 +1,5 @@
 import { Box, Flex, Grid, GridItem, Heading, HStack } from "@chakra-ui/layout";
-import { Image } from "@chakra-ui/react";
+import { Image, textDecoration } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import SNoLink from "@Components/SNoLink/SNoLink";
@@ -30,14 +30,14 @@ import { useCookies } from "react-cookie";
                         {isLoggedIn && 
                         <HStack spacing={6}>
                             {(userRole == "Teacher") && 
-                                <SNoLink href="/dashboard/teacher" padding="5px" _hover={{borderWidth: '1px', borderColor: 'white', borderRadius: '3px'}}>My Content</SNoLink>
+                                <SNoLink href="/dashboard/teacher" borderBottom="2px" borderColor="transparent" _hover={{ borderBottom: "2px"}}>My Content</SNoLink>
                             }
                             {(userRole == "Student") &&
-                                <SNoLink href="/dashboard" padding="5px" _hover={{borderWidth: '1px', borderColor: 'white', borderRadius: '3px'}}>My Courses</SNoLink>
+                                <SNoLink href="/dashboard" borderBottom="2px" borderColor="transparent" _hover={{ borderBottom: "2px"}}>My Courses</SNoLink>
                             }
                             <Box id="name">
                             <Menu>                                
-                                <MenuButton fontWeight="bold" padding="5px" _hover={{borderWidth: '1px', borderColor: 'white', borderRadius: '3px'}}>
+                                <MenuButton fontWeight="bold" borderBottom="2px" borderColor="transparent" _hover={{ borderBottom: "2px"}}>
                                     {username}
                                     <ChevronDownIcon width="2em" />
                                 </MenuButton>

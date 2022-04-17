@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, Heading, Image, Spacer } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Heading, Text, Image, Spacer } from "@chakra-ui/react";
 import Main from "@Components/Main/Main";
 import Router, { useRouter } from 'next/router';
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
@@ -91,7 +91,7 @@ function Course(props) {
             </Flex>
             <Box maxWidth="container.lg" margin="auto">
                 <Heading size="sm" pt="10px" pb="10px" fontWeight="bold">Description</Heading>
-                {description}
+                <Text>{description}</Text>
                 {(userRole == "Student") &&
                     <Center pt="25px">
                         {(isRegistered && lastTutorialId) &&
