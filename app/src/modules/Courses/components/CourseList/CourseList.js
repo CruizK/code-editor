@@ -40,7 +40,8 @@ function CourseItem(props) {
                         <Barrier 
                             buttonText={<DeleteIcon />}
                             title="Confirmation"
-                            text="Are you sure you want to delete this course and its associated tutorials?"
+                            text="Doing this will delete all tutorials associated with this course. 
+                                Are you sure you want to delete this course and its associated tutorials?"
                             callback={() => handleDeletion(id, token)}
                         />
                         <AccordionIcon />
