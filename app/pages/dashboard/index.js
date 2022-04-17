@@ -28,7 +28,7 @@ function Mine(props) {
 
   return(
     <Main>
-      <Center><SNoLink href="/"><img src="/siucode_logo.png" /></SNoLink></Center>
+      <Center><SNoLink href="/"><img maxWidth="90%" src="/siucode_logo.png" /></SNoLink></Center>
       <SectionHeader title="Continue Learning" />
       <Carousel items={myCourses} />
     </Main>

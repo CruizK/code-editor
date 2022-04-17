@@ -25,7 +25,7 @@ function AccessCodeModal() {
 
     return(
         <>
-            <Button variant="maroon" onClick={onOpen}>Open Modal</Button>
+            <Button variant="maroon" onClick={onOpen}>Generate Code</Button>
 
             <Modal isOpen={isOpen} onClose={() => { onClose(); setAccesscode(null) }}>
                 <ModalOverlay />
@@ -42,7 +42,7 @@ function AccessCodeModal() {
                             </Stack>
                         </RadioGroup>
                         <Button onClick={generate} 
-                            size="md" py="40px" variant='maroon'
+                            size="sm" py="30px" variant='maroon'
                         >Generate Access Code</Button>
                     </ModalBody>
 
@@ -50,12 +50,12 @@ function AccessCodeModal() {
                         {accesscode &&
                             <Flex direction="column" w="100%" alignItems="end">
                                 <Center mb={4} w="100%">
-                                    <Code w="100%">
+                                    <Code w="100%" fontSize={"20px"}>
                                         {accesscode}
                                     </Code>
                                 </Center>
                                 <HStack spacing={2} w="50%">
-                                    <SNoLinkButton href={`mailto:someone@somewhere.com?subject=Access Code from siuCode&body=${accesscode}`} variant="white">
+                                    <SNoLinkButton href={`mailto:someone@somewhere.com?subject=Access Code from siuCode&body=${accesscode}`} variant="black">
                                         Email Code
                                     </SNoLinkButton>
                                     <Button variant="black" onClick={onCopy}>

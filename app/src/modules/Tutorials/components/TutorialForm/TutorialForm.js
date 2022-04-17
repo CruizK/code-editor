@@ -27,7 +27,7 @@ function TutorialForm(props) {
     const difficultyOptions = difficultylevels;
 
     const spacing = 5;
-    const selectWidth = '150px';
+    const selectWidth = '300px';
 
     const [template, setTemplate] = useState(dvs["template"] || ``);
     const [prompt, setPrompt] = useState(dvs["prompt"] || '');
@@ -82,7 +82,7 @@ function TutorialForm(props) {
                 </Flex>
                 <Flex w="100%" mt={spacing}>
                     <Box w="20%" fontWeight={"bold"} fontSize={"md"}>Difficulty</Box>
-                    <Select w="30%" maxW={selectWidth} id="difficulty" defaultValue={dvs["difficultyId"]}>
+                    <Select w="30%" maxW={"150px"} id="difficulty" defaultValue={dvs["difficultyId"]}>
                         {difficultyOptions.map((option, index) => {
                             const { dbIndex, value } = option;
                             return <option id={index} value={dbIndex}>{value}</option>
@@ -97,16 +97,16 @@ function TutorialForm(props) {
 
                 </Flex>
                 <Flex w="100%" mt={spacing} direction="column">
-                    <Box w="100%" fontWeight={"bold"} fontSize={"md"}>Tutorial Base Code</Box>
+                    <Box w="100%" fontWeight={"bold"} fontSize={"md"} pb="5px">Tutorial Base Code</Box>
                     <p>Choose whether you want to upload an existing code file or if you want to edit boilerplate code provided by us.</p>
-                    <Spacer />
+                    <Spacer pb={5}/>
                     <Box id="actions">
                         <FileUpload id="fileSelect" py={0} callback={setTemplate} />
                         <TemplateLoader languageId={languageId} callback={setTemplate} />
                     </Box>
                 </Flex>
             </Flex>
-            <Grid pb={"10%"} pt={"20px"} id="panes" w="100%" maxW="container.lg" height="fit-content" templateColumns="repeat(2, 50%)" mx={2} fontFamily="input">
+            <Grid pb={"10%"} pt={"20px"} pl={"10%"} id="panes" w="100%" maxW="container.lg" height="fit-content" templateColumns="repeat(2, 50%)" mx={2} fontFamily="input">
                 <Box py={2}>
                     <Text fontSize={"md"} >Tutorial Instructions</Text>
                     <Text>Use checkmarks to give students tasks to complete.</Text>

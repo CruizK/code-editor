@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon, HamburgerIcon, SmallCloseIcon } from "@chakra-ui/icons";
-import { Box, Collapse, Flex, Icon, List, ListItem, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Spacer } from "@chakra-ui/react";
+import { Box, Collapse, Flex, Icon, List, ListItem, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Spacer, Text } from "@chakra-ui/react";
 import SNoLink from "@Components/SNoLink/SNoLink";
 import dynamic from 'next/dynamic'; 
 import { useRef } from "react";
@@ -33,6 +33,7 @@ function TutorialSideBar(props) {
                   <PopoverContent>
                     <PopoverHeader><SNoLink href={`/courses/${courseId}`}>Back to Course</SNoLink></PopoverHeader>
                     <PopoverBody>
+                      <Text fontWeight={"bold"} pb="5px">Course Tutorials</Text>
                       <List>
                       {tutorials.map((tutorialData, index) => {
                         //console.log(tutorialData);

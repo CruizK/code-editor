@@ -174,42 +174,5 @@ namespace CodeEditorApi.Features.Tutorials.GetTutorials
 
             return query;
         }
-
-        //public async SearchTutorials2()
-        //{
-        //    var LID = si.languageId;
-        //                var DID = si.difficultyId;
-        //                var tutorials = await _context.Tutorials
-        //                    .Where(t => t.CourseId == courseId && t.IsPublished)
-        //                    .Select(t => new SearchTutorialsBody
-        //                    {
-        //                        Title = t.Title,
-        //                        DifficultyId = t.DifficultyId,
-        //                        LanguageId = t.LanguageId
-        //                    }).ToListAsync();
-
-        //                var query = new List<SearchTutorialsBody>();
-
-        //                //if filtering by both Language and Difficulty
-        //                if (LID > 0 && DID > 0) 
-        //                {
-        //                    query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId == si.difficultyId || t.LanguageId == si.languageId).ToList();
-        //                }//if filtering by only Language
-        //                else if (LID > 0 && DID == 0) 
-        //                { 
-        //                    query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId.HasValue || t.LanguageId == si.languageId).ToList(); 
-        //                }//if filtering by only Difficulty
-        //                else if (LID == 0 && DID > 0)
-        //                {
-        //                    query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId == si.difficultyId || t.LanguageId.HasValue).ToList();
-        //                }
-        //                else
-        //                {
-        //                    query = tutorials.Where(t => t.Title.ToLower().Contains(si.searchString.ToLower()) || t.DifficultyId.HasValue || t.LanguageId.HasValue).ToList();
-        //                }
-                
-
-        //                return query;
-        //}
     }
 }

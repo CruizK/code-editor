@@ -229,21 +229,26 @@ function Tutorial(props) {
           <SNoLinkButton href={`/courses/${courseId}`} w="10%" maxW="150px" mr={2} variant="yellowOutline">
             Exit
           </SNoLinkButton>
-          <Button w="10%" maxW="150px" mr={2} variant="yellow"
+          <Button w="12%" maxW="150px" mr={2} variant="black" _hover={{
+                color: "ce_white",
+                backgroundColor: "maroon",
+                borderColor: "maroon",
+                boxShadow: "none"
+              }}
             onClick={(userRole == 'Student') ? saveInProgress : undefined}
           >SAVE PROGRESS</Button>
           {[tutorialStatus.Completed].includes(thisStatus) &&
             <Button w="10%" maxW="150px" mr={2} variant="yellow" onClick={goToNext}>CONTINUE {'>'}</Button>
           }
           {[tutorialStatus.InProgress, tutorialStatus.NotStarted, tutorialStatus.Restarted].includes(thisStatus) &&
-            <Button w="10%" maxW="150px" mr={2} variant="black"
+            <Button w="10%" maxW="150px" mr={2} variant="white"
               onClick={(userRole == 'Student') ? submitCode : undefined}
               _hover={{
                 color: "ce_white",
                 backgroundColor: "ce_yellow",
                 borderColor: "ce_yellow",
                 boxShadow: "none"
-              }}
+              }}              
             >SUBMIT</Button>
           }
         </Flex>

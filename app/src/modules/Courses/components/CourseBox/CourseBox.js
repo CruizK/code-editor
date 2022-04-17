@@ -29,12 +29,9 @@ function CourseBox(props) {
 
     if (typeof course.id == 'undefined') {
         return (
-            <Box _css={styles} {...rest}>
-                <SectionHeader title={
-                    <Text color="ce_black">DESCRIPTION</Text>
-                } />
-                <Text mt={2}>
-                    You don't currently have a course selected- try searching for one.
+            <Box _css={styles} {...rest}>               
+                <Text mt={2} width="100%" ml="-5%">
+                    You don't currently have a course selected - try searching for one.
                 </Text>
             </Box>
         );
@@ -43,14 +40,14 @@ function CourseBox(props) {
     return (
         <Box __css={styles} {...rest}>
             <SectionHeader title={
-                <Text isTruncated maxW="325px" 
-                    color="ce_black" fontWeight="bold" fontFamily="button" fontSize="lg"
+                <Text maxW="100%" 
+                    color="ce_black" fontWeight="bold" fontFamily="button" fontSize="md"
                 >
                     {title.toUpperCase()}
                 </Text>
             }>
                 <SNoLinkButton 
-                    href={"/courses/" + id} variant="white" maxW="180px"
+                    href={"/courses/" + id} variant="maroon" ml="20%" maxW="80%"
                 >
                     Go To Course {'>'}
                 </SNoLinkButton>

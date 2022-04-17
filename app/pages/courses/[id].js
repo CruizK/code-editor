@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, Heading, Image, Spacer } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Heading, Text, Image, Spacer } from "@chakra-ui/react";
 import Main from "@Components/Main/Main";
 import Router, { useRouter } from 'next/router';
 import TutorialList from "@Modules/Tutorials/components/TutorialList/TutorialList";
@@ -85,15 +85,15 @@ function Course(props) {
     return(
         <Main width="100%" margin="0" maxWidth="100%">
             <Flex width="100%" height="8rem" backgroundColor="ce_mainmaroon" alignItems="center">
-                <Flex height="50%" w="100%" color="ce_white" fontWeight="bold" fontFamily="button" fontSize="md" alignItems="end">
+                <Flex pl="5%" pr="5%" height="50%" w="100%" color="ce_white" fontWeight="bold" fontFamily="button" fontSize="md" alignItems="end">
                     {title}
                 </Flex>
             </Flex>
             <Box maxWidth="container.lg" margin="auto">
-                <Heading size="sm" fontWeight="bold">Description</Heading>
-                {description}
+                <Heading size="sm" pt="10px" pb="10px" fontWeight="bold">Description</Heading>
+                <Text>{description}</Text>
                 {(userRole == "Student") &&
-                    <Center>
+                    <Center pt="25px">
                         {(isRegistered && lastTutorialId) &&
                         <SNoLinkButton 
                             href={(lastTutorialId) ? "/tutorials/" + lastTutorialId : undefined}
