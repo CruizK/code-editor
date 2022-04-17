@@ -99,7 +99,38 @@ describe('Courses', () => {
     })
 
     context('Teacher', () => {
-        // tests
+        beforeEach(function fetchUser () {
+            cy.fixture('auth.json').then((users) => {
+                const { email, password } = users.devTeacher;
+
+                // send login request without going through UI
+                cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
+                    email: email,
+                    password: password,
+                })
+                .its('body')
+                .then((token) => {
+                    cy.setCookie('user', token)
+                })
+            })
+        })
+
+        it.only('Can create new course', function() {
+            const courseTitle = "New Course Title";
+
+            cy.visit('/courses/new')
+
+            // type course info
+            cy.get('#course_title').type(courseTitle)
+            cy.get('#description').type("New Course description!")
+
+            cy.contains('Publish').click()
+            
+            // should be redirected to dashboard
+            cy.url().should('match', /dashboard\/teacher/)
+
+            cy.contains(courseTitle)
+        })
     })
 })
   
