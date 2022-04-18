@@ -1,3 +1,4 @@
+import { loginAs } from '../support/utils'
 import users from '../fixtures/auth.json'
 
 describe('Tutorials', () => {
@@ -8,17 +9,7 @@ describe('Tutorials', () => {
     
     context('Unregistered Student', () => {
         beforeEach(function fetchUser () {
-            const { email, password } = users.genericStudents[0];
-
-            // send login request without going through UI
-            cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
-                email: email,
-                password: password,
-            })
-            .its('body')
-            .then((token) => {
-                cy.setCookie('user', token)
-            })
+            loginAs(users.genericStudents[0]);
         })
         
         // tests
@@ -26,17 +17,7 @@ describe('Tutorials', () => {
     
     context('Registered Student', () => {
         beforeEach(function fetchUser () {
-            const { email, password } = users.devStudent;
-
-            // send login request without going through UI
-            cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
-                email: email,
-                password: password,
-            })
-            .its('body')
-            .then((token) => {
-                cy.setCookie('user', token)
-            })
+            loginAs(users.devStudent);
         })
         
         // tests
@@ -44,17 +25,7 @@ describe('Tutorials', () => {
 
     context('Teacher', () => {
         beforeEach(function fetchUser () {
-            const { email, password } = users.devTeacher;
-
-            // send login request without going through UI
-            cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
-                email: email,
-                password: password,
-            })
-            .its('body')
-            .then((token) => {
-                cy.setCookie('user', token)
-            })
+            loginAs(users.devTeacher);
         })
 
         it('Can create new tutorial', function() {

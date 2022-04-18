@@ -1,3 +1,4 @@
+import { loginAs } from '../support/utils'
 import users from '../fixtures/auth.json'
 
 describe('Courses', () => {
@@ -14,18 +15,9 @@ describe('Courses', () => {
     
     context('Unregistered Student', () => {
         beforeEach(function fetchUser () {
-            const { email, password } = users.genericStudents[0];
-
-            // send login request without going through UI
-            cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
-                email: email,
-                password: password,
-            })
-            .its('body')
-            .then((token) => {
-                cy.setCookie('user', token)
-                userToken = token
-            })
+            loginAs(users.genericStudents[0]).then((cookie) => {
+                userToken = cookie.value
+            });
         })
         
         it('Can start from beginning', function() {
@@ -91,18 +83,7 @@ describe('Courses', () => {
     
     context('Registered Student', () => {
         beforeEach(function fetchUser () {
-            const { email, password } = users.devStudent;
-
-            // send login request without going through UI
-            cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
-                email: email,
-                password: password,
-            })
-            .its('body')
-            .then((token) => {
-                cy.setCookie('user', token)
-                userToken = token
-            })
+            loginAs(users.devStudent);
         })
         
         it('Can start from beginning', function() {
@@ -140,17 +121,7 @@ describe('Courses', () => {
 
     context('Teacher', () => {
         beforeEach(function fetchUser () {
-            const { email, password } = users.devTeacher;
-
-            // send login request without going through UI
-            cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
-                email: email,
-                password: password,
-            })
-            .its('body')
-            .then((token) => {
-                cy.setCookie('user', token)
-            })
+            loginAs(users.devTeacher);
         })
 
         it('Can create new course', function() {
