@@ -35,7 +35,7 @@ function TemplateLoader(props) {
     }
     
     return(
-        <Select onChange={handleChange}
+        <Select id="template-selector" onChange={handleChange}
             display="inline-block"
             w="20%" maxW="170px" mr={2}
             variant="maroon"
