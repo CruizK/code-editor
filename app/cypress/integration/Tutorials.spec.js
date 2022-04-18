@@ -1,3 +1,5 @@
+import users from '../fixtures/auth.json'
+
 describe('Tutorials', () => {
     beforeEach(() => {
         // reset and seed the database prior to every test
@@ -6,18 +8,16 @@ describe('Tutorials', () => {
     
     context('Unregistered Student', () => {
         beforeEach(function fetchUser () {
-            cy.fixture('auth.json').then((users) => {
-                const { email, password } = users.genericStudents[0];
+            const { email, password } = users.genericStudents[0];
 
-                // send login request without going through UI
-                cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
-                    email: email,
-                    password: password,
-                })
-                .its('body')
-                .then((token) => {
-                    cy.setCookie('user', token)
-                })
+            // send login request without going through UI
+            cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
+                email: email,
+                password: password,
+            })
+            .its('body')
+            .then((token) => {
+                cy.setCookie('user', token)
             })
         })
         
@@ -26,18 +26,16 @@ describe('Tutorials', () => {
     
     context('Registered Student', () => {
         beforeEach(function fetchUser () {
-            cy.fixture('auth.json').then((users) => {
-                const { email, password } = users.devStudent;
+            const { email, password } = users.genericStudents[0];
 
-                // send login request without going through UI
-                cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
-                    email: email,
-                    password: password,
-                })
-                .its('body')
-                .then((token) => {
-                    cy.setCookie('user', token)
-                })
+            // send login request without going through UI
+            cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
+                email: email,
+                password: password,
+            })
+            .its('body')
+            .then((token) => {
+                cy.setCookie('user', token)
             })
         })
         
@@ -46,22 +44,20 @@ describe('Tutorials', () => {
 
     context('Teacher', () => {
         beforeEach(function fetchUser () {
-            cy.fixture('auth.json').then((users) => {
-                const { email, password } = users.devTeacher;
+            const { email, password } = users.devTeacher;
 
-                // send login request without going through UI
-                cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
-                    email: email,
-                    password: password,
-                })
-                .its('body')
-                .then((token) => {
-                    cy.setCookie('user', token)
-                })
+            // send login request without going through UI
+            cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
+                email: email,
+                password: password,
+            })
+            .its('body')
+            .then((token) => {
+                cy.setCookie('user', token)
             })
         })
 
-        it.only('Can create new tutorial', function() {
+        it('Can create new tutorial', function() {
             const tutorialTitle = "New Tutorial Title";
 
             // intercept GET for monaco editor worker

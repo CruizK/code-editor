@@ -1,3 +1,5 @@
+import users from '../fixtures/auth.json'
+
 describe('Authentication', () => {
     beforeEach(() => {
         // reset and seed the database prior to every test
@@ -18,19 +20,17 @@ describe('Authentication', () => {
         it('Can login', function() {
             cy.visit('/auth/login')
 
-            cy.fixture('auth.json').then((users) => {
-                const { email, password } = users.devStudent;
+            const { email, password } = users.devStudent;
 
-                // type credentials
-                cy.get('input[id=email]').type(email)
-                cy.get('input[id=password]').type(password, { log: false })
+            // type credentials
+            cy.get('input[id=email]').type(email)
+            cy.get('input[id=password]').type(password, { log: false })
 
-                // submit
-                cy.get('button').contains('Sign In').click()
+            // submit
+            cy.get('button').contains('Sign In').click()
 
-                // should be redirected to home page
-                cy.url().should('match', /home/)
-            })
+            // should be redirected to home page
+            cy.url().should('match', /home/)
         })
 
         it('Cannot access non-auth pages', function() {
