@@ -26,7 +26,7 @@ describe('Tutorials', () => {
     
     context('Registered Student', () => {
         beforeEach(function fetchUser () {
-            const { email, password } = users.genericStudents[0];
+            const { email, password } = users.devStudent;
 
             // send login request without going through UI
             cy.request('POST', 'https://localhost:44377/api/Auth/Login', {
