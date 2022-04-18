@@ -1,6 +1,10 @@
 import users from '../fixtures/auth.json'
 
 describe('Courses', () => {
+    before(() => {
+        cy.fixture('courses').as('courses')
+    })
+
     beforeEach(() => {
         // reset and seed the database prior to every test
         cy.exec('npm run db:reset')
@@ -22,7 +26,9 @@ describe('Courses', () => {
         })
         
         it('Can start from beginning', function() {
-            cy.visit('/courses/1') // C# Basics
+            const { url } = this.courses["1"]
+
+            cy.visit(url) // C# Basics
 
             // get start button
             cy.contains('Start from Beginning').click()
@@ -32,7 +38,9 @@ describe('Courses', () => {
         })
 
         it('Can Start from any tutorial', function() {
-            cy.visit('/courses/1') // C# Basics
+            const { url } = this.courses["1"]
+
+            cy.visit(url) // C# Basics
 
             // get start button
             cy.get('.start').first().click()
@@ -42,7 +50,9 @@ describe('Courses', () => {
         })
 
         it('Can Start from any tutorial after being registered', function() {
-            cy.visit('/courses/1') // C# Basics
+            const { url } = this.courses["1"]
+
+            cy.visit(url) // C# Basics
 
             // get start button
             cy.get('.start').first().click()
@@ -76,7 +86,9 @@ describe('Courses', () => {
         })
         
         it('Can start from beginning', function() {
-            cy.visit('/courses/1') // C# Basics
+            const { url } = this.courses["1"]
+
+            cy.visit(url) // C# Basics
 
             // get start button
             cy.contains('Start from Beginning').click()
@@ -86,7 +98,9 @@ describe('Courses', () => {
         })
 
         it('Can Start from any tutorial', function() {
-            cy.visit('/courses/1') // C# Basics
+            const { url } = this.courses["1"]
+
+            cy.visit(url) // C# Basics
 
             // get start button
             cy.get('.start').first().click()
