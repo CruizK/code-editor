@@ -9,6 +9,8 @@ describe('Courses', () => {
         // reset and seed the database prior to every test
         cy.exec('npm run db:reset')
     })
+
+    let userToken
     
     context('Unregistered Student', () => {
         beforeEach(function fetchUser () {
@@ -22,6 +24,7 @@ describe('Courses', () => {
             .its('body')
             .then((token) => {
                 cy.setCookie('user', token)
+                userToken = token
             })
         })
         
@@ -50,17 +53,21 @@ describe('Courses', () => {
         })
 
         it('Can Start from any tutorial after being registered', function() {
-            const { url } = this.courses["1"]
+            const { id, url } = this.courses["1"]
 
-            cy.visit(url) // C# Basics
+            // send login request without going through UI
+            cy.request({
+                method: 'POST',
+                url: 'https://localhost:44377/api/Courses/RegisterUser',
+                auth: {
+                    bearer: userToken
+                },
+                body: {
+                    courseId: id
+                }
+            })
 
-            // get start button
-            cy.get('.start').first().click()
-
-            // get redirected
-            cy.url().should('match', /tutorials.*/)
-
-            cy.visit('/courses/1')
+            cy.visit(url)
 
             // get start button
             cy.get('.start').first().click()
@@ -82,6 +89,7 @@ describe('Courses', () => {
             .its('body')
             .then((token) => {
                 cy.setCookie('user', token)
+                userToken = token
             })
         })
         
