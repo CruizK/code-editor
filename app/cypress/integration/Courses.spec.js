@@ -29,7 +29,7 @@ describe('Courses', () => {
         })
         
         it('Can start from beginning', function() {
-            const { url } = this.courses["1"]
+            const { url, title } = this.courses["1"]
 
             cy.visit(url) // C# Basics
 
@@ -38,10 +38,14 @@ describe('Courses', () => {
 
             // get redirected
             cy.url().should('match', /tutorials.*/)
+
+            // course should show up in my courses
+            cy.visit('/dashboard')
+            cy.contains(title.toUpperCase())
         })
 
         it('Can Start from any tutorial', function() {
-            const { url } = this.courses["1"]
+            const { url, title } = this.courses["1"]
 
             cy.visit(url) // C# Basics
 
@@ -50,10 +54,14 @@ describe('Courses', () => {
 
             // get redirected
             cy.url().should('match', /tutorials.*/)
+
+            // course should show up in my courses
+            cy.visit('/dashboard')
+            cy.contains(title.toUpperCase())
         })
 
         it('Can Start from any tutorial after being registered', function() {
-            const { id, url } = this.courses["1"]
+            const { id, url, title } = this.courses["1"]
 
             // send login request without going through UI
             cy.request({
@@ -74,6 +82,10 @@ describe('Courses', () => {
 
             // get redirected
             cy.url().should('match', /tutorials.*/)
+
+            // course should show up in my courses
+            cy.visit('/dashboard')
+            cy.contains(title.toUpperCase())
         })
     })
     
@@ -94,7 +106,7 @@ describe('Courses', () => {
         })
         
         it('Can start from beginning', function() {
-            const { url } = this.courses["1"]
+            const { url, title } = this.courses["1"]
 
             cy.visit(url) // C# Basics
 
@@ -103,10 +115,14 @@ describe('Courses', () => {
 
             // get redirected
             cy.url().should('match', /tutorials.*/)
+
+            // course should show up in my courses
+            cy.visit('/dashboard')
+            cy.contains(title.toUpperCase())
         })
 
         it('Can Start from any tutorial', function() {
-            const { url } = this.courses["1"]
+            const { url, title } = this.courses["1"]
 
             cy.visit(url) // C# Basics
 
@@ -115,6 +131,10 @@ describe('Courses', () => {
 
             // get redirected
             cy.url().should('match', /tutorials.*/)
+
+            // course should show up in my courses
+            cy.visit('/dashboard')
+            cy.contains(title.toUpperCase())
         })
     })
 
