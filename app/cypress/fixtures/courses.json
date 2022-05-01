@@ -3,6 +3,11 @@
         "id": 1,
         "title": "C# Basics",
         "url": "/courses/1"
+    },
+    "5": {
+        "id": 5,
+        "title": "Web Dev 101",
+        "url": "/courses/5"
     }
 }
   
