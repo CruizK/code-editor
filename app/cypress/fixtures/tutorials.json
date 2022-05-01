@@ -1,0 +1,15 @@
+{
+    "6": {
+        "id": 6,
+        "title": "Anatomy of an HTML Element",
+        "solution": [
+            "{uparrow}{uparrow}{leftarrow}{leftarrow}{leftarrow}{leftarrow}{leftarrow}I'm editing the h1 element!",
+            "{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}<p>This is a paragraph tag</p>",
+            "{enter}<a href=\"https://dev.siucode.io\">This is our dev server!</a>",
+            "{enter}<img src=\"https://dev.siucode.io/siucode_logo.png\"/>",
+            "{enter}Pretend I embedded a video here",
+            "{enter}<ul><li>Bad List</li></ul>",
+            "{enter}<ol><li>1</li><li>2</li></ol>"
+        ]
+    }
+}
